@@ -1,0 +1,6 @@
+{
+  "*": {
+    "make": "../arduino-cli.exe compile --fqbn arduino:avr:micro --verbose brunnerdx",
+    "dispatch": "../arduino-cli.exe upload  -p COM6 --fqbn arduino:avr:micro --verbose brunnerdx",
+  }
+}
