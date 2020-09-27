@@ -42,6 +42,10 @@ long posX;
 long posY;
 int centerX;
 int centerY;
+int velX = 0;
+int velY = 0;
+int lastVelX = 0;
+int lastVelY = 0;
 int lastX = 0;
 int lastY = 0;
 
@@ -54,7 +58,7 @@ Joystick_ Joystick(
     JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
     11, 5, // Button Count, Hat Switch Count
     true, true, true, // X, Y and Z
-    false, false, false, // No Rx, Ry, or Rz
+    false, false, true, // No Rx, Ry, or Rz
     false, false, // No rudder or throttle
     false, false, false); // No accelerator, brake, or steering
 
@@ -76,6 +80,18 @@ void setup() {
     memset(brunnerBuffer, 0, brunnerBufferSize);
     brunnerBuffer[0] = 0xAF;
     prevBrunnerMillis = millis();
+}
+
+void loop(){
+    // doUDPStuff();
+    doJoystickStuff();
+
+    currentMillis = millis();
+    // do not run this more often than these milliseconds
+    if (currentMillis - prevBrunnerMillis >= 10) {
+        // doBrunnerStuff();
+        prevBrunnerMillis = currentMillis;
+    }
 }
 
 void setupFFBEffects(){
@@ -109,31 +125,17 @@ void setupFFBEffects(){
 
     Joystick.setGains(gain);
 
-    effects[0].springMaxPosition = maxX/2;
-    effects[1].springMaxPosition = maxY/2;
+    effects[0].springMaxPosition = maxX;
+    effects[1].springMaxPosition = maxY;
     effects[0].frictionMaxPositionChange = maxX; // TODO: test this works or should be = lastX - posX
     effects[1].frictionMaxPositionChange = maxY;
-    effects[0].inertiaMaxAcceleration = maxX;
+    effects[0].inertiaMaxAcceleration = 100;
     effects[1].inertiaMaxAcceleration = 100;
-    effects[0].damperMaxVelocity = 10;
+    effects[0].damperMaxVelocity = 100;
     effects[1].damperMaxVelocity = 100;
-    effects[0].inertiaAcceleration = 100;
-    effects[1].inertiaAcceleration = 100;
     effects[0].damperVelocity=100;
     effects[1].damperVelocity=100;
 
-}
-
-void loop(){
-    // doUDPStuff();
-    doJoystickStuff();
-
-    currentMillis = millis();
-    // do not run this more often than these milliseconds
-    if (currentMillis - prevBrunnerMillis >= 10) {
-        // doBrunnerStuff();
-        prevBrunnerMillis = currentMillis;
-    }
 }
 
 float char2float(char txt[], int offset) {
@@ -197,8 +199,14 @@ void doJoystickStuff(){
     Joystick.setXAxis(posX);
     Joystick.setYAxis(posY);
 
-    effects[0].frictionPositionChange = lastX - posX;
-    effects[1].frictionPositionChange = lastY - posY;
+    velX = lastX - posX;
+    velY = lastY - posY;
+
+    effects[0].frictionPositionChange = velX;
+    effects[1].frictionPositionChange = velY;
+
+    effects[0].inertiaAcceleration = velX - lastVelX;
+    effects[1].inertiaAcceleration = velY - lastVelY;
 
     Joystick.setEffectParams(effects);
     Joystick.getForce(forces);
@@ -214,6 +222,8 @@ void doJoystickStuff(){
 
     lastX = posX;
     lastY = posY;
+    lastVelX = velX;
+    lastVelY = velY;
 
 }
 
