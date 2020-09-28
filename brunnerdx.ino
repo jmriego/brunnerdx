@@ -1,5 +1,6 @@
-#define DEBUG
-#include "Joystick.h"
+#define DEBUGNO
+#include "brunnerdx.h"
+#include <Joystick.h>
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
@@ -9,6 +10,7 @@
 // Various global variables
 // -------------------------
 unsigned long currentMillis;
+unsigned long prevJoystickMillis;
 unsigned long prevBrunnerMillis;
 
 // --------------------------
@@ -18,17 +20,15 @@ unsigned long prevBrunnerMillis;
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192, 168, 3, 239);
-unsigned int localPort = 8888;              // local port to listen on
+IPAddress ip(192, 168, 3, 167);
+IPAddress brunnerIP(192, 168, 3, 194);
+unsigned int port = 15090;              // local port to send msg to
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
+EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
 // buffers for receiving and sending data
-// TODO: actually make this buffer one byte and 4 int32_t
-const int brunnerBufferSize = 1 + sizeof(int32_t)*4;
-char brunnerBuffer[brunnerBufferSize];  //buffer to hold Brunner external control buffer
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
-
-// An EthernetUDP instance to let us send and receive packets over UDP
-EthernetUDP Udp;
+requestAxisForces brunnerRequestAxisForces;
+char brunnerBufferRequest[sizeOfRequestAxisForces];  //buffer to hold Brunner external control buffer
 
 // --------------------------
 // Joystick related variables
@@ -67,8 +67,10 @@ void setup() {
     Serial.begin(9600);
     delay(2000); //Give the serial port time to catch up so we can debug
     Serial.println("Setting up...");
-    // Ethernet.begin(mac,ip);
-    // Udp.begin(localPort);
+    Ethernet.begin(mac,ip);
+    //Ethernet.begin(mac); with DHCP requires 10% more space
+    Serial.println(Ethernet.localIP()); // 192.168.3.167
+    Udp.begin(port);
 
     // setup joystick and FFB
     Joystick.setXAxisRange(minX, maxX);
@@ -77,19 +79,23 @@ void setup() {
     Joystick.begin();
 
     // setup Brunner
-    memset(brunnerBuffer, 0, brunnerBufferSize);
-    brunnerBuffer[0] = 0xAF;
+    memset(brunnerBufferRequest, 0, sizeOfRequestAxisForces);
+    brunnerRequestAxisForces.command = 0xAF;
+    prevJoystickMillis = millis();
     prevBrunnerMillis = millis();
 }
 
 void loop(){
-    // doUDPStuff();
-    doJoystickStuff();
+    doUDPStuff();
 
     currentMillis = millis();
-    // do not run this more often than these milliseconds
-    if (currentMillis - prevBrunnerMillis >= 10) {
-        // doBrunnerStuff();
+    // do not run more frequently than many milliseconds
+    if (currentMillis - prevJoystickMillis >= 1) {
+        doJoystickStuff();
+        prevJoystickMillis = currentMillis;
+    }
+    if (currentMillis - prevBrunnerMillis >= 1000) {
+        doBrunnerStuff();
         prevBrunnerMillis = currentMillis;
     }
 }
@@ -138,34 +144,28 @@ void setupFFBEffects(){
 
 }
 
-float char2float(char txt[], int offset) {
-    union u_tag {
-        byte b[4];
-        float fval;
-    } u;
-
-    u.b[0] = txt[offset];
-    u.b[1] = txt[offset + 1];
-    u.b[2] = txt[offset + 2];
-    u.b[3] = txt[offset + 3];
-
-    return u.fval;
-}
-
-void processMessage(char msg[]) {
-    int msgLength = strlen(msg);
-    if (msgLength == 17 && msg[0] == 0xAF) {
+void processMessage(char msg[], int msgLength) {
+    if (msgLength == sizeOfResponseAxisPositions) {
+        responseAxisPositions res = parseBrunnerResponse(msg);
+        if (res.command == 0xAF) {
+            posX = res.aileron * maxX;
+            posY = res.elevator * maxY;
+        }
     }
 }
 
 void doUDPStuff() {
     int packetSize = Udp.parsePacket();
+
     if(packetSize)
     {
+        // read the packet into packetBuffer
+        IPAddress remote = Udp.remoteIP();
+        Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+        #ifdef DEBUG_UDP
         Serial.print("Received packet of size ");
         Serial.println(packetSize);
         Serial.print("From ");
-        IPAddress remote = Udp.remoteIP();
         for (int i =0; i < 4; i++)
         {
             Serial.print(remote[i], DEC);
@@ -177,12 +177,13 @@ void doUDPStuff() {
         Serial.print(", port ");
         Serial.println(Udp.remotePort());
 
-        // read the packet into packetBufffer
-        Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+
         Serial.println("Contents:");
         Serial.println(packetBuffer);
+        #endif
+
+        processMessage(packetBuffer, packetSize);
     }
-    processMessage(packetBuffer);
 
     // TODO: read x and y positions
     // posX = encoderX.read();
@@ -212,7 +213,7 @@ void doJoystickStuff(){
     Joystick.getForce(forces);
 
     //Get Force [-255,255] you can set PWM with this value
-    #ifdef DEBUG
+    #ifdef DEBUG_FORCE
     Serial.println("");
     Serial.print(" - XF: ");
     Serial.print(forces[0]);
@@ -224,13 +225,15 @@ void doJoystickStuff(){
     lastY = posY;
     lastVelX = velX;
     lastVelY = velY;
-
 }
 
 void doBrunnerStuff(){
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-    memcpy(&brunnerBuffer, &posX, sizeof(int32_t));
-    memcpy(&brunnerBuffer + sizeof(int32_t), &posY, sizeof(int32_t));
-    Udp.write(brunnerBuffer, brunnerBufferSize);
+    Udp.beginPacket(brunnerIP, port);
+    brunnerRequestAxisForces.elevator = posY;
+    brunnerRequestAxisForces.aileron = posX;
+    generateBrunnerRequest(brunnerRequestAxisForces, brunnerBufferRequest);
+    //memcpy(&brunnerBufferRequest, &posX, sizeof(int32_t));
+    //memcpy(&brunnerBufferRequest + sizeof(int32_t), &posY, sizeof(int32_t));
+    Udp.write(brunnerBufferRequest, sizeOfRequestAxisForces);
     Udp.endPacket();
 }
