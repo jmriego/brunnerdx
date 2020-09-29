@@ -18,8 +18,6 @@ unsigned long nextBrunnerMillis;
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192, 168, 3, 167);
 IPAddress brunnerIP(192, 168, 3, 194);
 unsigned int port = 15090;              // local port to send msg to
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
@@ -61,6 +59,7 @@ void setup() {
     // setup connections
     Serial.begin(9600);
     delay(2000); //Give the serial port time to catch up so we can debug
+    readConfigFromEEPROM();
 
     // setup joystick and FFB
     Joystick.setXAxisRange(minX, maxX);
@@ -68,12 +67,8 @@ void setup() {
     setupFFBEffects();
     Joystick.begin();
 
-    // setup FFB
-    Ethernet.begin(mac,ip);
-    //Ethernet.begin(mac); with DHCP requires 10% more space
-    #ifdef DEBUG_NET
-    Serial.println(Ethernet.localIP()); // 192.168.3.167
-    #endif
+    // setup network
+    readConfigFromEEPROM();
     Udp.begin(port);
 
     // setup timing and run them as soon as possible
@@ -83,6 +78,7 @@ void setup() {
 
 void loop(){
     doUDPStuff();
+    readConfigFromSerial();
 
     currentMillis = millis();
     // do not run more frequently than these many milliseconds
