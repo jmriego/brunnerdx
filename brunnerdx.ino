@@ -10,8 +10,8 @@
 // Various global variables
 // -------------------------
 unsigned long currentMillis;
-unsigned long prevJoystickMillis;
-unsigned long prevBrunnerMillis;
+unsigned long nextJoystickMillis;
+unsigned long nextBrunnerMillis;
 
 // --------------------------
 // Network related variables
@@ -63,7 +63,7 @@ void setup() {
     // setup connections
     Serial.begin(9600);
     delay(2000); //Give the serial port time to catch up so we can debug
-    Serial.println("Setting up...");
+    /* Serial.println("Setting up..."); */
 
     // setup joystick and FFB
     Joystick.setXAxisRange(minX, maxX);
@@ -74,12 +74,12 @@ void setup() {
     // setup FFB
     Ethernet.begin(mac,ip);
     //Ethernet.begin(mac); with DHCP requires 10% more space
-    Serial.println(Ethernet.localIP()); // 192.168.3.167
+    /* Serial.println(Ethernet.localIP()); // 192.168.3.167 */
     Udp.begin(port);
 
-    // setup timing
-    prevJoystickMillis = millis();
-    prevBrunnerMillis = millis();
+    // setup timing and run them as soon as possible
+    nextJoystickMillis = 0;
+    nextBrunnerMillis = 0;
 }
 
 void loop(){
@@ -87,13 +87,13 @@ void loop(){
 
     currentMillis = millis();
     // do not run more frequently than many milliseconds
-    if (currentMillis - prevJoystickMillis >= 1) {
+    if (currentMillis >= nextJoystickMillis) {
         doJoystickStuff();
-        prevJoystickMillis = currentMillis;
+        nextJoystickMillis = millis + 1;
     }
-    if (currentMillis - prevBrunnerMillis >= 1000) {
+    if (currentMillis >= nextBrunnerMillis) {
         doBrunnerStuff();
-        prevBrunnerMillis = currentMillis;
+        nextBrunnerMillis = currentMillis + 1000;
     }
 }
 
