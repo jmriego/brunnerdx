@@ -1,6 +1,14 @@
 #define default_gain 100
 
+void setupJoystick() {
+    Joystick.setXAxisRange(minX, maxX);
+    Joystick.setYAxisRange(minY, maxY);
+    setupFFBEffects();
+    Joystick.begin();
+}
+
 void setupFFBEffects(){
+    Gains gain[2];
     //set x axis gains
     gain[0].totalGain = default_gain;
     gain[0].constantGain = default_gain;

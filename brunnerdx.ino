@@ -25,10 +25,10 @@ EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets o
 // --------------------------
 // Joystick related variables
 // --------------------------
-const int minX = 0;
-const int maxX = 1023;
-const int minY = 0;
-const int maxY = 1023;
+#define minX 0
+#define maxX 1023
+#define minY 0
+#define maxY 1023
 long posX;
 long posY;
 int velX = 0;
@@ -39,7 +39,6 @@ int lastX = 0;
 int lastY = 0;
 
 float strength = 4.0;
-Gains gain[2];
 EffectParams effects[2];
 int32_t forces[2] = {0, 0};
 
@@ -57,11 +56,7 @@ void setup() {
     delay(2000); //Give the serial port time to catch up so we can debug
     readConfigFromEEPROM();
 
-    // setup joystick and FFB
-    Joystick.setXAxisRange(minX, maxX);
-    Joystick.setYAxisRange(minY, maxY);
-    setupFFBEffects();
-    Joystick.begin();
+    setupJoystick();
 
     #ifdef DEBUG
     Serial.print("Strength: ");
