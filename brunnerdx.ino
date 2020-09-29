@@ -26,9 +26,6 @@ unsigned int port = 15090;              // local port to send msg to
 char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
-// buffers for receiving and sending data
-requestAxisForces brunnerRequestAxisForces;
-char brunnerBufferRequest[sizeOfRequestAxisForces];  //buffer to hold Brunner external control buffer
 
 // --------------------------
 // Joystick related variables
@@ -57,9 +54,9 @@ int32_t forces[2] = {0};
 Joystick_ Joystick(
     JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
     11, 5, // Button Count, Hat Switch Count
-    true, true, true, // X, Y and Z
-    false, false, true, // No Rx, Ry, or Rz
-    false, false, // No rudder or throttle
+    true, true, false, // X, Y and Z
+    false, false, false, // No Rx, Ry, or Rz
+    true, true, // No rudder or throttle
     false, false, false); // No accelerator, brake, or steering
 
 void setup() {
@@ -67,10 +64,6 @@ void setup() {
     Serial.begin(9600);
     delay(2000); //Give the serial port time to catch up so we can debug
     Serial.println("Setting up...");
-    Ethernet.begin(mac,ip);
-    //Ethernet.begin(mac); with DHCP requires 10% more space
-    Serial.println(Ethernet.localIP()); // 192.168.3.167
-    Udp.begin(port);
 
     // setup joystick and FFB
     Joystick.setXAxisRange(minX, maxX);
@@ -78,9 +71,13 @@ void setup() {
     setupFFBEffects();
     Joystick.begin();
 
-    // setup Brunner
-    memset(brunnerBufferRequest, 0, sizeOfRequestAxisForces);
-    brunnerRequestAxisForces.command = 0xAF;
+    // setup FFB
+    Ethernet.begin(mac,ip);
+    //Ethernet.begin(mac); with DHCP requires 10% more space
+    Serial.println(Ethernet.localIP()); // 192.168.3.167
+    Udp.begin(port);
+
+    // setup timing
     prevJoystickMillis = millis();
     prevBrunnerMillis = millis();
 }
@@ -166,8 +163,7 @@ void doUDPStuff() {
         Serial.print("Received packet of size ");
         Serial.println(packetSize);
         Serial.print("From ");
-        for (int i =0; i < 4; i++)
-        {
+        for (int i =0; i < 4; i++) {
             Serial.print(remote[i], DEC);
             if (i < 3)
             {
@@ -228,12 +224,14 @@ void doJoystickStuff(){
 }
 
 void doBrunnerStuff(){
+    int32_t command = 0xAF;
+    int32_t zero = 0;
+    
     Udp.beginPacket(brunnerIP, port);
-    brunnerRequestAxisForces.elevator = posY;
-    brunnerRequestAxisForces.aileron = posX;
-    generateBrunnerRequest(brunnerRequestAxisForces, brunnerBufferRequest);
-    //memcpy(&brunnerBufferRequest, &posX, sizeof(int32_t));
-    //memcpy(&brunnerBufferRequest + sizeof(int32_t), &posY, sizeof(int32_t));
-    Udp.write(brunnerBufferRequest, sizeOfRequestAxisForces);
+    Udp.write((byte*)&command, sizeof(command));
+    Udp.write((byte*)&(forces[0]), sizeof(forces[0]));
+    Udp.write((byte*)&(forces[1]), sizeof(forces[1]));
+    Udp.write((byte*)&zero, sizeof(zero));
+    Udp.write((byte*)&zero, sizeof(zero));
     Udp.endPacket();
 }

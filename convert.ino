@@ -23,15 +23,6 @@ float bytes2float(char txt[]) {
     return u.f;
 }
 
-void generateBrunnerRequest(requestAxisForces r, char c[]) {
-    union u_tag {
-        requestAxisForces r;
-        char c[sizeOfRequestAxisForces];
-    } u;
-
-    u.r = r;
-    c = u.c;
-}
 responseAxisPositions parseBrunnerResponse(char c[]) {
     union u_tag {
         char c[sizeOfResponseAxisPositions];
