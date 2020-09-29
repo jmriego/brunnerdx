@@ -23,7 +23,6 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 3, 167);
 IPAddress brunnerIP(192, 168, 3, 194);
 unsigned int port = 15090;              // local port to send msg to
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
 
@@ -86,7 +85,7 @@ void loop(){
     doUDPStuff();
 
     currentMillis = millis();
-    // do not run more frequently than many milliseconds
+    // do not run more frequently than these many milliseconds
     if (currentMillis >= nextJoystickMillis) {
         doJoystickStuff();
         nextJoystickMillis = millis + 1;
@@ -132,7 +131,7 @@ void setupFFBEffects(){
     effects[1].springMaxPosition = maxY;
     effects[0].frictionMaxPositionChange = maxX; // TODO: test this works or should be = lastX - posX
     effects[1].frictionMaxPositionChange = maxY;
-    effects[0].inertiaMaxAcceleration = 100;
+    effects[0].inertiaMaxAcceleration = 100; // TODO: find proper values for these
     effects[1].inertiaMaxAcceleration = 100;
     effects[0].damperMaxVelocity = 100;
     effects[1].damperMaxVelocity = 100;
@@ -152,6 +151,7 @@ void processMessage(char msg[], int msgLength) {
 }
 
 void doUDPStuff() {
+    char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
     int packetSize = Udp.parsePacket();
 
     if(packetSize)
