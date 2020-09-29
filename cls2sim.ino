@@ -34,10 +34,14 @@ void sendCLS2SIMForces(){
     int32_t command = 0xAF;
     int32_t zero = 0;
     
+    float brunnerForces[2];
+    brunnerForces[0] = forces[0] * strength;
+    brunnerForces[1] = forces[1] * strength;
+
     Udp.beginPacket(brunnerIP, port);
     Udp.write((byte*)&command, sizeof(command));
-    Udp.write((byte*)&(forces[0]), sizeof(forces[0]));
-    Udp.write((byte*)&(forces[1]), sizeof(forces[1]));
+    Udp.write((byte*)&(brunnerForces[0]), sizeof(float));
+    Udp.write((byte*)&(brunnerForces[1]), sizeof(float));
     Udp.write((byte*)&zero, sizeof(zero));
     Udp.write((byte*)&zero, sizeof(zero));
     Udp.endPacket();

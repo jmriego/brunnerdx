@@ -1,31 +1,33 @@
+#define default_gain 100
+
 void setupFFBEffects(){
     //set x axis gains
-    gain[0].totalGain = strength;
-    gain[0].constantGain = strength;
-    gain[0].rampGain = strength;
-    gain[0].squareGain = strength;
-    gain[0].sineGain = strength;
-    gain[0].triangleGain = strength;
-    gain[0].sawtoothdownGain = strength;
-    gain[0].sawtoothupGain = strength;
-    gain[0].springGain = strength;
-    gain[0].damperGain = strength;
-    gain[0].inertiaGain = strength;
-    gain[0].frictionGain = strength;
+    gain[0].totalGain = default_gain;
+    gain[0].constantGain = default_gain;
+    gain[0].rampGain = default_gain;
+    gain[0].squareGain = default_gain;
+    gain[0].sineGain = default_gain;
+    gain[0].triangleGain = default_gain;
+    gain[0].sawtoothdownGain = default_gain;
+    gain[0].sawtoothupGain = default_gain;
+    gain[0].springGain = default_gain;
+    gain[0].damperGain = default_gain;
+    gain[0].inertiaGain = default_gain;
+    gain[0].frictionGain = default_gain;
 
     //set y axis gains
-    gain[1].totalGain = strength;
-    gain[1].constantGain = strength;
-    gain[1].rampGain = strength;
-    gain[1].squareGain = strength;
-    gain[1].sineGain = strength;
-    gain[1].triangleGain = strength;
-    gain[1].sawtoothdownGain = strength;
-    gain[1].sawtoothupGain = strength;
-    gain[1].springGain = strength;
-    gain[1].damperGain = strength;
-    gain[1].inertiaGain = strength;
-    gain[1].frictionGain = strength;
+    gain[1].totalGain = default_gain;
+    gain[1].constantGain = default_gain;
+    gain[1].rampGain = default_gain;
+    gain[1].squareGain = default_gain;
+    gain[1].sineGain = default_gain;
+    gain[1].triangleGain = default_gain;
+    gain[1].sawtoothdownGain = default_gain;
+    gain[1].sawtoothupGain = default_gain;
+    gain[1].springGain = default_gain;
+    gain[1].damperGain = default_gain;
+    gain[1].inertiaGain = default_gain;
+    gain[1].frictionGain = default_gain;
 
     Joystick.setGains(gain);
 
