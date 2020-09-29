@@ -29,3 +29,16 @@ void processCLS2SIMMessage(char msg[], int msgLength) {
         }
     }
 }
+
+void sendCLS2SIMForces(){
+    int32_t command = 0xAF;
+    int32_t zero = 0;
+    
+    Udp.beginPacket(brunnerIP, port);
+    Udp.write((byte*)&command, sizeof(command));
+    Udp.write((byte*)&(forces[0]), sizeof(forces[0]));
+    Udp.write((byte*)&(forces[1]), sizeof(forces[1]));
+    Udp.write((byte*)&zero, sizeof(zero));
+    Udp.write((byte*)&zero, sizeof(zero));
+    Udp.endPacket();
+}
