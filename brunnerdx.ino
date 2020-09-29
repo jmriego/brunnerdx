@@ -1,5 +1,4 @@
 #define DEBUGNO
-#include "brunnerdx.h"
 #include <Joystick.h>
 #include <SPI.h>
 #include <Ethernet.h>
@@ -140,16 +139,6 @@ void setupFFBEffects(){
 
 }
 
-void processMessage(char msg[], int msgLength) {
-    if (msgLength == sizeOfResponseAxisPositions) {
-        responseAxisPositions res = parseBrunnerResponse(msg);
-        if (res.command == 0xAF) {
-            posX = res.aileron * maxX;
-            posY = res.elevator * maxY;
-        }
-    }
-}
-
 void doUDPStuff() {
     char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
     int packetSize = Udp.parsePacket();
@@ -178,7 +167,7 @@ void doUDPStuff() {
         Serial.println(packetBuffer);
         #endif
 
-        processMessage(packetBuffer, packetSize);
+        processCLS2SIMMessage(packetBuffer, packetSize);
     }
 
     // TODO: read x and y positions
