@@ -18,8 +18,8 @@ unsigned long nextBrunnerMillis;
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-IPAddress brunnerIP(192, 168, 3, 194);
-unsigned int port = 15090;              // local port to send msg to
+const IPAddress brunnerIP(192, 168, 3, 194);
+const unsigned int port = 15090;              // local port to send msg to
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
 
@@ -67,8 +67,13 @@ void setup() {
     setupFFBEffects();
     Joystick.begin();
 
+    #ifdef DEBUG
+    Serial.print("Strength: ");
+    Serial.println(strength); // 192.168.3.167
+    Serial.print("IP: ");
+    Serial.println(Ethernet.localIP()); // 192.168.3.167
+    #endif
     // setup network
-    readConfigFromEEPROM();
     Udp.begin(port);
 
     // setup timing and run them as soon as possible
@@ -101,7 +106,7 @@ void doUDPStuff() {
         // read the packet into packetBuffer
         IPAddress remote = Udp.remoteIP();
         Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
-        #ifdef DEBUG_NET
+        #ifdef DEBUG
         Serial.print("Received packet of size ");
         Serial.println(packetSize);
         Serial.print("From ");

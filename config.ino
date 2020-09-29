@@ -11,14 +11,31 @@ void readConfigFromSerial() {
 
         // say what you got:
         if (incomingByte == 'S') {
-            strength = Serial.parseInt(); 
-            EEPROM.put(POS_STRENGTH, strength);
+            incomingByte = Serial.parseInt(); 
+            if (Serial.read() == '\n') {
+                updateStrength(incomingByte);
+            }
         } else if (incomingByte == 'I') {
-            for (int i =0; i < 4; i++) {
+            int ip[4];
+            for (int i = 0; i < 4; i++) {
                 incomingByte = Serial.parseInt(); 
-                EEPROM.put(POS_IP + i*4, incomingByte);
+                ip[i] = incomingByte;
+            }
+            if (Serial.read() == '\n') {
+                updateIP(ip);
             }
         }
+    }
+}
+
+void updateStrength(int s) {
+    strength = s;
+    EEPROM.put(POS_STRENGTH, s);
+}
+
+void updateIP(int ip[]) {
+    for (int i = 0; i < 4; i++) {
+        EEPROM.put(POS_IP + i*4, ip[i]);
     }
 }
 
@@ -34,7 +51,7 @@ void readConfigFromEEPROM() {
     } else {
         Ethernet.begin(mac); // with DHCP requires 10% more space
     }
-    #ifdef DEBUG_NET
+    #ifdef DEBUG
     Serial.println(Ethernet.localIP()); // 192.168.3.167
     #endif
 }

@@ -62,7 +62,7 @@ void doJoystickStuff(){
     Joystick.getForce(forces);
 
     //Get Force [-255,255] you can set PWM with this value
-    #ifdef DEBUG_FORCE
+    #ifdef DEBUG
     Serial.println("");
     Serial.print(" - XF: ");
     Serial.print(forces[0]);
