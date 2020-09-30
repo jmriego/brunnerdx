@@ -53,6 +53,12 @@ void setupFFBEffects(){
 }
 
 void doJoystickStuff(){
+    static int velX;
+    static int velY;
+    static int lastVelX = 0;
+    static int lastVelY = 0;
+    static int lastX = 0;
+    static int lastY = 0;
 
     effects[0].springPosition = posX;
     effects[1].springPosition = posY;
