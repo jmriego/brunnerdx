@@ -40,7 +40,7 @@ void readConfigFromSerial() {
 }
 
 void updateStrength(int s) {
-    strength = s / 1000.0;
+    strength = s;
     EEPROM.put(POS_STRENGTH, s);
 }
 

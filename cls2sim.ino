@@ -31,18 +31,20 @@ void processCLS2SIMMessage(char msg[], int msgLength) {
 }
 
 void sendCLS2SIMForces(){
-    int32_t command = 0xAF;
-    int32_t zero = 0;
+    const int32_t command = 0xAF;
+    const byte zero[1] = {B0};
     
     float brunnerForces[2];
-    brunnerForces[0] = forces[0] * strength;
-    brunnerForces[1] = forces[1] * strength;
+    brunnerForces[0] = forces[0] * strength / 1000;
+    brunnerForces[1] = forces[1] * strength / 1000;
 
     Udp.beginPacket(brunnerIP, port);
     Udp.write((byte*)&command, sizeof(command));
     Udp.write((byte*)&(brunnerForces[0]), sizeof(float));
     Udp.write((byte*)&(brunnerForces[1]), sizeof(float));
-    Udp.write((byte*)&zero, sizeof(zero));
-    Udp.write((byte*)&zero, sizeof(zero));
+    // write zeroes for rudder and collective forces
+    for (int i = 0; i < sizeof(zero)*2; i++) {
+        Udp.write(zero, sizeof(zero));
+    }
     Udp.endPacket();
 }

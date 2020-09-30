@@ -38,7 +38,7 @@ int lastVelY = 0;
 int lastX = 0;
 int lastY = 0;
 
-float strength = 4.0;
+int strength = 4000;
 EffectParams effects[2];
 int32_t forces[2] = {0, 0};
 
