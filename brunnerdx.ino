@@ -26,15 +26,15 @@ EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets o
 // Joystick related variables
 // --------------------------
 #define minX 0
-#define maxX 1023
+#define maxX 32767
 #define minY 0
-#define maxY 1023
+#define maxY 32767
 long posX;
 long posY;
 
 int strength = 4000;
 EffectParams effects[2];
-int32_t forces[2] = {0, 0};
+int32_t forces[2] = {0};
 
 Joystick_ Joystick(
     JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
@@ -79,7 +79,7 @@ void loop(){
     }
     if (currentMillis >= nextBrunnerMillis) {
         sendCLS2SIMForces();
-        nextBrunnerMillis = currentMillis + 1000;
+        nextBrunnerMillis = currentMillis + 1;
     }
 }
 

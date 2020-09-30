@@ -55,15 +55,13 @@ void setupFFBEffects(){
 void doJoystickStuff(){
     static int velX;
     static int velY;
-    static int lastVelX = 0;
-    static int lastVelY = 0;
-    static int lastX = 0;
-    static int lastY = 0;
+    static int lastVelX;
+    static int lastVelY;
+    static int lastX;
+    static int lastY;
 
     effects[0].springPosition = posX;
     effects[1].springPosition = posY;
-    Joystick.setXAxis(posX);
-    Joystick.setYAxis(posY);
 
     velX = lastX - posX;
     velY = lastY - posY;
@@ -76,14 +74,18 @@ void doJoystickStuff(){
 
     Joystick.setEffectParams(effects);
     Joystick.getForce(forces);
+    Joystick.setXAxis(posX);
+    Joystick.setYAxis(posY);
 
     //Get Force [-255,255] you can set PWM with this value
     #ifdef DEBUG
-    Serial.println("");
-    Serial.print(" - XF: ");
-    Serial.print(forces[0]);
-    Serial.print(" YF: ");
-    Serial.print(forces[1]);
+    if (forces[0] > 0 || forces[1] > 0) {
+      Serial.println("");
+      Serial.print(" - XF: ");
+      Serial.print(forces[0]);
+      Serial.print(" YF: ");
+      Serial.print(forces[1]);
+    }
     #endif
 
     lastX = posX;
