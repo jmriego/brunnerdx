@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# if windows go to exe
+where arduino-cli.exe >/dev/null 2>&1 && cmd=arduino-cli.exe || cmd=arduino-cli
+
+if [ "$1" == "upload" ]; then
+    port=`$cmd board list | awk '/Micro/ {print $1;}'`
+    $cmd "$@" -p $port
+else
+    $cmd "$@"
+fi
