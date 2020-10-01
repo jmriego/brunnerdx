@@ -38,10 +38,10 @@ int32_t forces[2] = {0};
 
 Joystick_ Joystick(
     JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
-    11, 5, // Button Count, Hat Switch Count
-    true, true, false, // X, Y and Z
-    false, false, false, // No Rx, Ry, or Rz
-    true, true, // No rudder or throttle
+    19, 2, // Button Count, Hat Switch Count
+    true, true, true, // X, Y, Z
+    false, false, false, // Rx, Ry, Rz
+    true, true, // rudder, throttle
     false, false, false); // No accelerator, brake, or steering
 
 void setup() {
