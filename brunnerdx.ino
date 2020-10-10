@@ -25,21 +25,29 @@ EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets o
 // --------------------------
 // Joystick related variables
 // --------------------------
-#define minX 0
+#define minX -32768
 #define maxX 32767
-#define minY 0
+#define minY -32768
 #define maxY 32767
 long posX;
 long posY;
 
+int velX;
+int velY;
+int lastVelX;
+int lastVelY;
+int lastX;
+int lastY;
+Gains gain[2];
+
 int strength = 4000;
 EffectParams effects[2];
-int32_t forces[2] = {0};
+int32_t forces[2] = {0, 0};
 
 Joystick_ Joystick(
     JOYSTICK_DEFAULT_REPORT_ID, JOYSTICK_TYPE_JOYSTICK,
     19, 2, // Button Count, Hat Switch Count
-    true, true, true, // X, Y, Z
+    true, true, false, // X, Y, Z
     false, false, false, // Rx, Ry, Rz
     true, true, // rudder, throttle
     false, false, false); // No accelerator, brake, or steering
@@ -75,7 +83,7 @@ void loop(){
     // do not run more frequently than these many milliseconds
     if (currentMillis >= nextJoystickMillis) {
         doJoystickStuff();
-        nextJoystickMillis = millis + 1;
+        nextJoystickMillis = currentMillis + 1;
     }
     if (currentMillis >= nextBrunnerMillis) {
         sendCLS2SIMForces();

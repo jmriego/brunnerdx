@@ -24,8 +24,8 @@ void processCLS2SIMMessage(char msg[], int msgLength) {
     if (msgLength == sizeOfResponseAxisPositions) {
         ResponseAxisPositions res = parseBrunnerResponse(msg);
         if (res.command == 0xAF) {
-            posX = res.aileron * maxX;
-            posY = res.elevator * maxY;
+            posX = (res.aileron-0.5) * 2.0 * maxX;
+            posY = (res.elevator-0.5) * 2.0 * maxY;
         }
     }
 }
@@ -35,9 +35,8 @@ void sendCLS2SIMForces(){
     const byte zero[1] = {B0};
     
     int32_t brunnerForces[2];
-    brunnerForces[0] = forces[0] * strength / 1000;
-    brunnerForces[1] = forces[1] * strength / 1000;
-
+    brunnerForces[0] = forces[1] * strength / 1000; // Brunner forces are specified aileron/roll
+    brunnerForces[1] = forces[0] * strength / 1000; // instead of x/y. That's inversed order
     Udp.beginPacket(brunnerIP, port);
     Udp.write((byte*)&command, sizeof(command));
     Udp.write((byte*)&brunnerForces, sizeof(int32_t)*2);

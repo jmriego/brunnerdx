@@ -57,6 +57,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Brunner emulator")
 bg = (200, 200, 250, 100)
 red = (255, 0, 0, 100)
+white = (255, 255, 255, 100)
 rect = pygame.Rect(5, 75, 150, 150)
 
 # -------- Main Program Loop -----------
@@ -78,7 +79,7 @@ while not done:
       axis0 = joystick.get_axis(0)
       axis1 = joystick.get_axis(1)
 
-      if i == 0: # arduino
+      if joystick.get_name() == 'Arduino Micro': # arduino
         textPrint.tprint(screen, "Joystick {}".format(i))
         textPrint.indent()
         textPrint.tprint(screen, "Axis {} value: {:>6.3f}".format(1, axis0))
@@ -92,13 +93,14 @@ while not done:
         if response:
             result, elevator, aileron, rudder, collective = struct.unpack('<Iiiii', response)
 
-      elif i == 1: #x52
+      elif joystick.get_name() == 'X52 H.O.T.A.S.': #x52
             sock.sendto(
                 struct.pack('<iffff', 0xAF, axis1/2.0+0.5, axis0/2.0+0.5, 0.0, 0.0),
                 ('192.168.3.167', 15090))
 
     textPrint.tprint(screen, "Force values: {} , {}".format(aileron, elevator))
     pygame.draw.rect(screen, bg, rect)
+    pygame.draw.circle(screen, white, (80,150), 5)
     force_x = int(80+(aileron/16))
     force_y = int(150+(elevator/16))
     pygame.draw.circle(screen, red, (force_x,force_y), 5)
