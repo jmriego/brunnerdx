@@ -1,5 +1,5 @@
 #define DEBUGNO
-#include <Joystick.h>
+#include "src/Joystick.h"
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
