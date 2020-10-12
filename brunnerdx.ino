@@ -8,6 +8,7 @@
 // -------------------------
 // Various global variables
 // -------------------------
+unsigned long lastPositionUpdate;
 unsigned long nextJoystickMillis;
 unsigned long nextBrunnerMillis;
 
@@ -29,11 +30,7 @@ EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets o
 #define maxX 32767
 #define minY -32768
 #define maxY 32767
-long posX;
-long posY;
 
-int velX;
-int velY;
 int lastVelX;
 int lastVelY;
 int lastX;
@@ -70,6 +67,7 @@ void setup() {
     Udp.begin(port);
 
     // setup timing and run them as soon as possible
+    lastPositionUpdate = 0;
     nextJoystickMillis = 0;
     nextBrunnerMillis = 0;
 }
@@ -82,7 +80,7 @@ void loop(){
     currentMillis = millis();
     // do not run more frequently than these many milliseconds
     if (currentMillis >= nextJoystickMillis) {
-        doJoystickStuff();
+        updateEffects();
         nextJoystickMillis = currentMillis + 1;
     }
     if (currentMillis >= nextBrunnerMillis) {

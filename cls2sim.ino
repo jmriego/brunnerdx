@@ -24,8 +24,9 @@ void processCLS2SIMMessage(char msg[], int msgLength) {
     if (msgLength == sizeOfResponseAxisPositions) {
         ResponseAxisPositions res = parseBrunnerResponse(msg);
         if (res.command == 0xAF) {
-            posX = (res.aileron-0.5) * 2.0 * maxX;
-            posY = (res.elevator-0.5) * 2.0 * maxY;
+            updateJoystickPos(
+                (res.aileron-0.5) * 2.0 * maxX,
+                (res.elevator-0.5) * 2.0 * maxY);
         }
     }
 }
