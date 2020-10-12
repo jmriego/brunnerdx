@@ -41,8 +41,8 @@ void setupFFBEffects(){
 }
 
 void updateJoystickPos(int16_t posX, int16_t posY) {
-    effects[0].springMaxPosition = AXIS_RANGE;
-    effects[1].springMaxPosition = AXIS_RANGE;
+    effects[0].springMaxPosition = maxX;
+    effects[1].springMaxPosition = maxY;
     effects[0].frictionMaxPositionChange = 250; // TODO: find proper values for these
     effects[1].frictionMaxPositionChange = 250;
     effects[0].inertiaMaxAcceleration = 250;
@@ -50,16 +50,16 @@ void updateJoystickPos(int16_t posX, int16_t posY) {
     effects[0].damperMaxVelocity = 250;
     effects[1].damperMaxVelocity = 250;
 
-    effects[0].springPosition = map(posX, minX, maxX, 0, AXIS_RANGE);
-    effects[1].springPosition = map(posY, minY, maxY, 0, AXIS_RANGE);
+    effects[0].springPosition = posX;
+    effects[1].springPosition = posY;
 
     unsigned long currentMillis;
     currentMillis = millis();
     int16_t diffTime = currentMillis - lastPositionUpdate;
     if (diffTime > 0) {
         lastPositionUpdate = currentMillis;
-        int16_t positionChangeX = lastX - posX;
-        int16_t positionChangeY = lastY - posY;
+        int16_t positionChangeX = posX - lastX;
+        int16_t positionChangeY = posY - lastY;
         int16_t velX = positionChangeX / diffTime;
         int16_t velY = positionChangeY / diffTime;
     
