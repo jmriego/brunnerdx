@@ -173,10 +173,7 @@ public:
 		bool includeRyAxis = true,
 		bool includeRzAxis = true,
 		bool includeRudder = true,
-		bool includeThrottle = true,
-		bool includeAccelerator = true,
-		bool includeBrake = true,
-		bool includeSteering = true);
+		bool includeThrottle = true);
 
 	void begin(bool initAutoSendState = true);
 	void end();

@@ -39,8 +39,6 @@
 #define JOYSTICK_INCLUDE_RUDDER      B00000001
 #define JOYSTICK_INCLUDE_THROTTLE    B00000010
 #define JOYSTICK_INCLUDE_ACCELERATOR B00000100
-#define JOYSTICK_INCLUDE_BRAKE       B00001000
-#define JOYSTICK_INCLUDE_STEERING    B00010000
 
 const float cutoff_freq_damper   = 5.0;  //Cutoff frequency in Hz
 const float sampling_time_damper = 0.001; //Sampling time in seconds.
@@ -61,10 +59,7 @@ Joystick_::Joystick_(
 	bool includeRyAxis,
 	bool includeRzAxis,
 	bool includeRudder,
-	bool includeThrottle,
-	bool includeAccelerator,
-	bool includeBrake,
-	bool includeSteering)
+	bool includeThrottle)
 {
     // Set the USB HID Report ID
     _hidReportId = hidReportId;
@@ -82,9 +77,6 @@ Joystick_::Joystick_(
 	_includeSimulatorFlags = 0;
 	_includeSimulatorFlags |= (includeRudder ? JOYSTICK_INCLUDE_RUDDER : 0);
 	_includeSimulatorFlags |= (includeThrottle ? JOYSTICK_INCLUDE_THROTTLE : 0);
-	_includeSimulatorFlags |= (includeAccelerator ? JOYSTICK_INCLUDE_ACCELERATOR : 0);
-	_includeSimulatorFlags |= (includeBrake ? JOYSTICK_INCLUDE_BRAKE : 0);
-	_includeSimulatorFlags |= (includeSteering ? JOYSTICK_INCLUDE_STEERING : 0);
 	
     // Build Joystick HID Report Description
 	
@@ -105,10 +97,7 @@ Joystick_::Joystick_(
 		+  (includeRzAxis == true);
 		
 	uint8_t simulationCount = (includeRudder == true)
-		+ (includeThrottle == true)
-		+ (includeAccelerator == true)
-		+ (includeBrake == true)
-		+ (includeSteering == true); 
+		+ (includeThrottle == true); 
 		
 	static uint8_t tempHidReportDescriptor[150];
 	int hidReportDescriptorSize = 0;
@@ -411,24 +400,6 @@ Joystick_::Joystick_(
 			// USAGE (Throttle)
 			tempHidReportDescriptor[hidReportDescriptorSize++] = 0x09;
 			tempHidReportDescriptor[hidReportDescriptorSize++] = 0xBB;
-		}
-
-		if (includeAccelerator == true) {
-			// USAGE (Accelerator)
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0x09;
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0xC4;
-		}
-
-		if (includeBrake == true) {
-			// USAGE (Brake)
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0x09;
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0xC5;
-		}
-
-		if (includeSteering == true) {
-			// USAGE (Steering)
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0x09;
-			tempHidReportDescriptor[hidReportDescriptorSize++] = 0xC8;
 		}
 
 		// INPUT (Data,Var,Abs)

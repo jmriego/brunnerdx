@@ -47,8 +47,7 @@ Joystick_ Joystick(
     19, 2, // Button Count, Hat Switch Count
     true, true, false, // X, Y, Z
     false, false, false, // Rx, Ry, Rz
-    true, true, // rudder, throttle
-    false, false, false); // No accelerator, brake, or steering
+    true, true); // rudder, throttle
 
 void setup() {
     Ethernet.begin(mac, ip);
