@@ -38,7 +38,7 @@ public:
   /** \brief Filter class.
    *
    */
-  Filter(float_t hz_, float_t ts_, ORDER od_, TYPE ty_ = TYPE::LOWPASS);
+  Filter(float_t hz_, float_t ts_, TYPE ty_ = TYPE::LOWPASS);
   ~Filter();
 
   float_t filterIn(float_t input);
@@ -46,18 +46,9 @@ public:
   void flush();
   void init(bool doFlush=true);
 
-  void setSamplingTime(float_t ts_, bool doFlush=true) { ts = ts_; init(doFlush); }
-  void setCutoffFreqHZ(float_t hz_, bool doFlush=true) { hz = hz_; init(doFlush); }
-  void setOrder(ORDER od_, bool doFlush=true)          { od = od_; init(doFlush); }
-
-  bool isInErrorState() { return f_err;  }
-  bool isInWarnState()  { return f_warn; }
-  void dumpParams();
-
 private:
   float_t ts;
   float_t hz;
-  ORDER od;
   TYPE  ty;
 
   // Helper variables during coefficient calcutions
@@ -75,7 +66,6 @@ private:
   float_t ap(float_t p); ///< Assert Parameter
 
   inline float_t computeLowPass(float_t input);
-  inline float_t computeHighPass(float_t input);
 
   /** \brief Computes the discrete coefficients for a Butterworth low-pass filter via pole-zero matching. 
    *  Up to order 4. 
@@ -85,5 +75,4 @@ private:
   /** \brief Computes the discrete coefficients for a Butterworth high-pass filter via Bilinear-Transformation.
    *  Up to order 2 (I was lazy).
    */
-  inline void  initHighPass();
 };

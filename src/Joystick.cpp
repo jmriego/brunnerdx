@@ -42,10 +42,9 @@
 
 const float cutoff_freq_damper   = 5.0;  //Cutoff frequency in Hz
 const float sampling_time_damper = 0.001; //Sampling time in seconds.
-IIR::ORDER  order  = IIR::ORDER::OD1; // Order (OD1 to OD4)
-Filter damperFilter(cutoff_freq_damper, sampling_time_damper, order);
-Filter interiaFilter(cutoff_freq_damper, sampling_time_damper, order);
-Filter frictionFilter(cutoff_freq_damper, sampling_time_damper, order);
+Filter damperFilter(cutoff_freq_damper, sampling_time_damper);
+Filter interiaFilter(cutoff_freq_damper, sampling_time_damper);
+Filter frictionFilter(cutoff_freq_damper, sampling_time_damper);
 
 Joystick_::Joystick_(
 	uint8_t hidReportId,

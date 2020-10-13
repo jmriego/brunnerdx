@@ -22,10 +22,9 @@ using namespace IIR;
 
 // CONSTRUCTOR AND DESTRUCTOR * * * * * * * * * * * * * * *
 
-Filter::Filter(float_t hz_, float_t ts_, ORDER od_, TYPE ty_) :
+Filter::Filter(float_t hz_, float_t ts_, TYPE ty_) :
   ts( ts_ ),
   hz( hz_ ),
-  od( od_ ),
   ty( ty_ )
 {
   init();
@@ -65,68 +64,14 @@ inline float_t Filter::computeLowPass(float_t input) {
     u[i] = u[i-1];
   }
 
-  switch((uint8_t)od) {
-    case (uint8_t)ORDER::OD1:
-        y[0] = k1*y[1] + k0*input;
-      break;
-    case (uint8_t)ORDER::OD2:
-        y[0] = k1*y[1] - k2*y[2] + (k0*input)/KM;
-      break;
-    case (uint8_t)ORDER::OD3:
-        y[0] = k1*y[1] - k2*y[2] + k3*y[3] + (k0*input)/KM;
-      break;
-    case (uint8_t)ORDER::OD4:
-        y[0] = k1*y[1] - k2*y[2] + k3*y[3] - k4*y[4] + (k0*input)/KM;
-      break;
-    default:
-        y[0] = input;
-      break;
-  }
+  y[0] = k1*y[1] + k0*input;
   return y[0];
 }
 
 inline void  Filter::initLowPass() {
-  switch((uint8_t)od) {
-    case (uint8_t)ORDER::OD1:
-        a  = 2.0*PI*hz;
-        k1 = exp(-a*ts);
-        k0 = 1.0 - k1;
-      break;
-    case (uint8_t)ORDER::OD2:
-        a  = -PI*hz*SQRT2;
-        b  =  PI*hz*SQRT2;
-        k2 = ap(exp(2.0*ts*a));
-        k1 = ap(2.0*exp(a*ts)*cos(b*ts));
-        k0 = ap(1.0*KM - k1*KM + k2*KM);
-      break;
-    case (uint8_t)ORDER::OD3:
-        a  = -PI*hz;
-        b  =  PI*hz*SQRT3;
-        c  =  2.0*PI*hz;
-        b3 = exp(-c*ts);
-        b2 = exp(2.0*ts*a);
-        b1 = 2.0*exp(a*ts)*cos(b*ts);
-        k3 = ap(b2*b3);
-        k2 = ap(b2 + b1*b3);
-        k1 = ap(b1 + b3);
-        k0 = ap(1.0*KM - b1*KM + b2*KM -b3*KM + b1*KM*b3 - b2*KM*b3);
-      break;
-    case (uint8_t)ORDER::OD4:
-        a  = -0.3827*2.0*PI*hz;
-        b  =  0.9238*2.0*PI*hz;
-        c  = -0.9238*2.0*PI*hz;
-        d  =  0.3827*2.0*PI*hz;
-        b4 = exp(2.0*ts*c);
-        b3 = 2.0*exp(c*ts)*cos(d*ts);
-        b2 = exp(2.0*ts*a);
-        b1 = 2.0*exp(a*ts)*cos(b*ts);
-        k4 = ap(b2*b4);
-        k3 = ap(b1*b4 + b2*b3);
-        k2 = ap(b4 + b1*b3 + b2);
-        k1 = ap(b1 + b3);
-        k0 = ap(1.0*KM - k1*KM + k2*KM - k3*KM + k4*KM);
-      break;
-  }
+    a  = 2.0*PI*hz;
+    k1 = exp(-a*ts);
+    k0 = 1.0 - k1;
 }
 
 

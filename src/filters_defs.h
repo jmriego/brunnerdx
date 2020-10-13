@@ -31,7 +31,6 @@
 
 namespace IIR {
   const uint8_t MAX_ORDER = 5;
-  enum class ORDER  : uint8_t {OD1 = 0, OD2, OD3, OD4};//, OD5};
   enum class TYPE   : uint8_t {LOWPASS = 0, HIGHPASS = 1};
 
   const float_t SQRT2 = sqrt(2.0);
