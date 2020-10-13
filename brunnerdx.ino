@@ -1,8 +1,6 @@
 #define DEBUGNO
 #include "src/Joystick.h"
-#include <SPI.h>
 #include <Ethernet.h>
-#include <EthernetUdp.h>
 
 // -------------------------
 // Various global variables
@@ -20,7 +18,7 @@ unsigned long nextBrunnerMillis;
 const byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 #define brunnerIP IPAddress (192, 168, 3, 194)
 #define ip IPAddress (192, 168, 3, 167)
-const unsigned int port = 15090;              // local port to send msg to
+#define port 15090
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
 
@@ -36,9 +34,7 @@ int lastVelX;
 int lastVelY;
 int lastX;
 int lastY;
-Gains gain[2];
 
-int strength = 4000;
 EffectParams effects[2];
 int32_t forces[2] = {0, 0};
 

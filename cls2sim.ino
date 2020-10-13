@@ -5,7 +5,7 @@ struct ResponseAxisPositions {
     float rudder;
     float collective;
 };
-const int sizeOfResponseAxisPositions = 20; //sizeof(int32_t) + sizeof(float) * 4
+#define sizeOfResponseAxisPositions 20
 
 ResponseAxisPositions parseBrunnerResponse(char c[]);
 ResponseAxisPositions parseBrunnerResponse(char c[]) {
@@ -35,6 +35,7 @@ void sendCLS2SIMForces(){
     const int32_t command = 0xAF;
     const byte zero[1] = {B0};
     
+    int strength = 4000;
     int32_t brunnerForces[2];
     brunnerForces[0] = forces[1] * strength / 1000; // Brunner forces are specified aileron/roll
     brunnerForces[1] = forces[0] * strength / 1000; // instead of x/y. That's inversed order
