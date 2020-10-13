@@ -3,7 +3,6 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
-#include <EEPROM.h>
 
 // -------------------------
 // Various global variables
@@ -18,7 +17,9 @@ unsigned long nextBrunnerMillis;
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-const IPAddress brunnerIP(192, 168, 3, 194);
+const byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+#define brunnerIP IPAddress (192, 168, 3, 194)
+#define ip IPAddress (192, 168, 3, 167)
 const unsigned int port = 15090;              // local port to send msg to
 EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets over UDP
 
@@ -50,19 +51,10 @@ Joystick_ Joystick(
     false, false, false); // No accelerator, brake, or steering
 
 void setup() {
-    // setup connections
-    Serial.begin(9600);
-    delay(2000); //Give the serial port time to catch up so we can debug
-    readConfigFromEEPROM();
+    Ethernet.begin(mac, ip);
 
     setupJoystick();
 
-    #ifdef DEBUG
-    Serial.print("Strength: ");
-    Serial.println(strength); // 192.168.3.167
-    Serial.print("IP: ");
-    Serial.println(Ethernet.localIP()); // 192.168.3.167
-    #endif
     // setup network
     Udp.begin(port);
 
@@ -74,7 +66,6 @@ void setup() {
 
 void loop(){
     doUDPStuff();
-    readConfigFromSerial();
 
     unsigned long currentMillis;
     currentMillis = millis();
@@ -97,13 +88,6 @@ void doUDPStuff() {
     {
         // read the packet into packetBuffer
         Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
-        #ifdef DEBUG
-        Serial.print("Received packet of size ");
-        Serial.println(packetSize);
-        Serial.println("Contents:");
-        Serial.println(packetBuffer);
-        #endif
-
         processCLS2SIMMessage(packetBuffer, packetSize);
     }
 

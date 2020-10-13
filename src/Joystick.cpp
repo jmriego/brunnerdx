@@ -474,9 +474,6 @@ Joystick_::Joystick_(
 	_zAxisRotation = 0;
 	_throttle = 0;
 	_rudder = 0;
-	_accelerator = 0;
-	_brake = 0;
-	_steering = 0;
 	for (int index = 0; index < JOYSTICK_HATSWITCH_COUNT_MAXIMUM; index++)
 	{
 		_hatSwitchValues[index] = JOYSTICK_HATSWITCH_RELEASE;
@@ -847,22 +844,6 @@ void Joystick_::setZAxis(int16_t value)
 	if (_autoSendState) sendState();
 }
 
-void Joystick_::setRxAxis(int16_t value)
-{
-	_xAxisRotation = value;
-	if (_autoSendState) sendState();
-}
-void Joystick_::setRyAxis(int16_t value)
-{
-	_yAxisRotation = value;
-	if (_autoSendState) sendState();
-}
-void Joystick_::setRzAxis(int16_t value)
-{
-	_zAxisRotation = value;
-	if (_autoSendState) sendState();
-}
-
 void Joystick_::setRudder(int16_t value)
 {
 	_rudder = value;
@@ -871,21 +852,6 @@ void Joystick_::setRudder(int16_t value)
 void Joystick_::setThrottle(int16_t value)
 {
 	_throttle = value;
-	if (_autoSendState) sendState();
-}
-void Joystick_::setAccelerator(int16_t value)
-{
-	_accelerator = value;
-	if (_autoSendState) sendState();
-}
-void Joystick_::setBrake(int16_t value)
-{
-	_brake = value;
-	if (_autoSendState) sendState();
-}
-void Joystick_::setSteering(int16_t value)
-{
-	_steering = value;
 	if (_autoSendState) sendState();
 }
 
@@ -984,9 +950,6 @@ void Joystick_::sendState()
 	// Set Simulation Values
 	index += buildAndSetSimulationValue(_includeSimulatorFlags & JOYSTICK_INCLUDE_RUDDER, _rudder, _rudderMinimum, _rudderMaximum, &(data[index]));
 	index += buildAndSetSimulationValue(_includeSimulatorFlags & JOYSTICK_INCLUDE_THROTTLE, _throttle, _throttleMinimum, _throttleMaximum, &(data[index]));
-	index += buildAndSetSimulationValue(_includeSimulatorFlags & JOYSTICK_INCLUDE_ACCELERATOR, _accelerator, _acceleratorMinimum, _acceleratorMaximum, &(data[index]));
-	index += buildAndSetSimulationValue(_includeSimulatorFlags & JOYSTICK_INCLUDE_BRAKE, _brake, _brakeMinimum, _brakeMaximum, &(data[index]));
-	index += buildAndSetSimulationValue(_includeSimulatorFlags & JOYSTICK_INCLUDE_STEERING, _steering, _steeringMinimum, _steeringMaximum, &(data[index]));
 
 	DynamicHID().SendReport(_hidReportId, data, _hidReportSize);
 }

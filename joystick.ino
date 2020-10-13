@@ -37,7 +37,6 @@ void setupFFBEffects(){
     gain[1].frictionGain = default_gain;
 
     Joystick.setGains(gain);
-
 }
 
 void updateJoystickPos(int16_t posX, int16_t posY) {
@@ -82,13 +81,4 @@ void updateJoystickPos(int16_t posX, int16_t posY) {
 void updateEffects(){
     Joystick.setEffectParams(effects);
     Joystick.getForce(forces);
-
-    //Get Force [-255,255] you can set PWM with this value
-    #ifdef DEBUG
-      Serial.println("");
-      Serial.print(" - XF: ");
-      Serial.print(forces[0]);
-      Serial.print(" YF: ");
-      Serial.print(forces[1]);
-    #endif
 }
