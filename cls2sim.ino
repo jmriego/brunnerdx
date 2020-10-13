@@ -7,6 +7,17 @@ struct ResponseAxisPositions {
 };
 #define sizeOfResponseAxisPositions 20
 
+int32_t extractCommandFromResponse(char c[]){
+    union u_tag {
+        char c[4];
+        int32_t command;
+    } u;
+    for (int i =0; i < 4; i++) {
+        u.c[i] = c[i];
+    }
+    return u.command;
+}
+
 ResponseAxisPositions parseBrunnerResponse(char c[]);
 ResponseAxisPositions parseBrunnerResponse(char c[]) {
     union u_tag {
@@ -21,9 +32,10 @@ ResponseAxisPositions parseBrunnerResponse(char c[]) {
 }
 
 void processCLS2SIMMessage(char msg[], int msgLength) {
-    if (msgLength == sizeOfResponseAxisPositions) {
-        ResponseAxisPositions res = parseBrunnerResponse(msg);
-        if (res.command == 0xAF) {
+    int32_t command = extractCommandFromResponse(msg);
+    if (command == 0xAF) {
+        if (msgLength == sizeOfResponseAxisPositions) {
+            ResponseAxisPositions res = parseBrunnerResponse(msg);
             updateJoystickPos(
                 (res.aileron-0.5) * 2.0 * maxX,
                 (res.elevator-0.5) * 2.0 * maxY);
