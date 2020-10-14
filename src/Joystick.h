@@ -135,9 +135,6 @@ private:
 	uint8_t                  _hidReportId;
 	uint8_t                  _hidReportSize; 
 
-	//force feedback gain
-	Gains* m_gains;
-
 	//force feedback effect params
 	EffectParams* m_effect_params;
 
@@ -154,7 +151,7 @@ private:
 	int32_t SawtoothUpForceCalculator(volatile TEffectState& effect);
 	int32_t ConditionForceCalculator(volatile TEffectState& effect, float metric, uint8_t axis);
 	void forceCalculator(int32_t* forces);
-	int32_t getEffectForce(volatile TEffectState& effect, Gains _gains, EffectParams _effect_params, uint8_t axis);
+	int32_t getEffectForce(volatile TEffectState& effect, EffectParams _effect_params, uint8_t axis);
 protected:
 	int buildAndSet16BitValue(bool includeValue, int16_t value, int16_t valueMinimum, int16_t valueMaximum, int16_t actualMinimum, int16_t actualMaximum, uint8_t dataLocation[]);
 	int buildAndSetAxisValue(bool includeAxis, int16_t axisValue, int16_t axisMinimum, int16_t axisMaximum, uint8_t dataLocation[]);
@@ -241,15 +238,6 @@ public:
 
 	//force feedback Interfaces
 	void getForce(int32_t* forces);
-	//set gain functions
-	int8_t setGains(Gains* _gains){
-	    if(_gains != nullptr){
-			//it should be added some limition here,but im so tired,it's 2:24 A.M now!
-	        m_gains = _gains;
-	        return 0;
-	    }
-	    return -1;
-	};
 	//set effect params funtions
 	int8_t setEffectParams(EffectParams* _effect_params){
 	    if(_effect_params != nullptr){

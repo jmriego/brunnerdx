@@ -91,7 +91,9 @@ while not done:
                 break
             response, address = sock.recvfrom(20)
         if response:
-            result, elevator, aileron, rudder, collective = struct.unpack('<Iiiii', response)
+            command = struct.unpack_from('<I', response)[0]
+            if command == 0xAF:
+                result, elevator, aileron, rudder, collective = struct.unpack('<Iiiii', response)
 
       elif joystick.get_name() == 'X52 H.O.T.A.S.': #x52
             sock.sendto(

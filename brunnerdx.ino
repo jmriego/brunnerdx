@@ -29,6 +29,7 @@ EthernetUDP Udp; // An EthernetUDP instance to let us send and receive packets o
 #define maxX 32767
 #define minY -32768
 #define maxY 32767
+#define strength 4000
 
 int lastVelX;
 int lastVelY;

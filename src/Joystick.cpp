@@ -19,6 +19,7 @@
 */
 
 #include "Joystick.h"
+#include "../JoystickConfig.h"
 #include "FFBDescriptor.h"
 #include "filters.h"
 #if defined(_USING_DYNAMIC_HID)
@@ -465,7 +466,7 @@ void Joystick_::getForce(int32_t* forces) {
 	forceCalculator(forces);
 }
 
-int32_t Joystick_::getEffectForce(volatile TEffectState& effect,Gains _gains,EffectParams _effect_params, uint8_t axis){
+int32_t Joystick_::getEffectForce(volatile TEffectState& effect, EffectParams _effect_params, uint8_t axis){
 
     uint8_t direction;
     if (effect.enableAxis == DIRECTION_ENABLE)
@@ -490,42 +491,42 @@ int32_t Joystick_::getEffectForce(volatile TEffectState& effect,Gains _gains,Eff
 	switch (effect.effectType)
     {
 	    case USB_EFFECT_CONSTANT://1
-	        force = ConstantForceCalculator(effect) * _gains.constantGain * angle_ratio;
+	        force = ConstantForceCalculator(effect) * constantGain * angle_ratio;
 	        break;
 	    case USB_EFFECT_RAMP://2
-	    	force = RampForceCalculator(effect) * _gains.rampGain * angle_ratio;
+	    	force = RampForceCalculator(effect) * rampGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_SQUARE://3
-	    	force = SquareForceCalculator(effect) * _gains.squareGain * angle_ratio;
+	    	force = SquareForceCalculator(effect) * squareGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_SINE://4
-	    	force = SinForceCalculator(effect) * _gains.sineGain * angle_ratio;
+	    	force = SinForceCalculator(effect) * sineGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_TRIANGLE://5
-	    	force = TriangleForceCalculator(effect) * _gains.triangleGain * angle_ratio;
+	    	force = TriangleForceCalculator(effect) * triangleGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_SAWTOOTHDOWN://6
-	    	force = SawtoothDownForceCalculator(effect) * _gains.sawtoothdownGain * angle_ratio;
+	    	force = SawtoothDownForceCalculator(effect) * sawtoothdownGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_SAWTOOTHUP://7
-	    	force = SawtoothUpForceCalculator(effect) * _gains.sawtoothupGain * angle_ratio;
+	    	force = SawtoothUpForceCalculator(effect) * sawtoothupGain * angle_ratio;
 	    	break;
 	    case USB_EFFECT_SPRING://8
-	    	force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.springPosition, _effect_params.springMaxPosition), axis) * _gains.springGain;
+	    	force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.springPosition, _effect_params.springMaxPosition), axis) * springGain;
 	    	break;
 	    case USB_EFFECT_DAMPER://9
-	    	force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.damperVelocity, _effect_params.damperMaxVelocity), axis) * _gains.damperGain;
+	    	force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.damperVelocity, _effect_params.damperMaxVelocity), axis) * damperGain;
 	    	break;
 	    case USB_EFFECT_INERTIA://10
 	    	if (_effect_params.inertiaAcceleration < 0 && _effect_params.frictionPositionChange < 0) {
-	    		force = ConditionForceCalculator(effect, abs(NormalizeRange(_effect_params.inertiaAcceleration, _effect_params.inertiaMaxAcceleration)), axis) * _gains.inertiaGain;
+	    		force = ConditionForceCalculator(effect, abs(NormalizeRange(_effect_params.inertiaAcceleration, _effect_params.inertiaMaxAcceleration)), axis) * inertiaGain;
 	    	}
 	    	else if (_effect_params.inertiaAcceleration < 0 && _effect_params.frictionPositionChange > 0) {
-	    		force = -1 * ConditionForceCalculator(effect, abs(NormalizeRange(_effect_params.inertiaAcceleration, _effect_params.inertiaMaxAcceleration)), axis) * _gains.inertiaGain;
+	    		force = -1 * ConditionForceCalculator(effect, abs(NormalizeRange(_effect_params.inertiaAcceleration, _effect_params.inertiaMaxAcceleration)), axis) * inertiaGain;
 	    	}
 	    	break;
 	    case USB_EFFECT_FRICTION://11
-	    		force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.frictionPositionChange, _effect_params.frictionMaxPositionChange), axis) * _gains.frictionGain;
+	    		force = ConditionForceCalculator(effect, NormalizeRange(_effect_params.frictionPositionChange, _effect_params.frictionMaxPositionChange), axis) * frictionGain;
 	    		break;
 	    case USB_EFFECT_CUSTOM://12
 	    		break;
@@ -549,18 +550,18 @@ void Joystick_::forceCalculator(int32_t* forces) {
 				if (effect.enableAxis == DIRECTION_ENABLE
                     || effect.enableAxis & X_AXIS_ENABLE)
 				{
-					forces[0] += (int32_t)(getEffectForce(effect,m_gains[0], m_effect_params[0], 0));
+					forces[0] += (int32_t)(getEffectForce(effect, m_effect_params[0], 0));
 				}
 				if (effect.enableAxis == DIRECTION_ENABLE
                     || effect.enableAxis & Y_AXIS_ENABLE)
 				{
-					forces[1] += (int32_t)(getEffectForce(effect,m_gains[1], m_effect_params[1], 1));
+					forces[1] += (int32_t)(getEffectForce(effect, m_effect_params[1], 1));
 				}
 
 	    	}
 	    }
-	forces[0] = (int32_t)((float)1.00 * forces[0] * m_gains[0].totalGain / 10000); // each effect gain * total effect gain = 10000
-	forces[1] = (int32_t)((float)1.00 * forces[1] * m_gains[1].totalGain / 10000); // each effect gain * total effect gain = 10000
+	forces[0] = (int32_t)((float)1.00 * forces[0] * totalGain / 10000); // each effect gain * total effect gain = 10000
+	forces[1] = (int32_t)((float)1.00 * forces[1] * totalGain / 10000); // each effect gain * total effect gain = 10000
 	forces[0] = constrain(forces[0], -255, 255);
 	forces[1] = constrain(forces[1], -255, 255);
 }
