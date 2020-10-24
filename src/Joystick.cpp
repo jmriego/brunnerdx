@@ -19,7 +19,7 @@
 */
 
 #include "Joystick.h"
-#include "../JoystickConfig.h"
+#include "../config.h"
 #include "FFBDescriptor.h"
 #include "filters.h"
 #if defined(_USING_DYNAMIC_HID)
