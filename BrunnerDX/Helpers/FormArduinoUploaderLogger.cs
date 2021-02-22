@@ -5,42 +5,44 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 
+using NLog;
+
 using ArduinoUploader;
 
 namespace BrunnerDX
 {
     class FormArduinoUploaderLogger: IArduinoUploaderLogger
     {
-        private BrunnerDXGui form;
+        private NLog.Logger Logger;
 
-        public FormArduinoUploaderLogger(BrunnerDXGui form)
+        public FormArduinoUploaderLogger(NLog.Logger logger)
         {
-            this.form = form;
+            this.Logger = logger;
         }
 
         public void Error(string message, Exception exception)
         {
-            this.form.ConsoleLogText(message, Color.Red);
+            this.Logger.Error(exception, message);
         }
 
         public void Warn(string message)
         {
-            this.form.ConsoleLogText(message, Color.Orange);
+            this.Logger.Warn(message);
         }
 
         public void Info(string message)
         {
-            this.form.ConsoleLogText(message, Color.Black);
+            this.Logger.Info(message);
         }
 
         public void Debug(string message)
         {
-            this.form.ConsoleLogText(message, Color.Blue);
+            this.Logger.Debug(message);
         }
 
         public void Trace(string message)
         {
-            this.form.ConsoleLogText(message, Color.DarkRed);
+            this.Logger.Trace(message);
         }
     }
 }
