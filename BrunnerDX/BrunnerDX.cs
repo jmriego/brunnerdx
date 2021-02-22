@@ -107,17 +107,24 @@ namespace BrunnerDX
             Monitor.TryEnter(lockObject, TimeSpan.FromMilliseconds(1), ref lockTaken);
             try
             {
+                bool brunnerMoved = false;
                 if (brunnerSocket != null && lockTaken)
                 {
                     // Notice we change the order of Aileron,Elevator
                     ForceMessage forceMessage = new ForceMessage(
                         ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
                     PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
-                    this.position[0] = BrunnerPosition2Arduino(positionMessage.aileron);
-                    this.position[1] = BrunnerPosition2Arduino(positionMessage.elevator);
+                    int x = BrunnerPosition2Arduino(positionMessage.aileron);
+                    int y = BrunnerPosition2Arduino(positionMessage.elevator);
+                    if (x != position[0] || y != position[1])
+                    {
+                        brunnerMoved = true;
+                        position[0] = x;
+                        position[1] = y;
+                    }
                 }
 
-                if (arduinoPort.semaphore >= 2 && lockTaken)
+                if (arduinoPort.semaphore >= 1 && lockTaken)
                 {
                     arduinoPort.WriteOrder(Order.POSITION);
                     arduinoPort.WriteInt16(this.position[0]);
@@ -191,13 +198,8 @@ namespace BrunnerDX
                     timer.Elapsed += (o, e) => Communicate(arduinoPort, brunnerSocket);
                     timer.Start();
 
-                    Stopwatch stopwatch = Stopwatch.StartNew();
                     while (arduinoPort.IsOpen && !stopExecuting)
                     {
-                        stopwatch.Restart();
-                        //while (stopwatch.ElapsedMilliseconds < 1000)
-                        //{
-                        //}
                         System.Threading.Thread.Sleep(500);
                     }
                     timer.Stop();

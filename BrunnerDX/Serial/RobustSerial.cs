@@ -50,6 +50,8 @@ namespace BrunnerDX
 
         public void Dispose()
         {
+            arduinoPort.DataReceived -= DataReceivedHandler;
+            System.Threading.Thread.Sleep(500); // Give it time to process remaining messages
             arduinoPort.Dispose();
         }
 

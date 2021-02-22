@@ -11,11 +11,11 @@ namespace BrunnerDX
     {
         public int Compare(string x, string y)
         {
-            var regex = new Regex("^(d+)");
+            var digitsRegex = new Regex("(\\d+)");
 
             // run the regex on both strings
-            var xRegexResult = regex.Match(x);
-            var yRegexResult = regex.Match(y);
+            var xRegexResult = digitsRegex.Match(x);
+            var yRegexResult = digitsRegex.Match(y);
 
             // check if they are both numbers
             if (xRegexResult.Success && yRegexResult.Success)
