@@ -1,16 +1,23 @@
 # BrunnerDX
 ## This is an app and Arduino sketch for making your Brunner base look like a DirectX joystick with Force Feedback
 
-It will be detected by Windows as a standard USB joystick with advanced force feedback features without the need to install any device drivers. You need to have an Arduino Micro (or any other Atmega32UX).
+It will be detected by Windows as a standard USB joystick with advanced force feedback features without the need to install any device drivers.
+
+You need to have an Arduino Micro (or any other Atmega32UX).
+
 The part of the code that involves the Arduino sketch/driver is in this other repo if you are interested: [Fino](https://github.com/jmriego/Fino)
 
 ## Installation
 
-The easy way is just grab a Release from the right side and install it somewhere in your computer
-Then connect your Arduino to your PC. It should  
+The easy way is just grab a Release from this project page and install it somewhere in your computer.
 
+If it's your first time running this app you'll have to "Upload Firmware" and set up your Brunner CLS2Sim to talk to this app.
 
-## Running it with Python
+More details on the [wiki](https://github.com/jmriego/brunnerdx/wiki)
+
+Just click on connect and that's it!
+
+## Running it with Python (alternative to the GUI)
 Install the [pyserial](https://pypi.org/project/pyserial/) library
 Upload the sketch that you can build in [Fino](https://github.com/jmriego/Fino), run the `brunnerdx.py` file and enjoy!
 
