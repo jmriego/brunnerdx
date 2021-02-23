@@ -20,6 +20,7 @@ namespace BrunnerDX
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
+        const int timerMs = 5; // 200 FPS
 
         public string cls2SimHost;
         public int cls2SimPort;
@@ -32,6 +33,8 @@ namespace BrunnerDX
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
         private long _stopExecuting = 1;
+
+        private int timeSinceLastForcesRequest = 0;
 
         private object lockObject = new object();
 
@@ -107,29 +110,42 @@ namespace BrunnerDX
             Monitor.TryEnter(lockObject, TimeSpan.FromMilliseconds(1), ref lockTaken);
             try
             {
-                bool brunnerMoved = false;
-                if (brunnerSocket != null && lockTaken)
+                if (lockTaken)
                 {
-                    // Notice we change the order of Aileron,Elevator
-                    ForceMessage forceMessage = new ForceMessage(
-                        ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
-                    PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
-                    int x = BrunnerPosition2Arduino(positionMessage.aileron);
-                    int y = BrunnerPosition2Arduino(positionMessage.elevator);
-                    if (x != position[0] || y != position[1])
-                    {
-                        brunnerMoved = true;
-                        position[0] = x;
-                        position[1] = y;
-                    }
-                }
+                    timeSinceLastForcesRequest += timerMs;
 
-                if (arduinoPort.semaphore >= 1 && lockTaken)
-                {
-                    arduinoPort.WriteOrder(Order.POSITION);
-                    arduinoPort.WriteInt16(this.position[0]);
-                    arduinoPort.WriteInt16(this.position[1]);
-                    arduinoPort.WriteOrder(Order.FORCES);
+                    // wait for receiving new position
+                    bool brunnerMoved = false;
+                    if (brunnerSocket != null)
+                    {
+                        // Notice we change the order of Aileron,Elevator
+                        ForceMessage forceMessage = new ForceMessage(
+                            ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
+                        PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
+                        int x = BrunnerPosition2Arduino(positionMessage.aileron);
+                        int y = BrunnerPosition2Arduino(positionMessage.elevator);
+                        if (x != position[0] || y != position[1])
+                        {
+                            brunnerMoved = true;
+                            position[0] = x;
+                            position[1] = y;
+                        }
+                    }
+
+                    // recalculate forces if the joystick has moved or too much time has passed
+                    if (arduinoPort.semaphore >= 1 && brunnerMoved || timeSinceLastForcesRequest >= 20)
+                    {
+                        arduinoPort.WriteOrder(Order.FORCES);
+                        timeSinceLastForcesRequest = 0;
+                    }
+
+                    // send the current position to the Arduino
+                    if (arduinoPort.semaphore >= 1)
+                    {
+                        arduinoPort.WriteOrder(Order.POSITION);
+                        arduinoPort.WriteInt16(this.position[0]);
+                        arduinoPort.WriteInt16(this.position[1]);
+                    }
                 }
             }
             catch (Exception ex)
@@ -181,7 +197,7 @@ namespace BrunnerDX
             using (RobustSerial arduinoPort = connectArduino())
             using (Cls2SimSocket brunnerSocket = connectBrunner(required: false))
             {
-                var timer = new MultimediaTimer.Timer(5);
+                var timer = new MultimediaTimer.Timer(timerMs);
                 timer.Resolution = TimeSpan.FromMilliseconds(2);
                 //do what you need with the serial port here
                 try
