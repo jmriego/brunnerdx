@@ -1,0 +1,4 @@
+[submodule "Fino"]
+	path = Fino
+	url = git@github.com:jmriego/Fino.git
+	branch = master
