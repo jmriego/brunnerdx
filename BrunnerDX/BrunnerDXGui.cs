@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 using System.IO;
 using System.IO.Ports;
+using System.Text.RegularExpressions;
 
 using NLog;
 using NLog.Config;
@@ -29,6 +30,10 @@ namespace BrunnerDX
 
     public partial class BrunnerDXGui : Form
     {
+        static public Version brunnerDXVersion = new Version(1, 0, 0);
+        static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/gui/CHANGELOG.md";
+        static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
+        static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
         private static NLog.Logger logger;
 
         string arduinoPortName = "";
@@ -109,6 +114,27 @@ namespace BrunnerDX
             }
             this.comboPorts.SelectedIndex = ports.Length - 1;
         }
+        public void CheckBrunnerDXVersion()
+        {
+            string contents;
+            using (var wc = new System.Net.WebClient())
+                contents = wc.DownloadString(changeLogRawURL);
+
+            var versionRegex = new Regex(@"^## \[(\d[\d-.]*)]$", RegexOptions.Multiline);
+            var lastVersionText = versionRegex.Match(contents).Groups[1];
+            var lastVersion = new Version(lastVersionText.ToString());
+            switch (brunnerDXVersion.CompareTo(lastVersion))
+            {
+                case -1:
+                    logger.Warn($"There's an update available");
+                    this.consoleLog.AppendText($"\nDOWNLOAD: {releasesURL}\nCHANGELOG: {changeLogURL}\n\n");
+                    break;
+                case 0:
+                    logger.Info($"You have the latest version");
+                    break;
+            }
+
+        }
 
         delegate void SetProgressCallback(double progress);
 
@@ -172,6 +198,8 @@ namespace BrunnerDX
             logger = LogManager.GetCurrentClassLogger();
             logger.Info("Init");
             RichTextBoxTarget.ReInitializeAllTextboxes(this);
+            this.consoleLog.DetectUrls = true;
+            CheckBrunnerDXVersion();
         }
 
         private void comboPorts_SelectedIndexChanged(object sender, EventArgs e)
@@ -286,6 +314,11 @@ namespace BrunnerDX
         private void BrunnerDXGui_FormClosing(object sender, FormClosingEventArgs e)
         {
             brunnerDX.stopExecuting = true;
+        }
+
+        private void consoleLog_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
         }
     }
 }
