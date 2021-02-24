@@ -16,7 +16,7 @@ namespace BrunnerDX
 {
     class BrunnerDX
     {
-        static public Version expectedArduinoSketchVersion = new Version(2, 0);
+        static public Version expectedArduinoSketchVersion = new Version(2, 0, 1);
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
@@ -249,10 +249,17 @@ namespace BrunnerDX
                     break;
 
                 case Order.VERSION:
-                    int arduinoSketchVersionRaw = arduinoPort.ReadInt32();
-                    int major = arduinoSketchVersionRaw / 1000;
-                    int minor = arduinoSketchVersionRaw % 1000;
-                    arduinoSketchVersion = new Version(major, minor);
+                    string arduinoSketchVersionRaw = arduinoPort.ReadInt32().ToString();
+                    int len = arduinoSketchVersionRaw.Length;
+                    if (len < 7)
+                    {
+                        arduinoSketchVersionRaw = arduinoSketchVersionRaw.PadRight(7, '0');
+                        len = 7;
+                    };
+                    int major = int.Parse(arduinoSketchVersionRaw.Substring(0, len - 6));
+                    int minor = int.Parse(arduinoSketchVersionRaw.Substring(len - 6, 3));
+                    int revision = int.Parse(arduinoSketchVersionRaw.Substring(len - 3, 3));
+                    arduinoSketchVersion = new Version(major, minor, revision);
                     break;
 
                 case Order.FORCES:

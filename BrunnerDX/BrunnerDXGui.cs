@@ -31,7 +31,7 @@ namespace BrunnerDX
     public partial class BrunnerDXGui : Form
     {
         static public Version brunnerDXVersion = new Version(1, 0, 0);
-        static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/gui/CHANGELOG.md";
+        static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/master/CHANGELOG.md";
         static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
         static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
         private static NLog.Logger logger;
@@ -117,22 +117,31 @@ namespace BrunnerDX
         public void CheckBrunnerDXVersion()
         {
             string contents;
-            using (var wc = new System.Net.WebClient())
-                contents = wc.DownloadString(changeLogRawURL);
 
-            var versionRegex = new Regex(@"^## \[(\d[\d-.]*)]$", RegexOptions.Multiline);
-            var lastVersionText = versionRegex.Match(contents).Groups[1];
-            var lastVersion = new Version(lastVersionText.ToString());
-            switch (brunnerDXVersion.CompareTo(lastVersion))
+            try
             {
-                case -1:
-                    logger.Warn($"There's an update available");
-                    this.consoleLog.AppendText($"\nDOWNLOAD: {releasesURL}\nCHANGELOG: {changeLogURL}\n\n");
-                    break;
-                case 0:
-                    logger.Info($"You have the latest version");
-                    break;
+                using (var wc = new System.Net.WebClient())
+                    contents = wc.DownloadString(changeLogRawURL);
+
+                var versionRegex = new Regex(@"^## \[(\d[\d-.]*)]$", RegexOptions.Multiline);
+                var lastVersionText = versionRegex.Match(contents).Groups[1];
+                var lastVersion = new Version(lastVersionText.ToString());
+                switch (brunnerDXVersion.CompareTo(lastVersion))
+                {
+                    case -1:
+                        logger.Warn($"There's an update available");
+                        this.consoleLog.AppendText($"\nDOWNLOAD: {releasesURL}\nCHANGELOG: {changeLogURL}\n\n");
+                        break;
+                    case 0:
+                        logger.Info($"You have the latest version");
+                        break;
+                }
             }
+            catch (System.Net.WebException)
+            {
+                logger.Warn("Couldn't check for updates");
+            }
+
 
         }
 
