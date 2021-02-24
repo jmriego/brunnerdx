@@ -34,7 +34,7 @@ namespace BrunnerDX
         private bool _isBrunnerConnected = false;
         private long _stopExecuting = 1;
 
-        private int timeSinceLastForcesRequest = 0;
+        private int timeSinceLastPositionChange = 0;
 
         private object lockObject = new object();
 
@@ -112,7 +112,7 @@ namespace BrunnerDX
             {
                 if (lockTaken)
                 {
-                    timeSinceLastForcesRequest += timerMs;
+                    timeSinceLastPositionChange += timerMs;
 
                     // wait for receiving new position
                     bool brunnerMoved = false;
@@ -132,19 +132,18 @@ namespace BrunnerDX
                         }
                     }
 
-                    // recalculate forces if the joystick has moved or too much time has passed
-                    if (arduinoPort.semaphore >= 1 && brunnerMoved || timeSinceLastForcesRequest >= 20)
-                    {
-                        arduinoPort.WriteOrder(Order.FORCES);
-                        timeSinceLastForcesRequest = 0;
-                    }
-
                     // send the current position to the Arduino
-                    if (arduinoPort.semaphore >= 1)
+                    if (arduinoPort.semaphore >= 1 && (brunnerMoved || timeSinceLastPositionChange >= 20))
                     {
                         arduinoPort.WriteOrder(Order.POSITION);
                         arduinoPort.WriteInt16(this.position[0]);
                         arduinoPort.WriteInt16(this.position[1]);
+                        timeSinceLastPositionChange = 0;
+                    }
+
+                    if (arduinoPort.semaphore >= 1)
+                    {
+                        arduinoPort.WriteOrder(Order.FORCES);
                     }
                 }
             }
@@ -152,7 +151,7 @@ namespace BrunnerDX
             {
                 logger.Error(ex, ex.StackTrace);
                 logger.Error(ex, ex.Message);
-                throw;
+                stopExecuting = true;
             }
         }
 

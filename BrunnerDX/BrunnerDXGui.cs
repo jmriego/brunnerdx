@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using System.Configuration;
+using System.IO;
 using System.IO.Ports;
 
 using NLog;
@@ -136,7 +136,7 @@ namespace BrunnerDX
             var progress = new Progress<double>(
                 p => UpdateProgress(p));
             var options = new ArduinoSketchUploaderOptions() {
-                FileName = @"C:\Users\josem\brunnerdx\build\arduino.avr.micro\brunnerdx.ino.hex",
+                FileName = Path.Combine(AppContext.BaseDirectory, "Fino.ino.hex"),
                 PortName = this.arduinoPortName,
                 ArduinoModel = ArduinoModel.Micro
             };
