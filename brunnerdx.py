@@ -71,7 +71,7 @@ class BrunnerDx():
 
     # send a request to the Arduino to send us the forces soon
     def request_forces(self):
-        self.write_order(Order.ASK_FORCES)
+        self.write_order(Order.FORCES)
 
     # read the forces the Arduino is sending us right now
     def read_forces(self):
@@ -122,7 +122,7 @@ class BrunnerDx():
 
                 if order == Order.RECEIVED:
                     self.semaphore += 1
-                elif order == Order.REPLY_FORCES:
+                elif order == Order.FORCES:
                     self.read_forces()
                 elif order == Order.LOG:
                     log_line = self.read_log()
