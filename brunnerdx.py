@@ -10,7 +10,7 @@ HOST = '127.0.0.1'
 PORT = 15090
 TIMEOUT = 8
 # change these numbers for stronger or weaker forces
-FORCE_MULTIPLIER = 12.0
+FORCE_MULTIPLIER = 0.3
 
 import collections
 
@@ -21,7 +21,7 @@ class BrunnerDx():
         self.pos = [0,0,0,0]
         self.force = (0, 0, 0, 0)
         self.semaphore = 10
-        self.pos_history = collections.deque(maxlen=1)
+        self.pos_history = collections.deque(maxlen=100)
         try:
             self.serial_file = open_serial_port(baudrate=115200, timeout=None)
         except Exception as e:
@@ -99,10 +99,11 @@ class BrunnerDx():
     # this will send the current position to the Arduino
     # so it will make the joystick appear in the new position
     def send_position(self):
-        x,y = self.pos_history[0][0], self.pos_history[0][1]
-        self.write_order(Order.POSITION)
-        write_i16(self.serial_file, self.translate_brunner_pos(x))
-        write_i16(self.serial_file, self.translate_brunner_pos(y))
+        if len(self.pos_history) < 2 or self.pos_history[-1][0] != self.pos_history[-2][0] or self.pos_history[-1][1] != self.pos_history[-2][1] :
+            x,y = self.pos_history[-1][0], self.pos_history[-1][1]
+            self.write_order(Order.POSITION)
+            write_i16(self.serial_file, self.translate_brunner_pos(x))
+            write_i16(self.serial_file, self.translate_brunner_pos(y))
 
     # do we have messages from the Arduino
     @property

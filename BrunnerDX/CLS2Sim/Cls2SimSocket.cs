@@ -72,8 +72,8 @@ namespace BrunnerDX
                 remoteEP = new IPEndPoint(ipAddress, port);
                 sock = new UdpClient();
 
-                sock.Client.ReceiveTimeout = 50;
-                sock.Client.SendTimeout = 50;
+                sock.Client.ReceiveTimeout = 500;
+                sock.Client.SendTimeout = 500;
             }
             catch (Exception ex)
             {
@@ -142,7 +142,6 @@ namespace BrunnerDX
             int len = Marshal.SizeOf(position);
             byte[] bytes = sock.Receive(ref remoteEP);
             ByteArrayToPositionMessage(bytes, ref position);
-
             return position;
         }
     }

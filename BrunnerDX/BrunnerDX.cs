@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 using System.Diagnostics;
 
-using MultimediaTimer;
+using HighPrecisionTimer;
 using NLog;
 
 
@@ -20,7 +20,7 @@ namespace BrunnerDX
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
-        const int timerMs = 5; // 200 FPS
+        const int timerMs = 5; // 100 FPS
 
         public string cls2SimHost;
         public int cls2SimPort;
@@ -34,7 +34,7 @@ namespace BrunnerDX
         private bool _isBrunnerConnected = false;
         private long _stopExecuting = 1;
 
-        private int timeSinceLastPositionChange = 0;
+        private int ticksToNextPositionChange = 0;
 
         private object lockObject = new object();
 
@@ -104,41 +104,44 @@ namespace BrunnerDX
                 }
         }
 
+        private void UpdatePosition(PositionMessage positionMessage)
+        {
+            int x = BrunnerPosition2Arduino(positionMessage.aileron);
+            int y = BrunnerPosition2Arduino(positionMessage.elevator);
+            if (x != position[0] || y != position[1])
+            {
+                position[0] = x;
+                position[1] = y;
+                Interlocked.Exchange(ref ticksToNextPositionChange, 0);
+            }
+        }
+
         private void Communicate(RobustSerial arduinoPort, Cls2SimSocket brunnerSocket)
         {
             bool lockTaken = false;
+            Interlocked.Decrement(ref ticksToNextPositionChange);
             Monitor.TryEnter(lockObject, TimeSpan.FromMilliseconds(1), ref lockTaken);
             try
             {
                 if (lockTaken)
                 {
-                    timeSinceLastPositionChange += timerMs;
-
                     // wait for receiving new position
-                    bool brunnerMoved = false;
                     if (brunnerSocket != null)
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
                             ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
                         PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
-                        int x = BrunnerPosition2Arduino(positionMessage.aileron);
-                        int y = BrunnerPosition2Arduino(positionMessage.elevator);
-                        if (x != position[0] || y != position[1])
-                        {
-                            brunnerMoved = true;
-                            position[0] = x;
-                            position[1] = y;
-                        }
+                        UpdatePosition(positionMessage);
                     }
 
                     // send the current position to the Arduino
-                    if (arduinoPort.semaphore >= 1 && (brunnerMoved || timeSinceLastPositionChange >= 20))
+                    if (arduinoPort.semaphore >= 1 && ticksToNextPositionChange <= 0)
                     {
                         arduinoPort.WriteOrder(Order.POSITION);
                         arduinoPort.WriteInt16(this.position[0]);
                         arduinoPort.WriteInt16(this.position[1]);
-                        timeSinceLastPositionChange = 0;
+                        Interlocked.Exchange(ref ticksToNextPositionChange, (29 / timerMs) + 1);
                     }
 
                     if (arduinoPort.semaphore >= 1)
@@ -196,8 +199,9 @@ namespace BrunnerDX
             using (RobustSerial arduinoPort = connectArduino())
             using (Cls2SimSocket brunnerSocket = connectBrunner(required: false))
             {
-                var timer = new MultimediaTimer.Timer(timerMs);
-                timer.Resolution = TimeSpan.FromMilliseconds(2);
+                var timer = new HighPrecisionTimer.MultimediaTimer();
+                timer.Interval = timerMs;
+                timer.Resolution = 2;
                 //do what you need with the serial port here
                 try
                 {
@@ -245,7 +249,7 @@ namespace BrunnerDX
             {
                 case Order.LOG:
                     string line = arduinoPort.ReadLine();
-                    logger.Info($"Received log: {line}");
+                    logger.Debug($"Received log: {line}");
                     break;
 
                 case Order.VERSION:

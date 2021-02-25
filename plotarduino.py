@@ -10,7 +10,8 @@ import keyboard
 
 from brunnerdx import *
 
-LENGTH_LINES = 1000
+LENGTH_LINES = 200
+MAX_LENGTH_DF = 100000
 
 class BrunnerDaemon(BrunnerDx):
     def __init__(self, host, port):
@@ -60,11 +61,18 @@ class BrunnerDaemon(BrunnerDx):
                       self._df,
                       pd.DataFrame(pending_rows)
                   ], axis=0)
-              .tail(LENGTH_LINES)
+              .tail(MAX_LENGTH_DF)
               .fillna(method='ffill')
             )
         return self._df
 
+def save_csv(df):
+    try:
+        df.to_csv(
+            os.path.expandvars(r'%USERPROFILE%\Downloads\brunnerdx.csv'),
+            index=False)
+    except:
+        pass
 
 if __name__ == '__main__':
     brunnerdx = BrunnerDaemon(HOST, PORT)
@@ -74,14 +82,12 @@ if __name__ == '__main__':
     time.sleep(5) # give it time to start getting data
 
     keyboard.on_press_key("c", lambda _:
-        brunnerdx.df.to_csv(
-            os.path.expandvars(r'%USERPROFILE%\Downloads\brunnerdx.csv'),
-            index=False))
+        save_csv(brunnerdx.df))
 
     fig = plt.figure(figsize=(15,7))
     what_to_plot = {
         'x': [-32767, 32767],
-        'force': [-255, 255],
+        'force': [-10000, 10000],
         'change': [-1500, 1500],
         'velocity': [-100, 100]
     }
@@ -96,12 +102,12 @@ if __name__ == '__main__':
         ax.set_xlabel('Millis')
         ax.set_ylim(limits)
         axs.append(ax)
-        line, = ax.plot(x, brunnerdx.df[k], label='val')
+        line, = ax.plot(x, brunnerdx.df[k].tail(LENGTH_LINES), label='val')
         lines.append(line)
 
     def update(num):
         for i, (k,limits) in enumerate(what_to_plot.items()):
-            lines[i].set_ydata(brunnerdx.df[k])
+            lines[i].set_ydata(brunnerdx.df[k].tail(LENGTH_LINES))
         return tuple(lines)
 
     ani = animation.FuncAnimation(fig, update, len(x), interval=20, blit=True)

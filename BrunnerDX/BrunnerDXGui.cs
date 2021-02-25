@@ -67,7 +67,7 @@ namespace BrunnerDX
                 this.forceSlider.Value = (int)Properties.Settings.Default.Force;
             }
             catch (Exception ex) { }
-            this.forceLabel.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
+            this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
             ConfirmOptions();
             isBusy = false;
         }
@@ -223,14 +223,14 @@ namespace BrunnerDX
 
         private void forceSlider_Scroll(object sender, EventArgs e)
         {
-            this.forceLabel.Text = this.forceSlider.Value.ToString();
+            this.forceValue.Text = this.forceSlider.Value.ToString();
             if (!isBusy) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void delaySlider_Scroll(object sender, EventArgs e)
         {
             string delayText = $"{this.delaySlider.Value} secs";
-            this.delayLabel.Text = delayText;
+            this.delayValue.Text = delayText;
         }
 
         private void ipOption_TextChanged(object sender, EventArgs e)
