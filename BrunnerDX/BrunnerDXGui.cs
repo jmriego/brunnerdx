@@ -186,7 +186,7 @@ namespace BrunnerDX
                 try
                 {
                     uploader.UploadSketch();
-                    logger.Info("Uploaded to Arduino. Please click on 'Detect Ports' just in case the Arduino device has changed ports")
+                    logger.Info("Uploaded to Arduino. Please click on 'Detect Ports' just in case the Arduino device has changed ports");
                 }
                 catch (Exception ex)
                 {
@@ -205,10 +205,10 @@ namespace BrunnerDX
 
         private void BrunnerDXGui_Load(object sender, EventArgs e)
         {
-            logger = LogManager.GetCurrentClassLogger();
-            logger.Info("Init");
+            if (logger == null) logger = LogManager.GetCurrentClassLogger();
             RichTextBoxTarget.ReInitializeAllTextboxes(this);
             this.consoleLog.DetectUrls = true;
+            logger.Info("Init");
             CheckBrunnerDXVersion();
         }
 
