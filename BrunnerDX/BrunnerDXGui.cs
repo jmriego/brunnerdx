@@ -30,7 +30,7 @@ namespace BrunnerDX
 
     public partial class BrunnerDXGui : Form
     {
-        static public Version brunnerDXVersion = new Version(1, 0, 0);
+        static public Version brunnerDXVersion = new Version(2, 0, 0);
         static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/master/CHANGELOG.md";
         static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
         static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";

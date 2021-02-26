@@ -9,7 +9,7 @@ The part of the code that involves the Arduino sketch/driver is in this other re
 
 ## Installation
 
-The easy way is just grab a Release from this project page and install it somewhere in your computer.
+The easy way is just grab a [Release](https://github.com/jmriego/brunnerdx/releases) from this project page and install it somewhere in your computer.
 
 If it's your first time running this app you'll have to "Upload Firmware" and set up your Brunner CLS2Sim to talk to this app.
 
@@ -17,7 +17,12 @@ More details on the [wiki](https://github.com/jmriego/brunnerdx/wiki)
 
 Just click on connect and that's it!
 
-## Running it with Python (alternative to the GUI)
+This has been tested with IL-2 Cliffs of Dover and Battle of Stalingrad and it works great in them. Please let me know if you find any issue in other games and I'll fix it
+
+
+<details>
+<summary>Running it with Python (alternative to the GUI)</summary>
+
 Install the [pyserial](https://pypi.org/project/pyserial/) library
 Upload the sketch that you can build in [Fino](https://github.com/jmriego/Fino), run the `brunnerdx.py` file and enjoy!
 
@@ -36,16 +41,12 @@ These are more detailed steps, but it might be easier to just run the app:
 The only modifications you might need are in the `brunnerdx.py` file:
 1. Set the IP and port of CLS2Sim running locally (it should show up in the Brunner software).
 2. Change the FORCE_MULTIPLIER if you want weaker or stronger forces
-
-NOTES:
-The Brunner CLS2SIM program should be running and allowing external control. In the image below the external control port is 15090. I have it running in Usb HID mode instead of Ethernet as shown in the image below.
-![Connection Settings](https://cls2sim.brunner-innovation.swiss/images/settingsExtCtrl.png)
+</details>
 
 ## TODO:
 
-* This currently only reads the X and Y position of the Joystick and not the buttons. It's not an issue in modern games (you can play IL-2 BoX for example) but any old game with no multi joystick support would need to map joystick buttons to key presses somehow.
-* Add a GUI so you can change the strength of the Force Feedback in real time.
-* Improve the filtering of conditional forces. I'm sure this can be made a bit smoother though it acts similar to the MS FFB2 at the moment.
+* This currently only reads the X and Y position of the Joystick and not the buttons. It's not an issue in modern games (you can play IL-2 BoX and CloD for example) but any old game with no multi joystick support would need to map joystick buttons to key presses somehow.
+* Improve the filtering of conditional forces. I'm sure this can be made a bit smoother
 
 ## Ref
 
