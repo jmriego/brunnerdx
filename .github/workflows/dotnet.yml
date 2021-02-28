@@ -1,0 +1,55 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+
+    - name: Setup Arduino CLI
+      uses: arduino/setup-arduino-cli@v1.1.1
+
+    - name: Restore NuGet packages
+      run: nuget restore BrunnerDX.sln
+
+    - name: Build BrunnerDX
+      run: msbuild BrunnerDX.sln /t:Build /p:Configuration=Release
+
+    - name: Install Arduino Micro platform
+      run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+
+    - name: Compile Fino Arduino Sketch
+      run: |
+          New-Item -ItemType Directory -Force -Path ./Fino/build/arduino.avr.micro
+          arduino-cli compile --fqbn arduino:avr:micro --verbose --output-dir ./Fino/build/arduino.avr.micro ./Fino
+
+    - name: Config devenv
+      run: >
+          & cd $Env:FIX_DEVENV_DIR ;
+          & ./DisableOutOfProcBuild.exe ;
+      env:
+        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
+
+    - name: Build Installer
+      run: >
+          & $Env:DEVENV_PATH BrunnerDX.sln /build Release /project BrunnerDX.Setup/BrunnerDX.Setup.vdproj /projectconfig Release
+      env:
+        DEVENV_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.com
