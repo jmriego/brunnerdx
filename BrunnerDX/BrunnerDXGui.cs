@@ -186,6 +186,7 @@ namespace BrunnerDX
                 try
                 {
                     uploader.UploadSketch();
+                    logger.Info("Uploaded to Arduino. Please click on 'Detect Ports' just in case the Arduino device has changed ports")
                 }
                 catch (Exception ex)
                 {
