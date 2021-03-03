@@ -16,7 +16,7 @@ namespace BrunnerDX
 {
     class BrunnerDX
     {
-        static public Version expectedArduinoSketchVersion = new Version(2, 0, 1);
+        static public Version expectedArduinoSketchVersion = new Version(2, 1, 0);
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
@@ -29,6 +29,7 @@ namespace BrunnerDX
 
         private int[] _position;
         private int[] _force;
+        private bool[] axisHasMoved = new bool[] { false, false };
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
@@ -108,11 +109,26 @@ namespace BrunnerDX
         {
             int x = BrunnerPosition2Arduino(positionMessage.aileron);
             int y = BrunnerPosition2Arduino(positionMessage.elevator);
-            if (x != position[0] || y != position[1])
+            if (x != position[0])
             {
                 position[0] = x;
+                axisHasMoved[0] = true;
+            }
+            if (y != position[1])
+            {
                 position[1] = y;
+                axisHasMoved[1] = true;
+            }
+
+            if (axisHasMoved[0] && axisHasMoved[1])
+            {
                 Interlocked.Exchange(ref ticksToNextPositionChange, 0);
+            }
+            // If only one of the two axes has moved, we might want to wait up to 10ms to see if we get an update for the other
+            // some times we get an update for only one of the two axes
+            else if (axisHasMoved[0] || axisHasMoved[1])
+            {
+                Interlocked.Exchange(ref ticksToNextPositionChange, Math.Min((9 / timerMs) + 1, ticksToNextPositionChange));
             }
         }
 
@@ -142,6 +158,8 @@ namespace BrunnerDX
                         arduinoPort.WriteInt16(this.position[0]);
                         arduinoPort.WriteInt16(this.position[1]);
                         Interlocked.Exchange(ref ticksToNextPositionChange, (29 / timerMs) + 1);
+                        axisHasMoved[0] = false;
+                        axisHasMoved[1] = false;
                     }
 
                     if (arduinoPort.semaphore >= 1)
