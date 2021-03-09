@@ -89,14 +89,15 @@ if __name__ == '__main__':
         'x': [-32767, 32767],
         'force': [-10000, 10000],
         'change': [-1500, 1500],
-        'velocity': [-100, 100]
+        'velocity': [-100, 100],
+        'acceleration': [-7000, 7000]
     }
     x = list(range(0, LENGTH_LINES))
 
     axs = []
     lines = []
     for i, (k,limits) in enumerate(what_to_plot.items()):
-        ax = fig.add_subplot(4, 1, i+1)
+        ax = fig.add_subplot(len(what_to_plot), 1, i+1)
         ax.set_ylim(bottom=0)
         ax.set_ylabel(k)
         ax.set_xlabel('Millis')

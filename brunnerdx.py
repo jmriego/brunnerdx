@@ -10,7 +10,7 @@ HOST = '127.0.0.1'
 PORT = 15090
 TIMEOUT = 8
 # change these numbers for stronger or weaker forces
-FORCE_MULTIPLIER = 0.3
+FORCE_MULTIPLIER = 0.4
 
 import collections
 
