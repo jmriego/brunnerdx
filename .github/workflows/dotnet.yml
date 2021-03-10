@@ -2,7 +2,6 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
     tags: ['v*']
   pull_request:
     branches: [ master ]
@@ -55,6 +54,24 @@ jobs:
       env:
         DEVENV_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.com
 
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Artifact.BrunnerDX.Setup
+        path: BrunnerDX.Setup/Release/BrunnerDX.Setup.msi
+
+    - name: Upload zip artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Artifact.BrunnerDX
+        path: BrunnerDX/bin/Release
+
+    - name: Upload Arduino sketch artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Artifact.Fino
+        path: Fino/build/arduino.avr.micro/Fino.ino.hex
+
 
   publish:
     needs: build
@@ -63,35 +80,45 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - uses: actions/checkout@v2
+
+    - name: Download all workflow run artifacts
+      uses: actions/download-artifact@v2
+
+    - name: Zip release folder
+      run: Compress-Archive -Path Artifact.BrunnerDX\*,Artifact.Fino\* -DestinationPath Artifact.BrunnerDX/BrunnerDX.zip
+
+    - name: Filter changelog last version only
+      run: (((gc -Raw CHANGELOG.md) -split '(?sm)(^## \[[0-9.]+\])')[0..2] -join "").Trim() | Out-File -FilePath CHANGELOG.VERSION.md
+
     - name: release
       uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
         prerelease: false
-        release_name: ${{ github.ref }}
+        release_name: BrunnerDX Gui ${{ github.ref }}
         tag_name: ${{ github.ref }}
-        body_path: CHANGELOG.md
+        body_path: CHANGELOG.VERSION.md
       env:
         GITHUB_TOKEN: ${{ github.token }}
+
     - name: upload installer
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./BrunnerDX.Setup\Release\BrunnerDX.Setup.msi
+        asset_path: Artifact.BrunnerDX.Setup/BrunnerDX.Setup.msi
         asset_name: BrunnerDX.msi
         asset_content_type: application/x-msi
-    - name: Zip release folder
-      run: |
-          Compress-Archive -Path BrunnerDX/bin/Release -DestinationPath BrunnerDX/bin/Release/BrunnerDX.zip
+
     - name: upload zip
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./BrunnerDX/bin/Release/BrunnerDX.zip
-        asset_name: BrunnerDX.msi
-        asset_content_type: application/x-msi
+        asset_path: Artifact.BrunnerDX/BrunnerDX.zip
+        asset_name: BrunnerDX.zip
+        asset_content_type: application/zip

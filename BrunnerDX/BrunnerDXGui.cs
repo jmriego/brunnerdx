@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -30,7 +31,6 @@ namespace BrunnerDX
 
     public partial class BrunnerDXGui : Form
     {
-        static public Version brunnerDXVersion = new Version(2, 1, 0);
         static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/master/CHANGELOG.md";
         static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
         static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
@@ -139,6 +139,9 @@ namespace BrunnerDX
                 var versionRegex = new Regex(@"^## \[(\d[\d-.]*)]$", RegexOptions.Multiline);
                 var lastVersionText = versionRegex.Match(contents).Groups[1];
                 var lastVersion = new Version(lastVersionText.ToString());
+
+                var assemblyVersion = typeof(BrunnerDX).Assembly.GetName().Version;
+                Version brunnerDXVersion = new Version($"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Revision}");
                 switch (brunnerDXVersion.CompareTo(lastVersion))
                 {
                     case -1:
