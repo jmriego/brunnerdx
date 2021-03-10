@@ -16,19 +16,22 @@ namespace BrunnerDX
 {
     class BrunnerDX
     {
-        static public Version expectedArduinoSketchVersion = new Version(2, 0, 1);
+        static public Version expectedArduinoSketchVersion = new Version(2, 1, 0);
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
-        const int timerMs = 5; // 100 FPS
+        const int timerMs = 2; // 500 FPS
 
         public string cls2SimHost;
         public int cls2SimPort;
         public string arduinoPortName;
         public double forceMultiplier = 0.3;
+        public int delaySeconds;
 
         private int[] _position;
+        private Queue<int[]> positionHistory = new Queue<int[]>();
         private int[] _force;
+        private bool[] axisHasMoved = new bool[] { false, false };
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
@@ -47,9 +50,32 @@ namespace BrunnerDX
         {
             _position = new int[2] { 0, 0 };
             _force = new int[2] { 0, 0 };
+            positionHistory.Enqueue(_position);
         }
 
-        public int[] position => _position;
+        public int[] position {
+            get
+            {
+                if (delaySeconds == 0)
+                { 
+                    return _position;
+                }
+                else
+                {
+                    int delayPosition = 60 - delaySeconds * 10;
+                    var history = this.positionHistory.ToArray();
+                    if (delayPosition < positionHistory.Count)
+                    {
+                        return history[delayPosition];
+                    }
+                    else
+                    {
+                        return history[positionHistory.Count - 1];
+                    }
+                }
+            }
+        }
+
         public int[] force => _force;
         public bool isArduinoConnected => _isArduinoConnected;
         public bool isBrunnerConnected => _isBrunnerConnected;
@@ -108,11 +134,26 @@ namespace BrunnerDX
         {
             int x = BrunnerPosition2Arduino(positionMessage.aileron);
             int y = BrunnerPosition2Arduino(positionMessage.elevator);
-            if (x != position[0] || y != position[1])
+            if (x != _position[0])
             {
-                position[0] = x;
-                position[1] = y;
+                _position[0] = x;
+                axisHasMoved[0] = true;
+            }
+            if (y != _position[1])
+            {
+                _position[1] = y;
+                axisHasMoved[1] = true;
+            }
+
+            if (axisHasMoved[0] && axisHasMoved[1])
+            {
                 Interlocked.Exchange(ref ticksToNextPositionChange, 0);
+            }
+            // If only one of the two axes has moved, we might want to wait up to 10ms to see if we get an update for the other
+            // some times we get an update for only one of the two axes
+            else if (axisHasMoved[0] || axisHasMoved[1])
+            {
+                Interlocked.Exchange(ref ticksToNextPositionChange, Math.Min((9 / timerMs) + 1, ticksToNextPositionChange));
             }
         }
 
@@ -131,6 +172,11 @@ namespace BrunnerDX
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
                             ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
+                        if (delaySeconds > 0)
+                        {
+                            forceMessage.aileron = 0;
+                            forceMessage.elevator = 0;
+                        }
                         PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
                         UpdatePosition(positionMessage);
                     }
@@ -142,6 +188,8 @@ namespace BrunnerDX
                         arduinoPort.WriteInt16(this.position[0]);
                         arduinoPort.WriteInt16(this.position[1]);
                         Interlocked.Exchange(ref ticksToNextPositionChange, (29 / timerMs) + 1);
+                        axisHasMoved[0] = false;
+                        axisHasMoved[1] = false;
                     }
 
                     if (arduinoPort.semaphore >= 1)
@@ -219,7 +267,15 @@ namespace BrunnerDX
 
                     while (arduinoPort.IsOpen && !stopExecuting)
                     {
-                        System.Threading.Thread.Sleep(500);
+                        var currentPosition = new int[2];
+                        _position.CopyTo(currentPosition, 0);
+                        positionHistory.Enqueue(currentPosition);
+                        var prueba = positionHistory.ToArray();
+                        if (positionHistory.Count > 60)
+                        {
+                            positionHistory.Dequeue();
+                        }
+                        System.Threading.Thread.Sleep(100);
                     }
                     timer.Stop();
                     System.Threading.Thread.Sleep(500); // Give it time to the timer events to finish

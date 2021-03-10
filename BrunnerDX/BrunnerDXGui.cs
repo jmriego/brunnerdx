@@ -30,7 +30,7 @@ namespace BrunnerDX
 
     public partial class BrunnerDXGui : Form
     {
-        static public Version brunnerDXVersion = new Version(2, 0, 0);
+        static public Version brunnerDXVersion = new Version(2, 1, 0);
         static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/master/CHANGELOG.md";
         static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
         static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
@@ -43,6 +43,7 @@ namespace BrunnerDX
 
         private bool isBusy = false;
         long writeOptionsCountdownTicks = -1;
+        long connectCountdownTicks = -1;
 
         BrunnerDX brunnerDX = new BrunnerDX();
 
@@ -54,6 +55,16 @@ namespace BrunnerDX
             this.consoleLog.ReadOnly = true;
             this.ReadOptions();
             this.refreshComPorts();
+
+            // if AutoConnect is enabled and we just opened the app start the connection in 3s
+            if (this.autoConnectCheck.Checked)
+            {
+                connectCountdownTicks = (3000 / refreshTimer.Interval) + 1;
+                if (!refreshTimer.Enabled)
+                {
+                    refreshTimer.Start();
+                }
+            }
         }
 
         private void ReadOptions()
@@ -61,6 +72,7 @@ namespace BrunnerDX
             isBusy = true;
             this.ipOption.Text = Properties.Settings.Default.IP;
             this.portOption.Text = Properties.Settings.Default.Port.ToString();
+            this.autoConnectCheck.Checked = Properties.Settings.Default.AutoConnect;
             try
             {
 
@@ -77,6 +89,7 @@ namespace BrunnerDX
             Properties.Settings.Default.IP = cls2SimHost;
             Properties.Settings.Default.Port = cls2SimPort;
             Properties.Settings.Default.Force = forceMultiplier;
+            Properties.Settings.Default.AutoConnect = this.autoConnectCheck.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -232,6 +245,7 @@ namespace BrunnerDX
         {
             string delayText = $"{this.delaySlider.Value} secs";
             this.delayValue.Text = delayText;
+            brunnerDX.delaySeconds = this.delaySlider.Value;
         }
 
         private void ipOption_TextChanged(object sender, EventArgs e)
@@ -244,7 +258,21 @@ namespace BrunnerDX
             if (!isBusy) ConfirmOptions(startWriteCountdown: true);
         }
 
+        private void autoConnectCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!this.autoConnectCheck.Checked)
+            {
+                connectCountdownTicks = -1;
+            }
+        }
+
         private void connectButton_Click(object sender, EventArgs e)
+        {
+            ConnectBrunnerDX();
+        }
+
+        private void ConnectBrunnerDX()
         {
             brunnerDX.cls2SimHost = cls2SimHost;
             brunnerDX.cls2SimPort = cls2SimPort;
@@ -270,8 +298,6 @@ namespace BrunnerDX
                 });
                 thread.Start();
             }
-
-
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
@@ -284,7 +310,7 @@ namespace BrunnerDX
                 if (brunnerDX.isArduinoConnected)
                 {
                     this.arduinoStatus.BackColor = Color.Green;
-                    this.forceChart.Series[0].Points.AddXY(brunnerDX.force[0], (double)brunnerDX.force[1]);
+                    this.forceChart.Series[0].Points.AddXY(brunnerDX.force[0], (double)-brunnerDX.force[1]);
                     this.connectButton.Text = "Disconnect";
                 }
                 else
@@ -296,11 +322,21 @@ namespace BrunnerDX
                 if (brunnerDX.isBrunnerConnected)
                 {
                     this.cls2SimStatus.BackColor = Color.Green;
-                    this.positionChart.Series[0].Points.AddXY(brunnerDX.position[0], (double)-brunnerDX.position[1]);
+                    var brunnerPosition = brunnerDX.position;
+                    this.positionChart.Series[0].Points.AddXY(brunnerPosition[0], (double)-brunnerPosition[1]);
                 }
                 else
                 {
                     this.cls2SimStatus.BackColor = brunnerDX.stopExecuting ? Color.Transparent : Color.Red;
+                }
+
+                if (connectCountdownTicks > 0)
+                {
+                    --connectCountdownTicks;
+                    if (connectCountdownTicks == 0)
+                    {
+                        ConnectBrunnerDX();
+                    }
                 }
 
                 if (writeOptionsCountdownTicks > 0)
@@ -312,7 +348,10 @@ namespace BrunnerDX
                     }
                 }
 
-                if (brunnerDX.stopExecuting && writeOptionsCountdownTicks < 0 && !brunnerDX.isArduinoConnected)
+                if (brunnerDX.stopExecuting &&
+                    writeOptionsCountdownTicks < 0 &&
+                    connectCountdownTicks < 0 &&
+                    !brunnerDX.isArduinoConnected)
                 {
                     refreshTimer.Enabled = false;
                 }
