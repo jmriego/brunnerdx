@@ -1,5 +1,8 @@
 # Changelog
 
+### Changed
+- Improved detection of new releases
+
 ## [2.1.0]
 
 ### Added

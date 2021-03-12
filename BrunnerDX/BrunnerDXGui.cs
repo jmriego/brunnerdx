@@ -24,6 +24,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using ArduinoUploader;
 using ArduinoUploader.Hardware;
 
+using Octokit;
 
 namespace BrunnerDX
 {
@@ -31,9 +32,10 @@ namespace BrunnerDX
 
     public partial class BrunnerDXGui : Form
     {
-        static string changeLogRawURL = "https://raw.githubusercontent.com/jmriego/brunnerdx/master/CHANGELOG.md";
-        static string releasesURL = "https://github.com/jmriego/brunnerdx/releases";
-        static string changeLogURL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
+        static string GITHUB_USER = "jmriego";
+        static string GITHUB_REPO = "brunnerdx";
+        static string RELEASES_URL = $"https://github.com/jmriego/brunnerdx/releases";
+        static string CHANGELOG_URL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
         private static NLog.Logger logger;
 
         string arduinoPortName = "";
@@ -127,26 +129,21 @@ namespace BrunnerDX
             }
             this.comboPorts.SelectedIndex = ports.Length - 1;
         }
-        public void CheckBrunnerDXVersion()
+        public async void CheckBrunnerDXVersion()
         {
-            string contents;
-
             try
             {
-                using (var wc = new System.Net.WebClient())
-                    contents = wc.DownloadString(changeLogRawURL);
-
-                var versionRegex = new Regex(@"^## \[(\d[\d-.]*)]$", RegexOptions.Multiline);
-                var lastVersionText = versionRegex.Match(contents).Groups[1];
-                var lastVersion = new Version(lastVersionText.ToString());
+                var client = new GitHubClient(new ProductHeaderValue(GITHUB_REPO));
+                var releases = await client.Repository.Release.GetAll(GITHUB_USER, GITHUB_REPO);
+                var lastReleaseVersion = new Version(releases[0].TagName.TrimStart('v'));
 
                 var assemblyVersion = typeof(BrunnerDX).Assembly.GetName().Version;
                 Version brunnerDXVersion = new Version($"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Revision}");
-                switch (brunnerDXVersion.CompareTo(lastVersion))
+                switch (brunnerDXVersion.CompareTo(lastReleaseVersion))
                 {
                     case -1:
                         logger.Warn($"There's an update available");
-                        this.consoleLog.AppendText($"\nDOWNLOAD: {releasesURL}\nCHANGELOG: {changeLogURL}\n\n");
+                        this.consoleLog.AppendText($"\nDOWNLOAD: {RELEASES_URL}\nCHANGELOG: {CHANGELOG_URL}\n\n");
                         break;
                     case 0:
                         logger.Info($"You have the latest version");
@@ -157,8 +154,6 @@ namespace BrunnerDX
             {
                 logger.Warn("Couldn't check for updates");
             }
-
-
         }
 
         delegate void SetProgressCallback(double progress);
