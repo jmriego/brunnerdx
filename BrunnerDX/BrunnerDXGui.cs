@@ -75,9 +75,9 @@ namespace BrunnerDX
             this.ipOption.Text = Properties.Settings.Default.IP;
             this.portOption.Text = Properties.Settings.Default.Port.ToString();
             this.autoConnectCheck.Checked = Properties.Settings.Default.AutoConnect;
+            this.comboPorts.Text = Properties.Settings.Default.ComPort;
             try
             {
-
                 this.forceSlider.Value = (int)Properties.Settings.Default.Force;
             }
             catch (Exception ex) { }
@@ -92,6 +92,7 @@ namespace BrunnerDX
             Properties.Settings.Default.Port = cls2SimPort;
             Properties.Settings.Default.Force = forceMultiplier;
             Properties.Settings.Default.AutoConnect = this.autoConnectCheck.Checked;
+            Properties.Settings.Default.ComPort = arduinoPortName;
             Properties.Settings.Default.Save();
         }
 
@@ -102,6 +103,8 @@ namespace BrunnerDX
 
             cls2SimPort = int.Parse(this.portOption.Text);
             brunnerDX.cls2SimPort = cls2SimPort;
+
+            arduinoPortName = this.comboPorts.Text;
 
             forceMultiplier = this.forceSlider.Value;
             brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
@@ -123,12 +126,23 @@ namespace BrunnerDX
             Array.Sort(ports, comparer);
 
             this.comboPorts.Items.Clear();
+            bool selectedPortFound = false;
             foreach (string port in ports)
             {
                 this.comboPorts.Items.Add(port);
+                if (port == arduinoPortName)
+                {
+                    this.comboPorts.SelectedItem = arduinoPortName;
+                    selectedPortFound = true;
+                }
             }
-            this.comboPorts.SelectedIndex = ports.Length - 1;
+
+            if (!selectedPortFound)
+            { 
+                this.comboPorts.SelectedIndex = ports.Length - 1;
+            }
         }
+
         public async void CheckBrunnerDXVersion()
         {
             try
@@ -225,7 +239,7 @@ namespace BrunnerDX
 
         private void comboPorts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.arduinoPortName = comboPorts.SelectedItem.ToString();
+            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void detectPorts_Click(object sender, EventArgs e)
