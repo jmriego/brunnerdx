@@ -1,7 +1,12 @@
 # Changelog
 
+## [2.2.0]
+
 ### Changed
 - Improved detection of new releases
+- Remember the last COM port used for when you have multiple Arduinos
+- Added directional logic for conditional forces
+- Improved start delay parameter
 
 ## [2.1.0]
 
