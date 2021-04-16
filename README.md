@@ -47,7 +47,6 @@ The only modifications you might need are in the `brunnerdx.py` file:
 ## TODO:
 
 * This currently only reads the X and Y position of the Joystick and not the buttons. It's not an issue in modern games (you can play IL-2 BoX and CloD for example) but any old game with no multi joystick support would need to map joystick buttons to key presses somehow.
-* Improve the filtering of conditional forces. I'm sure this can be made a bit smoother
 
 ## Ref
 
