@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0]
+
+### Changed
+- Improved the damper effect relative to the speed of movement
+- Send the force feedback effects status back to the game
+
 ## [2.2.0]
 
 ### Changed
