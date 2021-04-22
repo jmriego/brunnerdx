@@ -3,7 +3,7 @@
 
 It will be detected by Windows as a standard USB joystick with advanced force feedback features without the need to install any device drivers.
 
-You need to have an Arduino Micro (or any other Atmega32UX).
+You need to have an Arduino Micro (or any other Atmega32UX). Make sure to get the 5V version, not the 3.3V
 
 The part of the code that involves the Arduino sketch/driver is in this other repo if you are interested: [Fino](https://github.com/jmriego/Fino)
 
