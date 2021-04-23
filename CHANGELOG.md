@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.4.0]
+
+### Changed
+- Improved the inertia effect
+- Filter too rapid movements from CLS2Sim to improve feeling
+
 ## [2.3.0]
 
 ### Changed

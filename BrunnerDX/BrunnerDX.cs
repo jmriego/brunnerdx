@@ -21,6 +21,8 @@ namespace BrunnerDX
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
         const int timerMs = 2; // 500 FPS
+        const int forcedArduinoCalculation = 29; // even if not receiving a new position in 29ms we will calculate velocity, etc.
+        const int minimumTimeBetweenCalculations = 12; // if we receive consecutive position changes in less than this time we'll wait before calculating
 
         public string cls2SimHost;
         public int cls2SimPort;
@@ -145,15 +147,19 @@ namespace BrunnerDX
                 axisHasMoved[1] = true;
             }
 
-            if (axisHasMoved[0] && axisHasMoved[1])
+            if (ticksToNextPositionChange < ((forcedArduinoCalculation - minimumTimeBetweenCalculations)/timerMs))
             {
-                Interlocked.Exchange(ref ticksToNextPositionChange, 0);
-            }
-            // If only one of the two axes has moved, we might want to wait up to 10ms to see if we get an update for the other
-            // some times we get an update for only one of the two axes
-            else if (axisHasMoved[0] || axisHasMoved[1])
-            {
-                Interlocked.Exchange(ref ticksToNextPositionChange, Math.Min((9 / timerMs) + 1, ticksToNextPositionChange));
+                // if both axes have moved and at least minimumTimeBetweenCalculations has passed
+                if (axisHasMoved[0] && axisHasMoved[1])
+                {
+                    Interlocked.Exchange(ref ticksToNextPositionChange, 0);
+                }
+                // If only one of the two axes has moved, we might want to wait up to 10ms to see if we get an update for the other
+                // some times we get an update for only one of the two axes
+                else if (axisHasMoved[0] || axisHasMoved[1])
+                {
+                    Interlocked.Exchange(ref ticksToNextPositionChange, Math.Min((9 / timerMs) + 1, ticksToNextPositionChange));
+                }
             }
         }
 
@@ -187,7 +193,7 @@ namespace BrunnerDX
                         arduinoPort.WriteOrder(Order.POSITION);
                         arduinoPort.WriteInt16(this.position[0]);
                         arduinoPort.WriteInt16(this.position[1]);
-                        Interlocked.Exchange(ref ticksToNextPositionChange, (29 / timerMs) + 1);
+                        Interlocked.Exchange(ref ticksToNextPositionChange, (forcedArduinoCalculation / timerMs) + 1);
                         axisHasMoved[0] = false;
                         axisHasMoved[1] = false;
                     }
