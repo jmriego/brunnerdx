@@ -16,7 +16,7 @@ namespace BrunnerDX
 {
     class BrunnerDX
     {
-        static public Version expectedArduinoSketchVersion = new Version(2, 3, 0);
+        static public Version expectedArduinoSketchVersion = new Version(2, 4, 0);
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
