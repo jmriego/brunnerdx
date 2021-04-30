@@ -238,7 +238,7 @@ namespace BrunnerDX
             switch (arduinoSketchVersion.CompareTo(expectedArduinoSketchVersion))
             {
                 case -1:
-                    logger.Warn($"Arduino sketch version is too old. Please Upload the Arduino Firmware");
+                    logger.Warn($"Arduino sketch version is too old. Please click on Upload Firmware to update it");
                     break;
                 case 1:
                     logger.Warn($"This program doesn't seem to be the last version. Please download the most recent one");
