@@ -287,7 +287,7 @@ namespace BrunnerDX
             this.forceSlider.LargeChange = 10;
             this.forceSlider.Location = new System.Drawing.Point(114, 109);
             this.forceSlider.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.forceSlider.Maximum = 80;
+            this.forceSlider.Maximum = 150;
             this.forceSlider.Name = "forceSlider";
             this.forceSlider.Size = new System.Drawing.Size(126, 45);
             this.forceSlider.TabIndex = 5;
