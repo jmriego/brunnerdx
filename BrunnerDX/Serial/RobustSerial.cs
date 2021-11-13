@@ -19,7 +19,8 @@ namespace BrunnerDX
         POSITION = 4,
         ERROR = 5,
         LOG = 6,
-        VERSION = 7
+        VERSION = 7,
+        CONFIG = 8
     };
 
     public delegate void MessageReceivedEventHandler(Order ord, RobustSerial port);

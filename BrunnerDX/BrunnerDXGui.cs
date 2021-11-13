@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -40,10 +41,11 @@ namespace BrunnerDX
 
         string arduinoPortName = "";
         string cls2SimHost;
+        string cls2SimPath;
         int cls2SimPort;
         double forceMultiplier;
 
-        private bool isBusy = false;
+        private bool isStarting = false;
         long writeOptionsCountdownTicks = -1;
         long connectCountdownTicks = -1;
 
@@ -58,6 +60,13 @@ namespace BrunnerDX
             this.ReadOptions();
             this.refreshComPorts();
 
+
+            if (this.AutoCLSOpenCheckBox.Checked)
+            {
+                CLS2SimAutomation simWindow = new CLS2SimAutomation(cls2SimPath);
+                simWindow.Open(returnFocus: Process.GetCurrentProcess());
+            }
+
             // if AutoConnect is enabled and we just opened the app start the connection in 3s
             if (this.autoConnectCheck.Checked)
             {
@@ -71,19 +80,24 @@ namespace BrunnerDX
 
         private void ReadOptions()
         {
-            isBusy = true;
+            isStarting = true;
             this.ipOption.Text = Properties.Settings.Default.IP;
             this.portOption.Text = Properties.Settings.Default.Port.ToString();
             this.autoConnectCheck.Checked = Properties.Settings.Default.AutoConnect;
+            this.checkDefaultSpring.Checked = Properties.Settings.Default.DefaultSpring;
             this.comboPorts.Text = Properties.Settings.Default.ComPort;
+
             try
             {
                 this.forceSlider.Value = (int)Properties.Settings.Default.Force;
             }
             catch (Exception ex) { }
+
             this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
+            this.AutoCLSOpenCheckBox.Checked = Properties.Settings.Default.AutoOpenCLS2Sim;
+            this.TextCLS2SimPath.Text = Properties.Settings.Default.AutoOpenCLS2SimPath;
             ConfirmOptions();
-            isBusy = false;
+            isStarting = false;
         }
 
         private void WriteOptions()
@@ -92,7 +106,10 @@ namespace BrunnerDX
             Properties.Settings.Default.Port = cls2SimPort;
             Properties.Settings.Default.Force = forceMultiplier;
             Properties.Settings.Default.AutoConnect = this.autoConnectCheck.Checked;
+            Properties.Settings.Default.DefaultSpring = this.checkDefaultSpring.Checked;
             Properties.Settings.Default.ComPort = arduinoPortName;
+            Properties.Settings.Default.AutoOpenCLS2Sim = this.AutoCLSOpenCheckBox.Checked;
+            Properties.Settings.Default.AutoOpenCLS2SimPath = this.TextCLS2SimPath.Text;
             Properties.Settings.Default.Save();
         }
 
@@ -108,6 +125,7 @@ namespace BrunnerDX
 
             forceMultiplier = this.forceSlider.Value;
             brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
+            this.cls2SimPath = this.TextCLS2SimPath.Text;
 
             if (startWriteCountdown)
             {
@@ -239,7 +257,7 @@ namespace BrunnerDX
 
         private void comboPorts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void detectPorts_Click(object sender, EventArgs e)
@@ -250,7 +268,7 @@ namespace BrunnerDX
         private void forceSlider_Scroll(object sender, EventArgs e)
         {
             this.forceValue.Text = this.forceSlider.Value.ToString();
-            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void delaySlider_Scroll(object sender, EventArgs e)
@@ -262,21 +280,62 @@ namespace BrunnerDX
 
         private void ipOption_TextChanged(object sender, EventArgs e)
         {
-            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void portOption_TextChanged(object sender, EventArgs e)
         {
-            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
         private void autoConnectCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (!isBusy) ConfirmOptions(startWriteCountdown: true);
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
             if (!this.autoConnectCheck.Checked)
             {
                 connectCountdownTicks = -1;
             }
+        }
+
+        private void checkDefaultSpring_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
+            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
+        }
+
+        private void AutoCLSOpenCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isStarting)
+            {
+                if (AutoCLSOpenCheckBox.Checked)
+                {
+                    using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                    {
+                        openFileDialog.InitialDirectory = this.cls2SimPath;
+                        openFileDialog.Filter = "Executable|CLS2Sim.exe";
+                        //openFileDialog.FilterIndex = 2;
+                        //openFileDialog.RestoreDirectory = true;
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            //Get the path of specified file
+                            var dir = Path.GetDirectoryName(openFileDialog.FileName);
+                            this.cls2SimPath = dir;
+                            this.TextCLS2SimPath.Text = dir;
+                            CLS2SimAutomation simWindow = new CLS2SimAutomation(dir);
+                            simWindow.Open(returnFocus: Process.GetCurrentProcess());
+                        }
+                        else
+                        {
+                            this.TextCLS2SimPath.Text = "";
+                            this.AutoCLSOpenCheckBox.Checked = false;
+                        }
+                    }
+                }
+
+                ConfirmOptions(startWriteCountdown: true);
+            }
+
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -289,6 +348,7 @@ namespace BrunnerDX
             brunnerDX.cls2SimHost = cls2SimHost;
             brunnerDX.cls2SimPort = cls2SimPort;
             brunnerDX.arduinoPortName = arduinoPortName;
+            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
 
             if (brunnerDX.isArduinoConnected)
             {

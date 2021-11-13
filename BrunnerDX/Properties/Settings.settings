@@ -17,5 +17,14 @@
     <Setting Name="ComPort" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DefaultSpring" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AutoOpenCLS2Sim" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AutoOpenCLS2SimPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Brunner Elektronik AG\CLS2Sim</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -12,7 +12,7 @@ namespace BrunnerDX.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -80,6 +80,42 @@ namespace BrunnerDX.Properties {
             }
             set {
                 this["ComPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DefaultSpring {
+            get {
+                return ((bool)(this["DefaultSpring"]));
+            }
+            set {
+                this["DefaultSpring"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoOpenCLS2Sim {
+            get {
+                return ((bool)(this["AutoOpenCLS2Sim"]));
+            }
+            set {
+                this["AutoOpenCLS2Sim"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Brunner Elektronik AG\\CLS2Sim")]
+        public string AutoOpenCLS2SimPath {
+            get {
+                return ((string)(this["AutoOpenCLS2SimPath"]));
+            }
+            set {
+                this["AutoOpenCLS2SimPath"] = value;
             }
         }
     }
