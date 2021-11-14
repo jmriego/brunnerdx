@@ -16,7 +16,7 @@ namespace BrunnerDX
 {
     class BrunnerDX
     {
-        static public Version expectedArduinoSketchVersion = new Version(2, 4, 0);
+        static public Version expectedArduinoSketchVersion = new Version(3, 0, 0);
 
         Version arduinoSketchVersion;
         Logger logger = LogManager.GetCurrentClassLogger();
@@ -34,9 +34,11 @@ namespace BrunnerDX
         private Queue<int[]> positionHistory = new Queue<int[]>();
         private int[] _force;
         private bool[] axisHasMoved = new bool[] { false, false };
+        private bool _defaultSpring = false;
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
+        private bool _requiresSendingConfig = false;
         private long _stopExecuting = 1;
 
         private int ticksToNextPositionChange = 0;
@@ -79,6 +81,18 @@ namespace BrunnerDX
         }
 
         public int[] force => _force;
+        public bool defaultSpring
+        {
+            get
+            {
+                return this._defaultSpring;
+            }
+            set
+            {
+                this._defaultSpring = value;
+                this._requiresSendingConfig = true;
+            }
+        }
         public bool isArduinoConnected => _isArduinoConnected;
         public bool isBrunnerConnected => _isBrunnerConnected;
         public bool stopExecuting
@@ -105,31 +119,22 @@ namespace BrunnerDX
 
         private RobustSerial connectArduino()
         {
+            this._isArduinoConnected = false;
             MessageReceivedEventHandler handler = new MessageReceivedEventHandler(this.DataReceivedHandler);
-            return new RobustSerial(arduinoPortName, handler);
+            var serial = new RobustSerial(arduinoPortName, handler);
+            this._isArduinoConnected = true;
+            return serial;
         }
 
         private Cls2SimSocket connectBrunner(bool required)
         {
-                try
-                {
-                    Cls2SimSocket sock = new Cls2SimSocket(cls2SimHost, cls2SimPort);
-                    sock.Connect();
-                    return sock;
-                }
-                catch (Exception ex)
-                {
-                    if (required)
-                    {
-                        logger.Error(ex, ex.Message);
-                        throw;
-                    }
-                    else
-                    {
-                        logger.Warn($"Couldn't connect to Brunner CLS2Sim: {ex.Message}");
-                        return null;
-                    }
-                }
+            Cls2SimSocket sock = new Cls2SimSocket(cls2SimHost, cls2SimPort);
+            return sock;
+        }
+
+        private bool waitForBrunner(Cls2SimSocket sock, int timeout=1)
+        {
+            return sock.WaitForResponse(timeout);
         }
 
         private void UpdatePosition(PositionMessage positionMessage)
@@ -170,10 +175,10 @@ namespace BrunnerDX
             Monitor.TryEnter(lockObject, TimeSpan.FromMilliseconds(1), ref lockTaken);
             try
             {
-                if (lockTaken)
+                if (lockTaken && !this._requiresSendingConfig && !stopExecuting)
                 {
                     // wait for receiving new position
-                    if (brunnerSocket != null)
+                    if (_isBrunnerConnected)
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
@@ -209,6 +214,19 @@ namespace BrunnerDX
                 logger.Error(ex, ex.StackTrace);
                 logger.Error(ex, ex.Message);
                 stopExecuting = true;
+            }
+        }
+
+        private void SendArduinoConfig(RobustSerial arduinoPort)
+        {
+            logger.Debug("Sending the new config to the Arduino");
+            try
+            {
+                arduinoPort.WriteOrder(Order.CONFIG);
+                arduinoPort.WriteInt8(this._defaultSpring ? 100 : 0);
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -249,7 +267,6 @@ namespace BrunnerDX
         public void loop()
         {
             stopExecuting = false;
-
             using (RobustSerial arduinoPort = connectArduino())
             using (Cls2SimSocket brunnerSocket = connectBrunner(required: false))
             {
@@ -262,17 +279,33 @@ namespace BrunnerDX
                     arduinoPort.WaitForConnection();
                     logger.Info("Checking Arduino Firmware version");
                     CheckArduinoSketchVersion(arduinoPort, maxSeconds:3);
-                    _isArduinoConnected = true;
-                    if (brunnerSocket != null)
-                    {
-                        _isBrunnerConnected = true;
-                    }
+                    this._requiresSendingConfig = true;
 
                     timer.Elapsed += (o, e) => Communicate(arduinoPort, brunnerSocket);
                     timer.Start();
 
+                    logger.Info("Waiting for connection to CLS2Sim...");
+                    int secondsWaitBrunner = 60;
+                    var awaitingBrunnerWatch = new Stopwatch();
+                    awaitingBrunnerWatch.Start();
+
                     while (arduinoPort.IsOpen && !stopExecuting)
                     {
+                        if (!_isBrunnerConnected && awaitingBrunnerWatch.IsRunning)
+                        {
+                            _isBrunnerConnected = waitForBrunner(brunnerSocket, timeout: 1);
+                            if (awaitingBrunnerWatch.ElapsedMilliseconds > secondsWaitBrunner * 1000)
+                            {
+                                awaitingBrunnerWatch.Stop();
+                                logger.Warn($"Was not able to connect to CLS2Sim after {secondsWaitBrunner} seconds");
+                            }
+                        }
+
+                        if (this._requiresSendingConfig) {
+                            SendArduinoConfig(arduinoPort);
+                            this._requiresSendingConfig = false;
+                        }
+
                         var currentPosition = new int[2];
                         _position.CopyTo(currentPosition, 0);
                         positionHistory.Enqueue(currentPosition);

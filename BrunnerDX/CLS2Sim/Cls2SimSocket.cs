@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 
 using NLog;
-
+using System.Threading;
 
 namespace BrunnerDX
 {
@@ -31,7 +31,6 @@ namespace BrunnerDX
         }
     }
 
-
     public struct PositionMessage
     {
         public UInt32 result;
@@ -40,7 +39,7 @@ namespace BrunnerDX
         public float rudder;
         public float collective;
 
-        public PositionMessage(UInt32 result, float elevator, float aileron, float rudder=0, float collective=0)
+        public PositionMessage(UInt32 result, float elevator, float aileron, float rudder = 0, float collective = 0)
         {
             this.result = result;
             this.elevator = elevator;
@@ -50,6 +49,21 @@ namespace BrunnerDX
         }
     }
 
+    public struct ProfileSetMessage
+    {
+        Int32 command;
+        Int32 profileCommand;
+        byte profileNameLength;
+        public char[] profileName;
+
+        public ProfileSetMessage(char[] profileName)
+        {
+            this.command = 0xCF;
+            this.profileCommand = 0x01;
+            this.profileNameLength = (byte)profileName.Length;
+            this.profileName = profileName;
+        }
+    }
 
     public class Cls2SimSocket : IDisposable
     {
@@ -71,6 +85,7 @@ namespace BrunnerDX
 
                 remoteEP = new IPEndPoint(ipAddress, port);
                 sock = new UdpClient();
+                sock.Connect(ipAddress, port);
 
                 sock.Client.ReceiveTimeout = 500;
                 sock.Client.SendTimeout = 500;
@@ -99,28 +114,31 @@ namespace BrunnerDX
             return arr;
         }
 
-        static void ByteArrayToPositionMessage(byte[] bytearray, ref PositionMessage obj)
+        static void ByteArrayToMessage<T>(byte[] bytearray, ref T obj)
         {
             int len = Marshal.SizeOf(obj);
             IntPtr i = Marshal.AllocHGlobal(len);
             Marshal.Copy(bytearray, 0, i, len);
-            obj = (PositionMessage)Marshal.PtrToStructure(i, obj.GetType());
+            obj = (T)Marshal.PtrToStructure(i, obj.GetType());
             Marshal.FreeHGlobal(i);
         }
 
-        public void Connect()
+        public bool WaitForResponse(int timeout=5)
         {
-            logger.Info($"Trying to connect to CLS2Sim in {ipAddress}:{port}");
-            try
+            while (timeout > 0)
             {
-                sock.Connect(ipAddress, port);
-                SendForcesReadPosition(new ForceMessage(0, 0));
+                try
+                {
+                    SendForcesReadPosition(new ForceMessage(0, 0));
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    --timeout;
+                }
+                Thread.Sleep(1000);
             }
-            catch (Exception ex)
-            {
-                logger.Error($"Couldn't connect to Brunner CLS2Sim: {ex.Message}");
-                throw;
-            }
+            return false;
         }
 
         public PositionMessage SendForcesReadPosition(ForceMessage forces)
@@ -141,7 +159,7 @@ namespace BrunnerDX
             PositionMessage position = new PositionMessage();
             int len = Marshal.SizeOf(position);
             byte[] bytes = sock.Receive(ref remoteEP);
-            ByteArrayToPositionMessage(bytes, ref position);
+            ByteArrayToMessage<PositionMessage>(bytes, ref position);
             return position;
         }
     }
