@@ -85,6 +85,7 @@ namespace BrunnerDX
 
                 remoteEP = new IPEndPoint(ipAddress, port);
                 sock = new UdpClient();
+                sock.Connect(ipAddress, port);
 
                 sock.Client.ReceiveTimeout = 500;
                 sock.Client.SendTimeout = 500;
@@ -122,9 +123,8 @@ namespace BrunnerDX
             Marshal.FreeHGlobal(i);
         }
 
-        public bool Connect(int timeout=5)
+        public bool WaitForResponse(int timeout=5)
         {
-            sock.Connect(ipAddress, port);
             while (timeout > 0)
             {
                 try
@@ -134,10 +134,7 @@ namespace BrunnerDX
                 }
                 catch (Exception ex)
                 {
-                    if (--timeout <= 0)
-                    {
-                        logger.Warn($"Couldn't connect to Brunner CLS2Sim: {ex.Message}");
-                    }
+                    --timeout;
                 }
                 Thread.Sleep(1000);
             }

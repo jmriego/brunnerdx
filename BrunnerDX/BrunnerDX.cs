@@ -119,23 +119,22 @@ namespace BrunnerDX
 
         private RobustSerial connectArduino()
         {
+            this._isArduinoConnected = false;
             MessageReceivedEventHandler handler = new MessageReceivedEventHandler(this.DataReceivedHandler);
-            return new RobustSerial(arduinoPortName, handler);
+            var serial = new RobustSerial(arduinoPortName, handler);
+            this._isArduinoConnected = true;
+            return serial;
         }
 
-        private Cls2SimSocket connectBrunner(bool required, int timeout=1)
+        private Cls2SimSocket connectBrunner(bool required)
         {
-            logger.Info("Trying to connect to CLS2Sim...");
             Cls2SimSocket sock = new Cls2SimSocket(cls2SimHost, cls2SimPort);
-            if (sock.Connect(timeout))
-            {
-                return sock;
-            }
-            else
-            {
-                logger.Error($"It was not possible to connect to CLS2Sim in {timeout} seconds");
-                return null;
-            }
+            return sock;
+        }
+
+        private bool waitForBrunner(Cls2SimSocket sock, int timeout=1)
+        {
+            return sock.WaitForResponse(timeout);
         }
 
         private void UpdatePosition(PositionMessage positionMessage)
@@ -179,7 +178,7 @@ namespace BrunnerDX
                 if (lockTaken && !this._requiresSendingConfig)
                 {
                     // wait for receiving new position
-                    if (brunnerSocket != null)
+                    if (brunnerSocket != null && _isBrunnerConnected)
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
@@ -268,9 +267,8 @@ namespace BrunnerDX
         public void loop()
         {
             stopExecuting = false;
-
             using (RobustSerial arduinoPort = connectArduino())
-            using (Cls2SimSocket brunnerSocket = connectBrunner(required: false, timeout: 60))
+            using (Cls2SimSocket brunnerSocket = connectBrunner(required: false))
             {
                 var timer = new HighPrecisionTimer.MultimediaTimer();
                 timer.Interval = timerMs;
@@ -281,18 +279,28 @@ namespace BrunnerDX
                     arduinoPort.WaitForConnection();
                     logger.Info("Checking Arduino Firmware version");
                     CheckArduinoSketchVersion(arduinoPort, maxSeconds:3);
-                    this._isArduinoConnected = true;
                     this._requiresSendingConfig = true;
-                    if (brunnerSocket != null)
-                    {
-                        _isBrunnerConnected = true;
-                    }
 
                     timer.Elapsed += (o, e) => Communicate(arduinoPort, brunnerSocket);
                     timer.Start();
 
+                    logger.Info("Trying to connect to CLS2Sim...");
+                    int secondsWaitBrunner = 60;
+                    var awaitingBrunnerWatch = new Stopwatch();
+                    awaitingBrunnerWatch.Start();
+
                     while (arduinoPort.IsOpen && !stopExecuting)
                     {
+                        if (!_isBrunnerConnected && awaitingBrunnerWatch.IsRunning)
+                        {
+                            _isBrunnerConnected = waitForBrunner(brunnerSocket, timeout: 1);
+                            if (awaitingBrunnerWatch.ElapsedMilliseconds > secondsWaitBrunner * 1000)
+                            {
+                                awaitingBrunnerWatch.Stop();
+                                logger.Warn($"Was not able to connect to CLS2Sim after {secondsWaitBrunner} seconds");
+                            }
+                        }
+
                         if (this._requiresSendingConfig) {
                             SendArduinoConfig(arduinoPort);
                             this._requiresSendingConfig = false;
