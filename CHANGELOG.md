@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.5.0]
+
+### Changed
+- Improved the friction effect
+- Added the option of opening CLS2Sim automatically in external control mode
+- Now tries for 1 minute to connect to CLS2Sim
+- Moved app settings into a separate tab
+
 ## [2.4.0]
 
 ### Changed
