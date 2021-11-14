@@ -175,10 +175,10 @@ namespace BrunnerDX
             Monitor.TryEnter(lockObject, TimeSpan.FromMilliseconds(1), ref lockTaken);
             try
             {
-                if (lockTaken && !this._requiresSendingConfig)
+                if (lockTaken && !this._requiresSendingConfig && !stopExecuting)
                 {
                     // wait for receiving new position
-                    if (brunnerSocket != null && _isBrunnerConnected)
+                    if (_isBrunnerConnected)
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
@@ -284,7 +284,7 @@ namespace BrunnerDX
                     timer.Elapsed += (o, e) => Communicate(arduinoPort, brunnerSocket);
                     timer.Start();
 
-                    logger.Info("Trying to connect to CLS2Sim...");
+                    logger.Info("Waiting for connection to CLS2Sim...");
                     int secondsWaitBrunner = 60;
                     var awaitingBrunnerWatch = new Stopwatch();
                     awaitingBrunnerWatch.Start();
