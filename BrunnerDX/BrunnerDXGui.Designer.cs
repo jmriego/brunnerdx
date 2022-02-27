@@ -30,14 +30,14 @@ namespace BrunnerDX
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint5 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint6 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint2 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.groupBoxFirmware = new System.Windows.Forms.GroupBox();
             this.uploadProgressBar = new System.Windows.Forms.ProgressBar();
             this.detectPorts = new System.Windows.Forms.Button();
@@ -76,9 +76,10 @@ namespace BrunnerDX
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.profileTab = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
-            this.optionsTab = new System.Windows.Forms.TabPage();
-            this.labelAutoCLSOpen = new System.Windows.Forms.Label();
+            this.connectionTab = new System.Windows.Forms.TabPage();
             this.TextCLS2SimPath = new System.Windows.Forms.Label();
+            this.labelAutoCLSOpen = new System.Windows.Forms.Label();
+            this.trimTab = new System.Windows.Forms.TabPage();
             this.groupBoxFirmware.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.delaySlider)).BeginInit();
@@ -90,7 +91,7 @@ namespace BrunnerDX
             ((System.ComponentModel.ISupportInitialize)(this.arduinoStatus)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.profileTab.SuspendLayout();
-            this.optionsTab.SuspendLayout();
+            this.connectionTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxFirmware
@@ -359,41 +360,41 @@ namespace BrunnerDX
             // 
             // positionChart
             // 
-            chartArea5.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea5.AxisX.IsLabelAutoFit = false;
-            chartArea5.AxisX.LabelStyle.Enabled = false;
-            chartArea5.AxisX.MajorGrid.Enabled = false;
-            chartArea5.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea5.AxisX.MajorTickMark.Enabled = false;
-            chartArea5.AxisX.Maximum = 32767D;
-            chartArea5.AxisX.Minimum = -32767D;
-            chartArea5.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea5.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea5.AxisY.IsLabelAutoFit = false;
-            chartArea5.AxisY.LabelStyle.Enabled = false;
-            chartArea5.AxisY.MajorGrid.Enabled = false;
-            chartArea5.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea5.AxisY.MajorTickMark.Enabled = false;
-            chartArea5.AxisY.Maximum = 32767D;
-            chartArea5.AxisY.Minimum = -32767D;
-            chartArea5.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea5.Name = "ChartArea1";
-            this.positionChart.ChartAreas.Add(chartArea5);
-            legend5.Enabled = false;
-            legend5.Name = "Legend1";
-            this.positionChart.Legends.Add(legend5);
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisX.IsLabelAutoFit = false;
+            chartArea1.AxisX.LabelStyle.Enabled = false;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisX.MajorTickMark.Enabled = false;
+            chartArea1.AxisX.Maximum = 32767D;
+            chartArea1.AxisX.Minimum = -32767D;
+            chartArea1.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisY.IsLabelAutoFit = false;
+            chartArea1.AxisY.LabelStyle.Enabled = false;
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisY.MajorTickMark.Enabled = false;
+            chartArea1.AxisY.Maximum = 32767D;
+            chartArea1.AxisY.Minimum = -32767D;
+            chartArea1.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea1.Name = "ChartArea1";
+            this.positionChart.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.positionChart.Legends.Add(legend1);
             this.positionChart.Location = new System.Drawing.Point(403, 17);
             this.positionChart.Margin = new System.Windows.Forms.Padding(4);
             this.positionChart.Name = "positionChart";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series5.IsVisibleInLegend = false;
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            series5.Points.Add(dataPoint5);
-            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.positionChart.Series.Add(series5);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.IsVisibleInLegend = false;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            series1.Points.Add(dataPoint1);
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.positionChart.Series.Add(series1);
             this.positionChart.Size = new System.Drawing.Size(85, 79);
             this.positionChart.TabIndex = 7;
             this.positionChart.Text = "chart1";
@@ -411,41 +412,41 @@ namespace BrunnerDX
             // 
             // forceChart
             // 
-            chartArea6.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea6.AxisX.IsLabelAutoFit = false;
-            chartArea6.AxisX.LabelStyle.Enabled = false;
-            chartArea6.AxisX.MajorGrid.Enabled = false;
-            chartArea6.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea6.AxisX.MajorTickMark.Enabled = false;
-            chartArea6.AxisX.Maximum = 10000D;
-            chartArea6.AxisX.Minimum = -10000D;
-            chartArea6.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea6.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea6.AxisY.IsLabelAutoFit = false;
-            chartArea6.AxisY.LabelStyle.Enabled = false;
-            chartArea6.AxisY.MajorGrid.Enabled = false;
-            chartArea6.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea6.AxisY.MajorTickMark.Enabled = false;
-            chartArea6.AxisY.Maximum = 10000D;
-            chartArea6.AxisY.Minimum = -10000D;
-            chartArea6.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea6.Name = "ChartArea1";
-            this.forceChart.ChartAreas.Add(chartArea6);
-            legend6.Enabled = false;
-            legend6.Name = "Legend1";
-            this.forceChart.Legends.Add(legend6);
+            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.AxisX.IsLabelAutoFit = false;
+            chartArea2.AxisX.LabelStyle.Enabled = false;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea2.AxisX.MajorTickMark.Enabled = false;
+            chartArea2.AxisX.Maximum = 10000D;
+            chartArea2.AxisX.Minimum = -10000D;
+            chartArea2.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea2.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.AxisY.IsLabelAutoFit = false;
+            chartArea2.AxisY.LabelStyle.Enabled = false;
+            chartArea2.AxisY.MajorGrid.Enabled = false;
+            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea2.AxisY.MajorTickMark.Enabled = false;
+            chartArea2.AxisY.Maximum = 10000D;
+            chartArea2.AxisY.Minimum = -10000D;
+            chartArea2.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea2.Name = "ChartArea1";
+            this.forceChart.ChartAreas.Add(chartArea2);
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.forceChart.Legends.Add(legend2);
             this.forceChart.Location = new System.Drawing.Point(288, 17);
             this.forceChart.Margin = new System.Windows.Forms.Padding(4);
             this.forceChart.Name = "forceChart";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series6.IsVisibleInLegend = false;
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            series6.Points.Add(dataPoint6);
-            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.forceChart.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.IsVisibleInLegend = false;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            series2.Points.Add(dataPoint2);
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.forceChart.Series.Add(series2);
             this.forceChart.Size = new System.Drawing.Size(85, 79);
             this.forceChart.TabIndex = 5;
             this.forceChart.Text = "chart1";
@@ -533,7 +534,8 @@ namespace BrunnerDX
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.profileTab);
-            this.tabControl1.Controls.Add(this.optionsTab);
+            this.tabControl1.Controls.Add(this.connectionTab);
+            this.tabControl1.Controls.Add(this.trimTab);
             this.tabControl1.Location = new System.Drawing.Point(540, 14);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -568,33 +570,24 @@ namespace BrunnerDX
             this.label1.Text = "Default Spring";
             this.label1.Visible = false;
             // 
-            // optionsTab
+            // connectionTab
             // 
-            this.optionsTab.BackColor = System.Drawing.Color.Transparent;
-            this.optionsTab.Controls.Add(this.TextCLS2SimPath);
-            this.optionsTab.Controls.Add(this.labelAutoCLSOpen);
-            this.optionsTab.Controls.Add(this.AutoCLSOpenCheckBox);
-            this.optionsTab.Controls.Add(this.ipLabel);
-            this.optionsTab.Controls.Add(this.udpLabel);
-            this.optionsTab.Controls.Add(this.ipOption);
-            this.optionsTab.Controls.Add(this.portOption);
-            this.optionsTab.Controls.Add(this.autoConnectCheck);
-            this.optionsTab.Controls.Add(this.autoConnectLabel);
-            this.optionsTab.Location = new System.Drawing.Point(4, 25);
-            this.optionsTab.Name = "optionsTab";
-            this.optionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.optionsTab.Size = new System.Drawing.Size(402, 228);
-            this.optionsTab.TabIndex = 0;
-            this.optionsTab.Text = "Options";
-            // 
-            // labelAutoCLSOpen
-            // 
-            this.labelAutoCLSOpen.AutoSize = true;
-            this.labelAutoCLSOpen.Location = new System.Drawing.Point(82, 121);
-            this.labelAutoCLSOpen.Name = "labelAutoCLSOpen";
-            this.labelAutoCLSOpen.Size = new System.Drawing.Size(104, 17);
-            this.labelAutoCLSOpen.TabIndex = 13;
-            this.labelAutoCLSOpen.Text = "Open CLS2Sim";
+            this.connectionTab.BackColor = System.Drawing.Color.Transparent;
+            this.connectionTab.Controls.Add(this.TextCLS2SimPath);
+            this.connectionTab.Controls.Add(this.labelAutoCLSOpen);
+            this.connectionTab.Controls.Add(this.AutoCLSOpenCheckBox);
+            this.connectionTab.Controls.Add(this.ipLabel);
+            this.connectionTab.Controls.Add(this.udpLabel);
+            this.connectionTab.Controls.Add(this.ipOption);
+            this.connectionTab.Controls.Add(this.portOption);
+            this.connectionTab.Controls.Add(this.autoConnectCheck);
+            this.connectionTab.Controls.Add(this.autoConnectLabel);
+            this.connectionTab.Location = new System.Drawing.Point(4, 25);
+            this.connectionTab.Name = "connectionTab";
+            this.connectionTab.Padding = new System.Windows.Forms.Padding(3);
+            this.connectionTab.Size = new System.Drawing.Size(402, 228);
+            this.connectionTab.TabIndex = 0;
+            this.connectionTab.Text = "Connection";
             // 
             // TextCLS2SimPath
             // 
@@ -605,6 +598,24 @@ namespace BrunnerDX
             this.TextCLS2SimPath.TabIndex = 14;
             this.TextCLS2SimPath.Text = "C:\\Program Files (x86)\\Brunner Elektronik AG\\CLS2Sim\\Settings";
             this.TextCLS2SimPath.Visible = false;
+            // 
+            // labelAutoCLSOpen
+            // 
+            this.labelAutoCLSOpen.AutoSize = true;
+            this.labelAutoCLSOpen.Location = new System.Drawing.Point(82, 121);
+            this.labelAutoCLSOpen.Name = "labelAutoCLSOpen";
+            this.labelAutoCLSOpen.Size = new System.Drawing.Size(104, 17);
+            this.labelAutoCLSOpen.TabIndex = 13;
+            this.labelAutoCLSOpen.Text = "Open CLS2Sim";
+            // 
+            // trimTab
+            // 
+            this.trimTab.BackColor = System.Drawing.Color.Transparent;
+            this.trimTab.Location = new System.Drawing.Point(4, 25);
+            this.trimTab.Name = "trimTab";
+            this.trimTab.Size = new System.Drawing.Size(402, 228);
+            this.trimTab.TabIndex = 2;
+            this.trimTab.Text = "Trim";
             // 
             // BrunnerDXGui
             // 
@@ -634,8 +645,8 @@ namespace BrunnerDX
             this.tabControl1.ResumeLayout(false);
             this.profileTab.ResumeLayout(false);
             this.profileTab.PerformLayout();
-            this.optionsTab.ResumeLayout(false);
-            this.optionsTab.PerformLayout();
+            this.connectionTab.ResumeLayout(false);
+            this.connectionTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -676,13 +687,14 @@ namespace BrunnerDX
         private System.Windows.Forms.DataVisualization.Charting.Chart positionChart;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage optionsTab;
+        private System.Windows.Forms.TabPage connectionTab;
         private System.Windows.Forms.TabPage profileTab;
         private System.Windows.Forms.CheckBox checkDefaultSpring;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelAutoCLSOpen;
         private System.Windows.Forms.CheckBox AutoCLSOpenCheckBox;
         private System.Windows.Forms.Label TextCLS2SimPath;
+        private System.Windows.Forms.TabPage trimTab;
     }
 }
 
