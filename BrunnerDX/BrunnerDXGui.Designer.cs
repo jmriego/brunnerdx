@@ -390,7 +390,11 @@ namespace BrunnerDX
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series1.IsVisibleInLegend = false;
             series1.Legend = "Legend1";
+            series1.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
             series1.Name = "Series1";
+            dataPoint1.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
             series1.Points.Add(dataPoint1);
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
@@ -442,7 +446,11 @@ namespace BrunnerDX
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series2.IsVisibleInLegend = false;
             series2.Legend = "Legend1";
+            series2.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
             series2.Name = "Series1";
+            dataPoint2.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
             series2.Points.Add(dataPoint2);
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
@@ -517,7 +525,6 @@ namespace BrunnerDX
             this.toolTip.SetToolTip(this.checkDefaultSpring, "Start a centering spring effect when there\'s no sim running and BrunnerDX is conn" +
         "ected");
             this.checkDefaultSpring.UseVisualStyleBackColor = true;
-            this.checkDefaultSpring.Visible = false;
             this.checkDefaultSpring.CheckedChanged += new System.EventHandler(this.checkDefaultSpring_CheckedChanged);
             // 
             // AutoCLSOpenCheckBox
@@ -568,7 +575,6 @@ namespace BrunnerDX
             this.label1.Size = new System.Drawing.Size(98, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Default Spring";
-            this.label1.Visible = false;
             // 
             // connectionTab
             // 

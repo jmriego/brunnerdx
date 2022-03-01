@@ -376,8 +376,10 @@ namespace BrunnerDX
         {
             if (Monitor.TryEnter(lockObject))
             {
-                this.forceChart.Series[0].Points.Clear();
-                this.positionChart.Series[0].Points.Clear();
+                if (this.forceChart.Series[0].Points.Count > 1)
+                    this.forceChart.Series[0].Points.RemoveAt(1);
+                if (this.positionChart.Series[0].Points.Count > 1)
+                    this.positionChart.Series[0].Points.RemoveAt(1);
 
                 if (brunnerDX.isArduinoConnected)
                 {
