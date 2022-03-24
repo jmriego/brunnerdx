@@ -30,14 +30,14 @@ namespace BrunnerDX
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint4 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint9 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint10 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.groupBoxFirmware = new System.Windows.Forms.GroupBox();
             this.uploadProgressBar = new System.Windows.Forms.ProgressBar();
             this.detectPorts = new System.Windows.Forms.Button();
@@ -94,9 +94,10 @@ namespace BrunnerDX
             this.btnIncTrimZ = new System.Windows.Forms.Button();
             this.ctnCenterTrimZ = new System.Windows.Forms.Button();
             this.barTrimZ = new System.Windows.Forms.TrackBar();
-            this.checkboxTrim = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBoxFirmware.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.delaySlider)).BeginInit();
@@ -113,6 +114,7 @@ namespace BrunnerDX
             ((System.ComponentModel.ISupportInitialize)(this.barTrimX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTrimY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTrimZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxFirmware
@@ -191,7 +193,7 @@ namespace BrunnerDX
             this.consoleLog.Location = new System.Drawing.Point(8, 84);
             this.consoleLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.consoleLog.Name = "consoleLog";
-            this.consoleLog.Size = new System.Drawing.Size(1385, 313);
+            this.consoleLog.Size = new System.Drawing.Size(1385, 312);
             this.consoleLog.TabIndex = 2;
             this.consoleLog.Text = "";
             this.consoleLog.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.consoleLog_LinkClicked);
@@ -203,11 +205,11 @@ namespace BrunnerDX
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxLogging.Controls.Add(this.clearLog);
             this.groupBoxLogging.Controls.Add(this.consoleLog);
-            this.groupBoxLogging.Location = new System.Drawing.Point(20, 435);
+            this.groupBoxLogging.Location = new System.Drawing.Point(20, 450);
             this.groupBoxLogging.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBoxLogging.Name = "groupBoxLogging";
             this.groupBoxLogging.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxLogging.Size = new System.Drawing.Size(1405, 409);
+            this.groupBoxLogging.Size = new System.Drawing.Size(1405, 408);
             this.groupBoxLogging.TabIndex = 3;
             this.groupBoxLogging.TabStop = false;
             this.groupBoxLogging.Text = "Logging";
@@ -371,7 +373,7 @@ namespace BrunnerDX
             this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBoxConnect.Name = "groupBoxConnect";
             this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxConnect.Size = new System.Drawing.Size(782, 212);
+            this.groupBoxConnect.Size = new System.Drawing.Size(782, 227);
             this.groupBoxConnect.TabIndex = 6;
             this.groupBoxConnect.TabStop = false;
             this.groupBoxConnect.Text = "Connect";
@@ -389,45 +391,45 @@ namespace BrunnerDX
             // 
             // positionChart
             // 
-            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea3.AxisX.IsLabelAutoFit = false;
-            chartArea3.AxisX.LabelStyle.Enabled = false;
-            chartArea3.AxisX.MajorGrid.Enabled = false;
-            chartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea3.AxisX.MajorTickMark.Enabled = false;
-            chartArea3.AxisX.Maximum = 32767D;
-            chartArea3.AxisX.Minimum = -32767D;
-            chartArea3.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea3.AxisY.IsLabelAutoFit = false;
-            chartArea3.AxisY.LabelStyle.Enabled = false;
-            chartArea3.AxisY.MajorGrid.Enabled = false;
-            chartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea3.AxisY.MajorTickMark.Enabled = false;
-            chartArea3.AxisY.Maximum = 32767D;
-            chartArea3.AxisY.Minimum = -32767D;
-            chartArea3.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea3.Name = "ChartArea1";
-            this.positionChart.ChartAreas.Add(chartArea3);
-            legend3.Enabled = false;
-            legend3.Name = "Legend1";
-            this.positionChart.Legends.Add(legend3);
+            chartArea9.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea9.AxisX.IsLabelAutoFit = false;
+            chartArea9.AxisX.LabelStyle.Enabled = false;
+            chartArea9.AxisX.MajorGrid.Enabled = false;
+            chartArea9.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea9.AxisX.MajorTickMark.Enabled = false;
+            chartArea9.AxisX.Maximum = 32767D;
+            chartArea9.AxisX.Minimum = -32767D;
+            chartArea9.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea9.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea9.AxisY.IsLabelAutoFit = false;
+            chartArea9.AxisY.LabelStyle.Enabled = false;
+            chartArea9.AxisY.MajorGrid.Enabled = false;
+            chartArea9.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea9.AxisY.MajorTickMark.Enabled = false;
+            chartArea9.AxisY.Maximum = 32767D;
+            chartArea9.AxisY.Minimum = -32767D;
+            chartArea9.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea9.Name = "ChartArea1";
+            this.positionChart.ChartAreas.Add(chartArea9);
+            legend9.Enabled = false;
+            legend9.Name = "Legend1";
+            this.positionChart.Legends.Add(legend9);
             this.positionChart.Location = new System.Drawing.Point(604, 27);
             this.positionChart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.positionChart.Name = "positionChart";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.IsVisibleInLegend = false;
-            series3.Legend = "Legend1";
-            series3.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series3.Name = "Series1";
-            dataPoint3.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series3.Points.Add(dataPoint3);
-            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.positionChart.Series.Add(series3);
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series9.IsVisibleInLegend = false;
+            series9.Legend = "Legend1";
+            series9.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series9.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series9.Name = "Series1";
+            dataPoint9.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint9.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series9.Points.Add(dataPoint9);
+            series9.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series9.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.positionChart.Series.Add(series9);
             this.positionChart.Size = new System.Drawing.Size(128, 123);
             this.positionChart.TabIndex = 7;
             this.positionChart.Text = "chart1";
@@ -445,45 +447,45 @@ namespace BrunnerDX
             // 
             // forceChart
             // 
-            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea4.AxisX.IsLabelAutoFit = false;
-            chartArea4.AxisX.LabelStyle.Enabled = false;
-            chartArea4.AxisX.MajorGrid.Enabled = false;
-            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea4.AxisX.MajorTickMark.Enabled = false;
-            chartArea4.AxisX.Maximum = 10000D;
-            chartArea4.AxisX.Minimum = -10000D;
-            chartArea4.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea4.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea4.AxisY.IsLabelAutoFit = false;
-            chartArea4.AxisY.LabelStyle.Enabled = false;
-            chartArea4.AxisY.MajorGrid.Enabled = false;
-            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea4.AxisY.MajorTickMark.Enabled = false;
-            chartArea4.AxisY.Maximum = 10000D;
-            chartArea4.AxisY.Minimum = -10000D;
-            chartArea4.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea4.Name = "ChartArea1";
-            this.forceChart.ChartAreas.Add(chartArea4);
-            legend4.Enabled = false;
-            legend4.Name = "Legend1";
-            this.forceChart.Legends.Add(legend4);
+            chartArea10.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea10.AxisX.IsLabelAutoFit = false;
+            chartArea10.AxisX.LabelStyle.Enabled = false;
+            chartArea10.AxisX.MajorGrid.Enabled = false;
+            chartArea10.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea10.AxisX.MajorTickMark.Enabled = false;
+            chartArea10.AxisX.Maximum = 10000D;
+            chartArea10.AxisX.Minimum = -10000D;
+            chartArea10.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea10.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea10.AxisY.IsLabelAutoFit = false;
+            chartArea10.AxisY.LabelStyle.Enabled = false;
+            chartArea10.AxisY.MajorGrid.Enabled = false;
+            chartArea10.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea10.AxisY.MajorTickMark.Enabled = false;
+            chartArea10.AxisY.Maximum = 10000D;
+            chartArea10.AxisY.Minimum = -10000D;
+            chartArea10.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea10.Name = "ChartArea1";
+            this.forceChart.ChartAreas.Add(chartArea10);
+            legend10.Enabled = false;
+            legend10.Name = "Legend1";
+            this.forceChart.Legends.Add(legend10);
             this.forceChart.Location = new System.Drawing.Point(432, 27);
             this.forceChart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.forceChart.Name = "forceChart";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series4.IsVisibleInLegend = false;
-            series4.Legend = "Legend1";
-            series4.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series4.Name = "Series1";
-            dataPoint4.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series4.Points.Add(dataPoint4);
-            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.forceChart.Series.Add(series4);
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series10.IsVisibleInLegend = false;
+            series10.Legend = "Legend1";
+            series10.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series10.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series10.Name = "Series1";
+            dataPoint10.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint10.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series10.Points.Add(dataPoint10);
+            series10.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series10.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.forceChart.Series.Add(series10);
             this.forceChart.Size = new System.Drawing.Size(128, 123);
             this.forceChart.TabIndex = 5;
             this.forceChart.Text = "chart1";
@@ -580,7 +582,7 @@ namespace BrunnerDX
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(615, 413);
+            this.tabControl1.Size = new System.Drawing.Size(615, 428);
             this.tabControl1.TabIndex = 7;
             // 
             // profileTab
@@ -598,7 +600,7 @@ namespace BrunnerDX
             this.profileTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.profileTab.Name = "profileTab";
             this.profileTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.profileTab.Size = new System.Drawing.Size(599, 355);
+            this.profileTab.Size = new System.Drawing.Size(599, 381);
             this.profileTab.TabIndex = 1;
             this.profileTab.Text = "Profile";
             // 
@@ -628,7 +630,7 @@ namespace BrunnerDX
             this.connectionTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.connectionTab.Name = "connectionTab";
             this.connectionTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.connectionTab.Size = new System.Drawing.Size(599, 355);
+            this.connectionTab.Size = new System.Drawing.Size(599, 381);
             this.connectionTab.TabIndex = 0;
             this.connectionTab.Text = "Connection";
             // 
@@ -656,9 +658,10 @@ namespace BrunnerDX
             // trimTab
             // 
             this.trimTab.BackColor = System.Drawing.Color.Transparent;
+            this.trimTab.Controls.Add(this.trackBar1);
+            this.trimTab.Controls.Add(this.label5);
             this.trimTab.Controls.Add(this.label4);
             this.trimTab.Controls.Add(this.button1);
-            this.trimTab.Controls.Add(this.checkboxTrim);
             this.trimTab.Controls.Add(this.btnDecTrimZ);
             this.trimTab.Controls.Add(this.btnIncTrimZ);
             this.trimTab.Controls.Add(this.ctnCenterTrimZ);
@@ -676,14 +679,14 @@ namespace BrunnerDX
             this.trimTab.Location = new System.Drawing.Point(8, 39);
             this.trimTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trimTab.Name = "trimTab";
-            this.trimTab.Size = new System.Drawing.Size(599, 366);
+            this.trimTab.Size = new System.Drawing.Size(599, 381);
             this.trimTab.TabIndex = 2;
             this.trimTab.Text = "Trim";
             // 
             // barTrimX
             // 
             this.barTrimX.LargeChange = 1000;
-            this.barTrimX.Location = new System.Drawing.Point(134, 79);
+            this.barTrimX.Location = new System.Drawing.Point(136, 68);
             this.barTrimX.Maximum = 10000;
             this.barTrimX.Minimum = -10000;
             this.barTrimX.Name = "barTrimX";
@@ -695,7 +698,7 @@ namespace BrunnerDX
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 25);
+            this.label2.Location = new System.Drawing.Point(27, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 25);
             this.label2.TabIndex = 1;
@@ -703,7 +706,7 @@ namespace BrunnerDX
             // 
             // ctnCenterTrimX
             // 
-            this.ctnCenterTrimX.Location = new System.Drawing.Point(25, 79);
+            this.ctnCenterTrimX.Location = new System.Drawing.Point(27, 68);
             this.ctnCenterTrimX.Name = "ctnCenterTrimX";
             this.ctnCenterTrimX.Size = new System.Drawing.Size(103, 62);
             this.ctnCenterTrimX.TabIndex = 2;
@@ -712,7 +715,7 @@ namespace BrunnerDX
             // 
             // btnIncTrimX
             // 
-            this.btnIncTrimX.Location = new System.Drawing.Point(496, 79);
+            this.btnIncTrimX.Location = new System.Drawing.Point(498, 68);
             this.btnIncTrimX.Name = "btnIncTrimX";
             this.btnIncTrimX.Size = new System.Drawing.Size(85, 62);
             this.btnIncTrimX.TabIndex = 3;
@@ -721,7 +724,7 @@ namespace BrunnerDX
             // 
             // btnDecTrimX
             // 
-            this.btnDecTrimX.Location = new System.Drawing.Point(405, 79);
+            this.btnDecTrimX.Location = new System.Drawing.Point(407, 68);
             this.btnDecTrimX.Name = "btnDecTrimX";
             this.btnDecTrimX.Size = new System.Drawing.Size(85, 62);
             this.btnDecTrimX.TabIndex = 4;
@@ -731,7 +734,7 @@ namespace BrunnerDX
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(426, 25);
+            this.label3.Location = new System.Drawing.Point(404, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(117, 25);
             this.label3.TabIndex = 5;
@@ -739,7 +742,7 @@ namespace BrunnerDX
             // 
             // btnDecTrimY
             // 
-            this.btnDecTrimY.Location = new System.Drawing.Point(405, 150);
+            this.btnDecTrimY.Location = new System.Drawing.Point(407, 139);
             this.btnDecTrimY.Name = "btnDecTrimY";
             this.btnDecTrimY.Size = new System.Drawing.Size(85, 62);
             this.btnDecTrimY.TabIndex = 9;
@@ -748,7 +751,7 @@ namespace BrunnerDX
             // 
             // btnIncTrimY
             // 
-            this.btnIncTrimY.Location = new System.Drawing.Point(496, 150);
+            this.btnIncTrimY.Location = new System.Drawing.Point(498, 139);
             this.btnIncTrimY.Name = "btnIncTrimY";
             this.btnIncTrimY.Size = new System.Drawing.Size(85, 62);
             this.btnIncTrimY.TabIndex = 8;
@@ -757,7 +760,7 @@ namespace BrunnerDX
             // 
             // ctnCenterTrimY
             // 
-            this.ctnCenterTrimY.Location = new System.Drawing.Point(25, 150);
+            this.ctnCenterTrimY.Location = new System.Drawing.Point(27, 139);
             this.ctnCenterTrimY.Name = "ctnCenterTrimY";
             this.ctnCenterTrimY.Size = new System.Drawing.Size(103, 62);
             this.ctnCenterTrimY.TabIndex = 7;
@@ -767,7 +770,7 @@ namespace BrunnerDX
             // barTrimY
             // 
             this.barTrimY.LargeChange = 1000;
-            this.barTrimY.Location = new System.Drawing.Point(134, 150);
+            this.barTrimY.Location = new System.Drawing.Point(136, 139);
             this.barTrimY.Maximum = 10000;
             this.barTrimY.Minimum = -10000;
             this.barTrimY.Name = "barTrimY";
@@ -778,7 +781,7 @@ namespace BrunnerDX
             // 
             // btnDecTrimZ
             // 
-            this.btnDecTrimZ.Location = new System.Drawing.Point(405, 222);
+            this.btnDecTrimZ.Location = new System.Drawing.Point(407, 211);
             this.btnDecTrimZ.Name = "btnDecTrimZ";
             this.btnDecTrimZ.Size = new System.Drawing.Size(85, 62);
             this.btnDecTrimZ.TabIndex = 13;
@@ -787,7 +790,7 @@ namespace BrunnerDX
             // 
             // btnIncTrimZ
             // 
-            this.btnIncTrimZ.Location = new System.Drawing.Point(496, 222);
+            this.btnIncTrimZ.Location = new System.Drawing.Point(498, 211);
             this.btnIncTrimZ.Name = "btnIncTrimZ";
             this.btnIncTrimZ.Size = new System.Drawing.Size(85, 62);
             this.btnIncTrimZ.TabIndex = 12;
@@ -796,7 +799,7 @@ namespace BrunnerDX
             // 
             // ctnCenterTrimZ
             // 
-            this.ctnCenterTrimZ.Location = new System.Drawing.Point(25, 222);
+            this.ctnCenterTrimZ.Location = new System.Drawing.Point(27, 211);
             this.ctnCenterTrimZ.Name = "ctnCenterTrimZ";
             this.ctnCenterTrimZ.Size = new System.Drawing.Size(103, 62);
             this.ctnCenterTrimZ.TabIndex = 11;
@@ -806,7 +809,7 @@ namespace BrunnerDX
             // barTrimZ
             // 
             this.barTrimZ.LargeChange = 1000;
-            this.barTrimZ.Location = new System.Drawing.Point(134, 222);
+            this.barTrimZ.Location = new System.Drawing.Point(136, 211);
             this.barTrimZ.Maximum = 10000;
             this.barTrimZ.Minimum = -10000;
             this.barTrimZ.Name = "barTrimZ";
@@ -815,19 +818,9 @@ namespace BrunnerDX
             this.barTrimZ.TabIndex = 10;
             this.barTrimZ.TickFrequency = 1000;
             // 
-            // checkboxTrim
-            // 
-            this.checkboxTrim.AutoSize = true;
-            this.checkboxTrim.Location = new System.Drawing.Point(25, 308);
-            this.checkboxTrim.Name = "checkboxTrim";
-            this.checkboxTrim.Size = new System.Drawing.Size(159, 29);
-            this.checkboxTrim.TabIndex = 15;
-            this.checkboxTrim.Text = "Enable Trim";
-            this.checkboxTrim.UseVisualStyleBackColor = true;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(496, 290);
+            this.button1.Location = new System.Drawing.Point(498, 279);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 62);
             this.button1.TabIndex = 16;
@@ -837,17 +830,36 @@ namespace BrunnerDX
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(346, 309);
+            this.label4.Location = new System.Drawing.Point(348, 298);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(144, 25);
             this.label4.TabIndex = 17;
             this.label4.Text = "Button Center";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(27, 298);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(141, 25);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Trim Strength";
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.LargeChange = 10;
+            this.trackBar1.Location = new System.Drawing.Point(168, 279);
+            this.trackBar1.Maximum = 150;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(174, 90);
+            this.trackBar1.TabIndex = 19;
+            this.trackBar1.TickFrequency = 10;
+            // 
             // BrunnerDXGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1448, 856);
+            this.ClientSize = new System.Drawing.Size(1448, 870);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBoxConnect);
             this.Controls.Add(this.groupBoxLogging);
@@ -878,6 +890,7 @@ namespace BrunnerDX
             ((System.ComponentModel.ISupportInitialize)(this.barTrimX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTrimY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barTrimZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -940,9 +953,10 @@ namespace BrunnerDX
         private System.Windows.Forms.Button ctnCenterTrimX;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar barTrimX;
-        private System.Windows.Forms.CheckBox checkboxTrim;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label5;
     }
 }
 
