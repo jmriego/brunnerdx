@@ -125,6 +125,8 @@ namespace BrunnerDX
 
             forceMultiplier = this.forceSlider.Value;
             brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
+            brunnerDX.trimStrength = this.barTrimStrength.Value;
+
             this.cls2SimPath = this.TextCLS2SimPath.Text;
 
             if (startWriteCountdown)
@@ -268,6 +270,11 @@ namespace BrunnerDX
         private void forceSlider_Scroll(object sender, EventArgs e)
         {
             this.forceValue.Text = this.forceSlider.Value.ToString();
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
+        }
+
+        private void barTrimStrength_Scroll(object sender, EventArgs e)
+        {
             if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 

@@ -30,6 +30,12 @@ namespace BrunnerDX
         public double forceMultiplier = 0.3;
         public int delaySeconds;
 
+        // Trim variables
+        public int trimStrength;
+        public int[] trimPosition;
+        public int[] trimForces;
+
+        // Position variables
         private int[] _position;
         private Queue<int[]> positionHistory = new Queue<int[]>();
         private int[] _force;
@@ -53,6 +59,8 @@ namespace BrunnerDX
         public void Reset()
         {
             _position = new int[2] { 0, 0 };
+            trimPosition = new int[3] { 0, 0, 0 };
+            trimForces = new int[3] { 0, 0, 0 };
             _force = new int[2] { 0, 0 };
             positionHistory.Enqueue(_position);
         }
@@ -137,10 +145,33 @@ namespace BrunnerDX
             return sock.WaitForResponse(timeout);
         }
 
+        private int calculateSpring(int pos, int trimPos)
+        {
+            float normalizedPos = ((float)pos / (float)32767);
+            float normalizedTrimPos = ((float)trimPos / (float)32767);
+
+            float force = normalizedTrimPos - normalizedPos;
+
+            return (int)(force * trimStrength);
+        }
+
+        public static int Clamp(int value, int min, int max)
+        {
+            return (value < min) ? min : (value > max) ? max : value;
+        }
+
         private void UpdatePosition(PositionMessage positionMessage)
         {
             int x = BrunnerPosition2Arduino(positionMessage.aileron);
             int y = BrunnerPosition2Arduino(positionMessage.elevator);
+            int z = BrunnerPosition2Arduino(positionMessage.rudder);
+
+            // calculate trim
+            trimForces[0] = calculateSpring(x, trimPosition[0]);
+            trimForces[1] = calculateSpring(y, trimPosition[1]);
+            trimForces[2] = calculateSpring(z, trimPosition[2]);
+
+            // positions
             if (x != _position[0])
             {
                 _position[0] = x;
@@ -182,7 +213,10 @@ namespace BrunnerDX
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
-                            ArduinoForce2Brunner(force[1]), ArduinoForce2Brunner(force[0]));
+                            ArduinoForce2Brunner(Clamp(force[1]+trimForces[1], -10000, 10000)),
+                            ArduinoForce2Brunner(Clamp(force[0]+trimForces[0], -10000, 10000)),
+                            ArduinoForce2Brunner(Clamp(trimForces[2], -10000, 10000))
+                            );
                         if (delaySeconds > 0)
                         {
                             forceMessage.aileron = 0;
