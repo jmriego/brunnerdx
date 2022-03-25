@@ -46,7 +46,7 @@ jobs:
           & cd $Env:FIX_DEVENV_DIR ;
           & Get-ChildItem -Recurse | Where-Object { $_.Attributes -ne "Directory"};
       env:
-        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\
+        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\2022
 
     - name: Build Installer
       run: >
