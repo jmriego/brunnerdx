@@ -47,7 +47,7 @@ jobs:
           & Get-ChildItem -Path . -Recurse;
           & ./DisableOutOfProcBuild.exe ;
       env:
-        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
+        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\
 
     - name: Build Installer
       run: >
