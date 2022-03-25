@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v2
@@ -44,10 +44,9 @@ jobs:
     - name: Config devenv
       run: >
           & cd $Env:FIX_DEVENV_DIR ;
-          & Get-ChildItem -Recurse | Where-Object { $_.Attributes -ne "Directory"};
-          & gci -recurse -filter "devenv.com";
+          & ./DisableOutOfProcBuild.exe ;
       env:
-        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\2022
+        FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild
 
     - name: Build Installer
       run: >
