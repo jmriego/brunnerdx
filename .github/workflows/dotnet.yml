@@ -44,7 +44,7 @@ jobs:
     - name: Config devenv
       run: >
           & cd $Env:FIX_DEVENV_DIR ;
-          & Get-ChildItem -Path . -Recurse;
+          & gci -recurse -filter "DisableOutOfProcBuild.exe";
           & ./DisableOutOfProcBuild.exe ;
       env:
         FIX_DEVENV_DIR: C:\Program Files (x86)\Microsoft Visual Studio\
