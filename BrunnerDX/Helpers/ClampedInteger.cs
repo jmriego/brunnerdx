@@ -52,8 +52,9 @@ namespace BrunnerDX.Helpers
             set
             {
                 // we can also convert from a ratio to the right value
-                double oldRange = this.max - this.min;
-                this.value = (int)(this.min + (oldRange * value));
+                int oldRange = this.max - this.min;
+                int center = this.min + (oldRange / 2);
+                this.value = center + (int)(oldRange * (value / 2.0));
             }
         }
 
@@ -80,7 +81,7 @@ namespace BrunnerDX.Helpers
     {
         public PositionValue(): base()
         {
-            this.min = -32768;
+            this.min = -32767;
             this.max = 32767;
         }
 
