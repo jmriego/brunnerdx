@@ -34,7 +34,8 @@ namespace BrunnerDX
 
         // Trim variables
         public PositionValue[] trimPosition;
-        public ForceValue trimStrength;
+        public double trimForceMultiplierXY;
+        public double trimForceMultiplierZ;
         public ForceValue[] trimForces;
 
         // Position variables
@@ -161,8 +162,7 @@ namespace BrunnerDX
 
             ForceValue force = new ForceValue();
             force.ratio = normalizedTrimPos - normalizedPos;
-
-            return (int)(force * this.trimStrength);
+            return force;
         }
 
         private void UpdatePosition(PositionMessage positionMessage)
@@ -172,9 +172,9 @@ namespace BrunnerDX
             PositionValue z = BrunnerPosition2Arduino(positionMessage.rudder);
 
             // calculate trim
-            trimForces[0] = calculateSpring(x, trimPosition[0]);
-            trimForces[1] = calculateSpring(y, trimPosition[1]);
-            trimForces[2] = calculateSpring(z, trimPosition[2]);
+            trimForces[0] = calculateSpring(x, trimPosition[0]) * this.trimForceMultiplierXY;
+            trimForces[1] = calculateSpring(y, trimPosition[1]) * this.trimForceMultiplierXY;
+            trimForces[2] = calculateSpring(z, trimPosition[2]) * this.trimForceMultiplierZ;
 
             // positions
             if (x != _position[0])

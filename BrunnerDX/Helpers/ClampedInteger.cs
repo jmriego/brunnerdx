@@ -22,6 +22,13 @@ namespace BrunnerDX.Helpers
             this.max = max;
         }
 
+        public ClampedInteger(int min, int max, int value)
+        {
+            this.min = min;
+            this.max = max;
+            this.value = value;
+        }
+
         public int value {
             get
             {
@@ -53,6 +60,20 @@ namespace BrunnerDX.Helpers
         public static implicit operator int(ClampedInteger i) {
             return i._value;
         }
+
+        public static ClampedInteger operator +(ClampedInteger a, ClampedInteger b)
+        {
+            ClampedInteger x = new ClampedInteger(a.min, a.max);
+            x.value = a.value + b.value;
+            return x;
+        }
+
+        public static ClampedInteger operator *(ClampedInteger a, double d)
+        {
+            ClampedInteger x = new ClampedInteger(a.min, a.max);
+            x.value = (int)((double)a.value * d);
+            return x;
+        }
     }
 
     public class PositionValue: ClampedInteger
@@ -82,6 +103,16 @@ namespace BrunnerDX.Helpers
             ForceValue result = new ForceValue();
             result.value = value;
             return result;
+        }
+        public static ForceValue operator +(ForceValue a, ForceValue b)
+        {
+            ClampedInteger x = (ClampedInteger)a + (ClampedInteger)b;
+            return (ForceValue)x.value;
+        }
+        public static ForceValue operator *(ForceValue a, double d)
+        {
+            ClampedInteger x = (ClampedInteger)a * d;
+            return (ForceValue)x.value;
         }
     }
 
