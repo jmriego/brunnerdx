@@ -97,12 +97,28 @@ namespace BrunnerDX
                 this.forceSlider.Value = (int)Properties.Settings.Default.Force;
             }
             catch (Exception ex) { }
+            try
+            {
+                this.barTrimStrengthXY.Value = (int)Properties.Settings.Default.TrimStrengthXY;
+            }
+            catch (Exception ex) { }
+            try
+            {
+                this.barTrimStrengthZ.Value = (int)Properties.Settings.Default.TrimStrengthZ;
+            }
+            catch (Exception ex) { }
 
             this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
             this.AutoCLSOpenCheckBox.Checked = Properties.Settings.Default.AutoOpenCLS2Sim;
             this.TextCLS2SimPath.Text = Properties.Settings.Default.AutoOpenCLS2SimPath;
             ConfirmOptions();
             isStarting = false;
+
+            btnDecTrimX.Text = Properties.Settings.Default.DecTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimX.ToString();
+            btnIncTrimX.Text = Properties.Settings.Default.IncTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimX.ToString();
+            btnDecTrimY.Text = Properties.Settings.Default.DecTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimY.ToString();
+            btnIncTrimY.Text = Properties.Settings.Default.IncTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimY.ToString();
+            btnCenterTrim.Text = Properties.Settings.Default.CenterTrim.ToString() == "-1" ? "?" : Properties.Settings.Default.CenterTrim.ToString();
         }
 
         private void WriteOptions()
@@ -115,7 +131,28 @@ namespace BrunnerDX
             Properties.Settings.Default.ComPort = arduinoPortName;
             Properties.Settings.Default.AutoOpenCLS2Sim = this.AutoCLSOpenCheckBox.Checked;
             Properties.Settings.Default.AutoOpenCLS2SimPath = this.TextCLS2SimPath.Text;
+            // button mapping options
+            Properties.Settings.Default.DecTrimX = parseTextToInt(btnDecTrimX.Text, -1);
+            Properties.Settings.Default.IncTrimX = parseTextToInt(btnIncTrimX.Text, -1);
+            Properties.Settings.Default.DecTrimY = parseTextToInt(btnDecTrimY.Text, -1);
+            Properties.Settings.Default.IncTrimY = parseTextToInt(btnIncTrimY.Text, -1);
+            Properties.Settings.Default.CenterTrim = parseTextToInt(btnCenterTrim.Text, -1);
+
+            // trimming strength options
+            Properties.Settings.Default.TrimStrengthXY = this.barTrimStrengthXY.Value;
+            Properties.Settings.Default.TrimStrengthZ = this.barTrimStrengthZ.Value;
             Properties.Settings.Default.Save();
+        }
+
+        private int parseTextToInt(string s, int defaultValue)
+        {
+            try
+            {
+                return int.Parse(s);
+            } catch (FormatException)
+            {
+                return defaultValue;
+            }
         }
 
         private void ConfirmOptions(bool startWriteCountdown=false)
@@ -133,6 +170,14 @@ namespace BrunnerDX
             brunnerDX.trimForceMultiplierXY = (double)this.barTrimStrengthXY.Value / (double)this.barTrimStrengthXY.Maximum;
             brunnerDX.trimForceMultiplierZ = (double)this.barTrimStrengthZ.Value / (double)this.barTrimStrengthZ.Maximum;
 
+            // button mapping options
+            brunnerDX.mapping["DecTrimX"] = parseTextToInt(btnDecTrimX.Text, -1);
+            brunnerDX.mapping["IncTrimX"] = parseTextToInt(btnIncTrimX.Text, -1);
+            brunnerDX.mapping["DecTrimY"] = parseTextToInt(btnDecTrimY.Text, -1);
+            brunnerDX.mapping["IncTrimY"] = parseTextToInt(btnIncTrimY.Text, -1);
+            brunnerDX.mapping["CenterTrim"] = parseTextToInt(btnCenterTrim.Text, -1);
+
+            // location of CLS2Sim program
             this.cls2SimPath = this.TextCLS2SimPath.Text;
 
             if (startWriteCountdown)
@@ -396,10 +441,10 @@ namespace BrunnerDX
             if (this.waitingForMappingState == "CANCEL")
             {
                 logger.Info($"Cancelling mapping for {bindingName}");
-                this.brunnerDX.mapping[bindingName] = -1;
                 this.waitingForMappingButton.Text = "?";
                 this.waitingForMappingState = "";
                 this.waitingForMappingButton = null;
+                ConfirmOptions(startWriteCountdown: true);
             }
             else if (this.prevButtonsPressed != null)
             {
@@ -408,10 +453,10 @@ namespace BrunnerDX
                     if (!this.prevButtonsPressed[i] && this.brunnerDX.buttons[i])
                     {
                         logger.Info($"Remapped {bindingName} to button {i}");
-                        this.brunnerDX.mapping[bindingName] = i;
                         this.waitingForMappingButton.Text = i.ToString();
                         this.waitingForMappingState = "";
                         this.waitingForMappingButton = null;
+                        ConfirmOptions(startWriteCountdown: true);
                     }
                 }
             }

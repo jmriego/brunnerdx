@@ -118,5 +118,89 @@ namespace BrunnerDX.Properties {
                 this["AutoOpenCLS2SimPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int DecTrimX {
+            get {
+                return ((int)(this["DecTrimX"]));
+            }
+            set {
+                this["DecTrimX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int IncTrimX {
+            get {
+                return ((int)(this["IncTrimX"]));
+            }
+            set {
+                this["IncTrimX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int DecTrimY {
+            get {
+                return ((int)(this["DecTrimY"]));
+            }
+            set {
+                this["DecTrimY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int IncTrimY {
+            get {
+                return ((int)(this["IncTrimY"]));
+            }
+            set {
+                this["IncTrimY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int CenterTrim {
+            get {
+                return ((int)(this["CenterTrim"]));
+            }
+            set {
+                this["CenterTrim"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int TrimStrengthXY {
+            get {
+                return ((int)(this["TrimStrengthXY"]));
+            }
+            set {
+                this["TrimStrengthXY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int TrimStrengthZ {
+            get {
+                return ((int)(this["TrimStrengthZ"]));
+            }
+            set {
+                this["TrimStrengthZ"] = value;
+            }
+        }
     }
 }
