@@ -73,6 +73,10 @@ namespace BrunnerDX
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.checkDefaultSpring = new System.Windows.Forms.CheckBox();
             this.AutoCLSOpenCheckBox = new System.Windows.Forms.CheckBox();
+            this.btnDecTrimY = new System.Windows.Forms.Button();
+            this.btnIncTrimY = new System.Windows.Forms.Button();
+            this.btnDecTrimX = new System.Windows.Forms.Button();
+            this.btnIncTrimX = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.profileTab = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
@@ -80,24 +84,11 @@ namespace BrunnerDX
             this.TextCLS2SimPath = new System.Windows.Forms.Label();
             this.labelAutoCLSOpen = new System.Windows.Forms.Label();
             this.trimTab = new System.Windows.Forms.TabPage();
-            this.barTrimStrength = new System.Windows.Forms.TrackBar();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnDecTrimZ = new System.Windows.Forms.Button();
-            this.btnIncTrimZ = new System.Windows.Forms.Button();
-            this.ctnCenterTrimZ = new System.Windows.Forms.Button();
-            this.barTrimZ = new System.Windows.Forms.TrackBar();
-            this.btnDecTrimY = new System.Windows.Forms.Button();
-            this.btnIncTrimY = new System.Windows.Forms.Button();
-            this.ctnCenterTrimY = new System.Windows.Forms.Button();
-            this.barTrimY = new System.Windows.Forms.TrackBar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnDecTrimX = new System.Windows.Forms.Button();
-            this.btnIncTrimX = new System.Windows.Forms.Button();
-            this.ctnCenterTrimX = new System.Windows.Forms.Button();
+            this.barTrimStrengthZ = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
-            this.barTrimX = new System.Windows.Forms.TrackBar();
+            this.barTrimStrengthXY = new System.Windows.Forms.TrackBar();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBoxFirmware.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.delaySlider)).BeginInit();
@@ -111,10 +102,8 @@ namespace BrunnerDX
             this.profileTab.SuspendLayout();
             this.connectionTab.SuspendLayout();
             this.trimTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrength)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrengthZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrengthXY)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxFirmware
@@ -407,7 +396,7 @@ namespace BrunnerDX
             legend1.Name = "Legend1";
             this.positionChart.Legends.Add(legend1);
             this.positionChart.Location = new System.Drawing.Point(403, 17);
-            this.positionChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.positionChart.Margin = new System.Windows.Forms.Padding(4);
             this.positionChart.Name = "positionChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
@@ -463,7 +452,7 @@ namespace BrunnerDX
             legend2.Name = "Legend1";
             this.forceChart.Legends.Add(legend2);
             this.forceChart.Location = new System.Drawing.Point(288, 17);
-            this.forceChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.forceChart.Margin = new System.Windows.Forms.Padding(4);
             this.forceChart.Name = "forceChart";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
@@ -561,6 +550,50 @@ namespace BrunnerDX
             this.AutoCLSOpenCheckBox.UseVisualStyleBackColor = true;
             this.AutoCLSOpenCheckBox.CheckedChanged += new System.EventHandler(this.AutoCLSOpenCheckBox_CheckedChanged);
             // 
+            // btnDecTrimY
+            // 
+            this.btnDecTrimY.Location = new System.Drawing.Point(199, 60);
+            this.btnDecTrimY.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDecTrimY.Name = "btnDecTrimY";
+            this.btnDecTrimY.Size = new System.Drawing.Size(57, 40);
+            this.btnDecTrimY.TabIndex = 9;
+            this.btnDecTrimY.Text = "?";
+            this.toolTip.SetToolTip(this.btnDecTrimY, "Map button to trim nose up");
+            this.btnDecTrimY.UseVisualStyleBackColor = true;
+            // 
+            // btnIncTrimY
+            // 
+            this.btnIncTrimY.Location = new System.Drawing.Point(199, 19);
+            this.btnIncTrimY.Margin = new System.Windows.Forms.Padding(2);
+            this.btnIncTrimY.Name = "btnIncTrimY";
+            this.btnIncTrimY.Size = new System.Drawing.Size(57, 40);
+            this.btnIncTrimY.TabIndex = 8;
+            this.btnIncTrimY.Text = "?";
+            this.toolTip.SetToolTip(this.btnIncTrimY, "Map button to trim nose down");
+            this.btnIncTrimY.UseVisualStyleBackColor = true;
+            // 
+            // btnDecTrimX
+            // 
+            this.btnDecTrimX.Location = new System.Drawing.Point(138, 35);
+            this.btnDecTrimX.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDecTrimX.Name = "btnDecTrimX";
+            this.btnDecTrimX.Size = new System.Drawing.Size(57, 40);
+            this.btnDecTrimX.TabIndex = 4;
+            this.btnDecTrimX.Text = "?";
+            this.toolTip.SetToolTip(this.btnDecTrimX, "Map button to trim roll left");
+            this.btnDecTrimX.UseVisualStyleBackColor = true;
+            // 
+            // btnIncTrimX
+            // 
+            this.btnIncTrimX.Location = new System.Drawing.Point(260, 35);
+            this.btnIncTrimX.Margin = new System.Windows.Forms.Padding(2);
+            this.btnIncTrimX.Name = "btnIncTrimX";
+            this.btnIncTrimX.Size = new System.Drawing.Size(57, 40);
+            this.btnIncTrimX.TabIndex = 3;
+            this.btnIncTrimX.Text = "?";
+            this.toolTip.SetToolTip(this.btnIncTrimX, "Map button to trim roll left");
+            this.btnIncTrimX.UseVisualStyleBackColor = true;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.profileTab);
@@ -585,7 +618,7 @@ namespace BrunnerDX
             this.profileTab.Controls.Add(this.delayLabel);
             this.profileTab.Location = new System.Drawing.Point(4, 25);
             this.profileTab.Name = "profileTab";
-            this.profileTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.profileTab.Padding = new System.Windows.Forms.Padding(3);
             this.profileTab.Size = new System.Drawing.Size(402, 245);
             this.profileTab.TabIndex = 1;
             this.profileTab.Text = "Profile";
@@ -613,7 +646,7 @@ namespace BrunnerDX
             this.connectionTab.Controls.Add(this.autoConnectLabel);
             this.connectionTab.Location = new System.Drawing.Point(4, 25);
             this.connectionTab.Name = "connectionTab";
-            this.connectionTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.connectionTab.Padding = new System.Windows.Forms.Padding(3);
             this.connectionTab.Size = new System.Drawing.Size(402, 245);
             this.connectionTab.TabIndex = 0;
             this.connectionTab.Text = "Connection";
@@ -640,221 +673,76 @@ namespace BrunnerDX
             // trimTab
             // 
             this.trimTab.BackColor = System.Drawing.Color.Transparent;
-            this.trimTab.Controls.Add(this.barTrimStrength);
+            this.trimTab.Controls.Add(this.barTrimStrengthZ);
+            this.trimTab.Controls.Add(this.label2);
+            this.trimTab.Controls.Add(this.barTrimStrengthXY);
             this.trimTab.Controls.Add(this.label5);
-            this.trimTab.Controls.Add(this.label4);
-            this.trimTab.Controls.Add(this.button1);
-            this.trimTab.Controls.Add(this.btnDecTrimZ);
-            this.trimTab.Controls.Add(this.btnIncTrimZ);
-            this.trimTab.Controls.Add(this.ctnCenterTrimZ);
-            this.trimTab.Controls.Add(this.barTrimZ);
             this.trimTab.Controls.Add(this.btnDecTrimY);
             this.trimTab.Controls.Add(this.btnIncTrimY);
-            this.trimTab.Controls.Add(this.ctnCenterTrimY);
-            this.trimTab.Controls.Add(this.barTrimY);
             this.trimTab.Controls.Add(this.label3);
             this.trimTab.Controls.Add(this.btnDecTrimX);
             this.trimTab.Controls.Add(this.btnIncTrimX);
-            this.trimTab.Controls.Add(this.ctnCenterTrimX);
-            this.trimTab.Controls.Add(this.label2);
-            this.trimTab.Controls.Add(this.barTrimX);
             this.trimTab.Location = new System.Drawing.Point(4, 25);
             this.trimTab.Name = "trimTab";
             this.trimTab.Size = new System.Drawing.Size(402, 245);
             this.trimTab.TabIndex = 2;
             this.trimTab.Text = "Trim";
             // 
-            // barTrimStrength
+            // barTrimStrengthZ
             // 
-            this.barTrimStrength.LargeChange = 1000;
-            this.barTrimStrength.Location = new System.Drawing.Point(112, 179);
-            this.barTrimStrength.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barTrimStrength.Maximum = 10000;
-            this.barTrimStrength.Name = "barTrimStrength";
-            this.barTrimStrength.Size = new System.Drawing.Size(116, 56);
-            this.barTrimStrength.SmallChange = 500;
-            this.barTrimStrength.TabIndex = 19;
-            this.barTrimStrength.TickFrequency = 1000;
-            this.barTrimStrength.Scroll += new System.EventHandler(this.barTrimStrength_Scroll);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(18, 191);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 17);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Trim Strength";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(232, 191);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 17);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Button Center";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(332, 179);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(57, 40);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "?";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // btnDecTrimZ
-            // 
-            this.btnDecTrimZ.Location = new System.Drawing.Point(271, 135);
-            this.btnDecTrimZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnDecTrimZ.Name = "btnDecTrimZ";
-            this.btnDecTrimZ.Size = new System.Drawing.Size(57, 40);
-            this.btnDecTrimZ.TabIndex = 13;
-            this.btnDecTrimZ.Text = "?";
-            this.btnDecTrimZ.UseVisualStyleBackColor = true;
-            // 
-            // btnIncTrimZ
-            // 
-            this.btnIncTrimZ.Location = new System.Drawing.Point(332, 135);
-            this.btnIncTrimZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnIncTrimZ.Name = "btnIncTrimZ";
-            this.btnIncTrimZ.Size = new System.Drawing.Size(57, 40);
-            this.btnIncTrimZ.TabIndex = 12;
-            this.btnIncTrimZ.Text = "?";
-            this.btnIncTrimZ.UseVisualStyleBackColor = true;
-            // 
-            // ctnCenterTrimZ
-            // 
-            this.ctnCenterTrimZ.Location = new System.Drawing.Point(18, 135);
-            this.ctnCenterTrimZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ctnCenterTrimZ.Name = "ctnCenterTrimZ";
-            this.ctnCenterTrimZ.Size = new System.Drawing.Size(69, 40);
-            this.ctnCenterTrimZ.TabIndex = 11;
-            this.ctnCenterTrimZ.Text = "Yaw";
-            this.ctnCenterTrimZ.UseVisualStyleBackColor = true;
-            // 
-            // barTrimZ
-            // 
-            this.barTrimZ.LargeChange = 1024;
-            this.barTrimZ.Location = new System.Drawing.Point(91, 135);
-            this.barTrimZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barTrimZ.Maximum = 32767;
-            this.barTrimZ.Minimum = -32768;
-            this.barTrimZ.Name = "barTrimZ";
-            this.barTrimZ.Size = new System.Drawing.Size(177, 56);
-            this.barTrimZ.SmallChange = 256;
-            this.barTrimZ.TabIndex = 10;
-            this.barTrimZ.TickFrequency = 4096;
-            // 
-            // btnDecTrimY
-            // 
-            this.btnDecTrimY.Location = new System.Drawing.Point(271, 89);
-            this.btnDecTrimY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnDecTrimY.Name = "btnDecTrimY";
-            this.btnDecTrimY.Size = new System.Drawing.Size(57, 40);
-            this.btnDecTrimY.TabIndex = 9;
-            this.btnDecTrimY.Text = "?";
-            this.btnDecTrimY.UseVisualStyleBackColor = true;
-            // 
-            // btnIncTrimY
-            // 
-            this.btnIncTrimY.Location = new System.Drawing.Point(332, 89);
-            this.btnIncTrimY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnIncTrimY.Name = "btnIncTrimY";
-            this.btnIncTrimY.Size = new System.Drawing.Size(57, 40);
-            this.btnIncTrimY.TabIndex = 8;
-            this.btnIncTrimY.Text = "?";
-            this.btnIncTrimY.UseVisualStyleBackColor = true;
-            // 
-            // ctnCenterTrimY
-            // 
-            this.ctnCenterTrimY.Location = new System.Drawing.Point(18, 89);
-            this.ctnCenterTrimY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ctnCenterTrimY.Name = "ctnCenterTrimY";
-            this.ctnCenterTrimY.Size = new System.Drawing.Size(69, 40);
-            this.ctnCenterTrimY.TabIndex = 7;
-            this.ctnCenterTrimY.Text = "Pitch";
-            this.ctnCenterTrimY.UseVisualStyleBackColor = true;
-            // 
-            // barTrimY
-            // 
-            this.barTrimY.LargeChange = 1024;
-            this.barTrimY.Location = new System.Drawing.Point(91, 89);
-            this.barTrimY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barTrimY.Maximum = 32767;
-            this.barTrimY.Minimum = -32768;
-            this.barTrimY.Name = "barTrimY";
-            this.barTrimY.Size = new System.Drawing.Size(177, 56);
-            this.barTrimY.SmallChange = 256;
-            this.barTrimY.TabIndex = 6;
-            this.barTrimY.TickFrequency = 4096;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(269, 16);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 17);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Button - / +\r\n";
-            // 
-            // btnDecTrimX
-            // 
-            this.btnDecTrimX.Location = new System.Drawing.Point(271, 44);
-            this.btnDecTrimX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnDecTrimX.Name = "btnDecTrimX";
-            this.btnDecTrimX.Size = new System.Drawing.Size(57, 40);
-            this.btnDecTrimX.TabIndex = 4;
-            this.btnDecTrimX.Text = "?";
-            this.btnDecTrimX.UseVisualStyleBackColor = true;
-            // 
-            // btnIncTrimX
-            // 
-            this.btnIncTrimX.Location = new System.Drawing.Point(332, 44);
-            this.btnIncTrimX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnIncTrimX.Name = "btnIncTrimX";
-            this.btnIncTrimX.Size = new System.Drawing.Size(57, 40);
-            this.btnIncTrimX.TabIndex = 3;
-            this.btnIncTrimX.Text = "?";
-            this.btnIncTrimX.UseVisualStyleBackColor = true;
-            // 
-            // ctnCenterTrimX
-            // 
-            this.ctnCenterTrimX.Location = new System.Drawing.Point(18, 44);
-            this.ctnCenterTrimX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ctnCenterTrimX.Name = "ctnCenterTrimX";
-            this.ctnCenterTrimX.Size = new System.Drawing.Size(69, 40);
-            this.ctnCenterTrimX.TabIndex = 2;
-            this.ctnCenterTrimX.Text = "Roll";
-            this.ctnCenterTrimX.UseVisualStyleBackColor = true;
+            this.barTrimStrengthZ.LargeChange = 1000;
+            this.barTrimStrengthZ.Location = new System.Drawing.Point(138, 187);
+            this.barTrimStrengthZ.Margin = new System.Windows.Forms.Padding(2);
+            this.barTrimStrengthZ.Maximum = 10000;
+            this.barTrimStrengthZ.Name = "barTrimStrengthZ";
+            this.barTrimStrengthZ.Size = new System.Drawing.Size(248, 56);
+            this.barTrimStrengthZ.SmallChange = 500;
+            this.barTrimStrengthZ.TabIndex = 21;
+            this.barTrimStrengthZ.TickFrequency = 1000;
+            this.barTrimStrengthZ.Scroll += new System.EventHandler(this.barTrimStrengthZ_Scroll);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 16);
+            this.label2.Location = new System.Drawing.Point(9, 204);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 17);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Center";
+            this.label2.Size = new System.Drawing.Size(113, 17);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Rudder Strength";
             // 
-            // barTrimX
+            // barTrimStrengthXY
             // 
-            this.barTrimX.LargeChange = 1024;
-            this.barTrimX.Location = new System.Drawing.Point(91, 44);
-            this.barTrimX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barTrimX.Maximum = 32767;
-            this.barTrimX.Minimum = -32768;
-            this.barTrimX.Name = "barTrimX";
-            this.barTrimX.Size = new System.Drawing.Size(177, 56);
-            this.barTrimX.SmallChange = 256;
-            this.barTrimX.TabIndex = 0;
-            this.barTrimX.TickFrequency = 4096;
+            this.barTrimStrengthXY.LargeChange = 1000;
+            this.barTrimStrengthXY.Location = new System.Drawing.Point(138, 129);
+            this.barTrimStrengthXY.Margin = new System.Windows.Forms.Padding(2);
+            this.barTrimStrengthXY.Maximum = 10000;
+            this.barTrimStrengthXY.Name = "barTrimStrengthXY";
+            this.barTrimStrengthXY.Size = new System.Drawing.Size(248, 56);
+            this.barTrimStrengthXY.SmallChange = 500;
+            this.barTrimStrengthXY.TabIndex = 19;
+            this.barTrimStrengthXY.TickFrequency = 1000;
+            this.barTrimStrengthXY.Scroll += new System.EventHandler(this.barTrimStrengthXY_Scroll);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 138);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(125, 17);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Roll/Pitch Strength";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 47);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(107, 17);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Button Mapping";
             // 
             // BrunnerDXGui
             // 
@@ -888,10 +776,8 @@ namespace BrunnerDX
             this.connectionTab.PerformLayout();
             this.trimTab.ResumeLayout(false);
             this.trimTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrength)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barTrimX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrengthZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barTrimStrengthXY)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -940,24 +826,15 @@ namespace BrunnerDX
         private System.Windows.Forms.CheckBox AutoCLSOpenCheckBox;
         private System.Windows.Forms.Label TextCLS2SimPath;
         private System.Windows.Forms.TabPage trimTab;
-        private System.Windows.Forms.Button btnDecTrimZ;
-        private System.Windows.Forms.Button btnIncTrimZ;
-        private System.Windows.Forms.Button ctnCenterTrimZ;
-        private System.Windows.Forms.TrackBar barTrimZ;
         private System.Windows.Forms.Button btnDecTrimY;
         private System.Windows.Forms.Button btnIncTrimY;
-        private System.Windows.Forms.Button ctnCenterTrimY;
-        private System.Windows.Forms.TrackBar barTrimY;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnDecTrimX;
         private System.Windows.Forms.Button btnIncTrimX;
-        private System.Windows.Forms.Button ctnCenterTrimX;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar barTrimX;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TrackBar barTrimStrength;
+        private System.Windows.Forms.TrackBar barTrimStrengthXY;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar barTrimStrengthZ;
+        private System.Windows.Forms.Label label2;
     }
 }
 

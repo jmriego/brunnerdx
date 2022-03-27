@@ -125,7 +125,8 @@ namespace BrunnerDX
 
             forceMultiplier = this.forceSlider.Value;
             brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
-            brunnerDX.trimStrength = this.barTrimStrength.Value;
+            brunnerDX.trimForceMultiplierXY = (double)this.barTrimStrengthXY.Value / (double)this.barTrimStrengthXY.Maximum;
+            brunnerDX.trimForceMultiplierZ = (double)this.barTrimStrengthZ.Value / (double)this.barTrimStrengthZ.Maximum;
 
             this.cls2SimPath = this.TextCLS2SimPath.Text;
 
@@ -273,7 +274,12 @@ namespace BrunnerDX
             if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
-        private void barTrimStrength_Scroll(object sender, EventArgs e)
+        private void barTrimStrengthXY_Scroll(object sender, EventArgs e)
+        {
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
+        }
+
+        private void barTrimStrengthZ_Scroll(object sender, EventArgs e)
         {
             if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
