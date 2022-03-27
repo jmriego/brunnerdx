@@ -45,11 +45,16 @@ namespace BrunnerDX
         int cls2SimPort;
         double forceMultiplier;
 
+        // button mapping variables
+        private string waitingForMappingState = "";
+        private Button waitingForMappingButton = null;
+
         private bool isStarting = false;
         long writeOptionsCountdownTicks = -1;
         long connectCountdownTicks = -1;
 
         BrunnerDX brunnerDX = new BrunnerDX();
+        private bool[] prevButtonsPressed;
 
         private object lockObject = new object();
 
@@ -385,6 +390,33 @@ namespace BrunnerDX
             }
         }
 
+        private void RemapBrunnerDXButton()
+        {
+            string buttonName = this.waitingForMappingButton.Name.Replace("btn", "");
+            string bindingName = char.ToUpper(buttonName[0]) + buttonName.Substring(1);
+            if (this.waitingForMappingState == "CANCEL")
+            {
+                logger.Info($"Cancelling mapping for {bindingName}");
+                this.brunnerDX.mapping[bindingName] = -1;
+                this.waitingForMappingButton.Text = "?";
+                this.waitingForMappingState = "";
+            }
+            else
+            {
+                for (int i = 0; i < this.brunnerDX.buttons.Length; i++)
+                {
+                    if (!this.prevButtonsPressed[i] && this.brunnerDX.buttons[i])
+                    {
+                        logger.Info($"Remapped {bindingName} to button {i}");
+                        this.brunnerDX.mapping[bindingName] = i;
+                        this.waitingForMappingButton.Text = i.ToString();
+                        this.waitingForMappingState = "";
+                    }
+                }
+            }
+
+        }
+
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             if (Monitor.TryEnter(lockObject))
@@ -399,6 +431,8 @@ namespace BrunnerDX
                     this.arduinoStatus.BackColor = Color.Green;
                     this.forceChart.Series[0].Points.AddXY(brunnerDX.force[0], (double)-brunnerDX.force[1]);
                     this.connectButton.Text = "Disconnect";
+                    if (this.waitingForMappingState != "") RemapBrunnerDXButton();
+                    this.prevButtonsPressed = brunnerDX.buttons;
                 }
                 else
                 {
@@ -455,6 +489,21 @@ namespace BrunnerDX
         private void consoleLog_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
+        }
+
+        private void btnTrimMapping_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == this.waitingForMappingButton)
+            {
+                this.waitingForMappingState = "CANCEL";
+            }
+            else
+            {
+                this.waitingForMappingState = "WAITING";
+                logger.Info($"Waiting for button press...");
+            }
+            this.waitingForMappingButton = btn;
         }
     }
 }

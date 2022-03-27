@@ -47,7 +47,7 @@ namespace BrunnerDX
 
         // Buttons variables
         public bool[] buttons = new bool[64];
-        private ButtonMapping mapping = new ButtonMapping();
+        public Dictionary<String, int> mapping = ButtonMapping.GenerateMapping();
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
@@ -218,12 +218,12 @@ namespace BrunnerDX
         private void UpdateTrimPosition()
         {
             int step = 10;
-            if (IsButtonPressed(this.mapping.decTrimX)) trimPosition[0] = trimPosition[0] - step;
-            if (IsButtonPressed(this.mapping.incTrimX)) trimPosition[0] = trimPosition[0] + step;
-            if (IsButtonPressed(this.mapping.decTrimY)) trimPosition[1] = trimPosition[1] - step;
-            if (IsButtonPressed(this.mapping.incTrimY)) trimPosition[1] = trimPosition[1] + step;
-            if (IsButtonPressed(this.mapping.decTrimZ)) trimPosition[2] = trimPosition[2] - step;
-            if (IsButtonPressed(this.mapping.incTrimZ)) trimPosition[2] = trimPosition[2] + step;
+            if (IsButtonPressed(this.mapping["decTrimX"])) trimPosition[0] = trimPosition[0] - step;
+            if (IsButtonPressed(this.mapping["incTrimX"])) trimPosition[0] = trimPosition[0] + step;
+            if (IsButtonPressed(this.mapping["decTrimY"])) trimPosition[1] = trimPosition[1] - step;
+            if (IsButtonPressed(this.mapping["incTrimY"])) trimPosition[1] = trimPosition[1] + step;
+            if (IsButtonPressed(this.mapping["decTrimZ"])) trimPosition[2] = trimPosition[2] - step;
+            if (IsButtonPressed(this.mapping["incTrimZ"])) trimPosition[2] = trimPosition[2] + step;
         }
 
         private void SaveButtonPresses(bool[] buttons)

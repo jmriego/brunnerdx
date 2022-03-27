@@ -8,21 +8,17 @@ namespace BrunnerDX.Mapping
 {
     public class ButtonMapping
     {
-        public int decTrimX;
-        public int incTrimX;
-        public int decTrimY;
-        public int incTrimY;
-        public int decTrimZ;
-        public int incTrimZ;
+        public static string[] listMappings = { "decTrimX", "incTrimX", "decTrimY", "incTrimY", "decTrimZ", "incTrimZ" };
 
-        public ButtonMapping(int decTrimX=-1, int incTrimX=-1, int decTrimY=-1, int incTrimY=-1, int decTrimZ=-1, int incTrimZ=-1)
+        public static Dictionary<string, int> GenerateMapping()
         {
-            this.decTrimX = decTrimX;
-            this.incTrimX = incTrimX;
-            this.decTrimY = decTrimY;
-            this.incTrimY = incTrimY;
-            this.decTrimZ = decTrimZ;
-            this.incTrimZ = incTrimZ;
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            foreach (string buttonName in listMappings)
+            {
+                result[buttonName] = -1;
+            }
+            return result;
         }
     }
 }

@@ -560,6 +560,7 @@ namespace BrunnerDX
             this.btnDecTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimY, "Map button to trim nose up");
             this.btnDecTrimY.UseVisualStyleBackColor = true;
+            this.btnDecTrimY.Click += new System.EventHandler(this.btnTrimMapping_Click);
             // 
             // btnIncTrimY
             // 
@@ -571,6 +572,7 @@ namespace BrunnerDX
             this.btnIncTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimY, "Map button to trim nose down");
             this.btnIncTrimY.UseVisualStyleBackColor = true;
+            this.btnIncTrimY.Click += new System.EventHandler(this.btnTrimMapping_Click);
             // 
             // btnDecTrimX
             // 
@@ -582,6 +584,7 @@ namespace BrunnerDX
             this.btnDecTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimX, "Map button to trim roll left");
             this.btnDecTrimX.UseVisualStyleBackColor = true;
+            this.btnDecTrimX.Click += new System.EventHandler(this.btnTrimMapping_Click);
             // 
             // btnIncTrimX
             // 
@@ -593,6 +596,7 @@ namespace BrunnerDX
             this.btnIncTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimX, "Map button to trim roll left");
             this.btnIncTrimX.UseVisualStyleBackColor = true;
+            this.btnIncTrimX.Click += new System.EventHandler(this.btnTrimMapping_Click);
             // 
             // tabControl1
             // 
