@@ -392,16 +392,16 @@ namespace BrunnerDX
 
         private void RemapBrunnerDXButton()
         {
-            string buttonName = this.waitingForMappingButton.Name.Replace("btn", "");
-            string bindingName = char.ToUpper(buttonName[0]) + buttonName.Substring(1);
+            string bindingName = this.waitingForMappingButton.Name.Replace("btn", "");
             if (this.waitingForMappingState == "CANCEL")
             {
                 logger.Info($"Cancelling mapping for {bindingName}");
                 this.brunnerDX.mapping[bindingName] = -1;
                 this.waitingForMappingButton.Text = "?";
                 this.waitingForMappingState = "";
+                this.waitingForMappingButton = null;
             }
-            else
+            else if (this.prevButtonsPressed != null)
             {
                 for (int i = 0; i < this.brunnerDX.buttons.Length; i++)
                 {
@@ -411,6 +411,7 @@ namespace BrunnerDX
                         this.brunnerDX.mapping[bindingName] = i;
                         this.waitingForMappingButton.Text = i.ToString();
                         this.waitingForMappingState = "";
+                        this.waitingForMappingButton = null;
                     }
                 }
             }
@@ -500,8 +501,8 @@ namespace BrunnerDX
             }
             else
             {
-                this.waitingForMappingState = "WAITING";
                 logger.Info($"Waiting for button press...");
+                this.waitingForMappingState = "WAITING";
             }
             this.waitingForMappingButton = btn;
         }

@@ -30,14 +30,14 @@ namespace BrunnerDX
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint2 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint4 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.groupBoxFirmware = new System.Windows.Forms.GroupBox();
             this.uploadProgressBar = new System.Windows.Forms.ProgressBar();
             this.detectPorts = new System.Windows.Forms.Button();
@@ -89,6 +89,7 @@ namespace BrunnerDX
             this.barTrimStrengthXY = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnCenterTrim = new System.Windows.Forms.Button();
             this.groupBoxFirmware.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.delaySlider)).BeginInit();
@@ -372,45 +373,45 @@ namespace BrunnerDX
             // 
             // positionChart
             // 
-            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.AxisX.IsLabelAutoFit = false;
-            chartArea1.AxisX.LabelStyle.Enabled = false;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisX.Maximum = 32767D;
-            chartArea1.AxisX.Minimum = -32767D;
-            chartArea1.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.AxisY.IsLabelAutoFit = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.Maximum = 32767D;
-            chartArea1.AxisY.Minimum = -32767D;
-            chartArea1.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea1.Name = "ChartArea1";
-            this.positionChart.ChartAreas.Add(chartArea1);
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            this.positionChart.Legends.Add(legend1);
+            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisX.IsLabelAutoFit = false;
+            chartArea3.AxisX.LabelStyle.Enabled = false;
+            chartArea3.AxisX.MajorGrid.Enabled = false;
+            chartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisX.MajorTickMark.Enabled = false;
+            chartArea3.AxisX.Maximum = 32767D;
+            chartArea3.AxisX.Minimum = -32767D;
+            chartArea3.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisY.IsLabelAutoFit = false;
+            chartArea3.AxisY.LabelStyle.Enabled = false;
+            chartArea3.AxisY.MajorGrid.Enabled = false;
+            chartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisY.MajorTickMark.Enabled = false;
+            chartArea3.AxisY.Maximum = 32767D;
+            chartArea3.AxisY.Minimum = -32767D;
+            chartArea3.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.Name = "ChartArea1";
+            this.positionChart.ChartAreas.Add(chartArea3);
+            legend3.Enabled = false;
+            legend3.Name = "Legend1";
+            this.positionChart.Legends.Add(legend3);
             this.positionChart.Location = new System.Drawing.Point(403, 17);
             this.positionChart.Margin = new System.Windows.Forms.Padding(4);
             this.positionChart.Name = "positionChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.IsVisibleInLegend = false;
-            series1.Legend = "Legend1";
-            series1.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series1.Name = "Series1";
-            dataPoint1.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series1.Points.Add(dataPoint1);
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.positionChart.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.IsVisibleInLegend = false;
+            series3.Legend = "Legend1";
+            series3.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series3.Name = "Series1";
+            dataPoint3.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series3.Points.Add(dataPoint3);
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.positionChart.Series.Add(series3);
             this.positionChart.Size = new System.Drawing.Size(85, 79);
             this.positionChart.TabIndex = 7;
             this.positionChart.Text = "chart1";
@@ -428,45 +429,45 @@ namespace BrunnerDX
             // 
             // forceChart
             // 
-            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.AxisX.IsLabelAutoFit = false;
-            chartArea2.AxisX.LabelStyle.Enabled = false;
-            chartArea2.AxisX.MajorGrid.Enabled = false;
-            chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea2.AxisX.MajorTickMark.Enabled = false;
-            chartArea2.AxisX.Maximum = 10000D;
-            chartArea2.AxisX.Minimum = -10000D;
-            chartArea2.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea2.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.AxisY.IsLabelAutoFit = false;
-            chartArea2.AxisY.LabelStyle.Enabled = false;
-            chartArea2.AxisY.MajorGrid.Enabled = false;
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea2.AxisY.MajorTickMark.Enabled = false;
-            chartArea2.AxisY.Maximum = 10000D;
-            chartArea2.AxisY.Minimum = -10000D;
-            chartArea2.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea2.Name = "ChartArea1";
-            this.forceChart.ChartAreas.Add(chartArea2);
-            legend2.Enabled = false;
-            legend2.Name = "Legend1";
-            this.forceChart.Legends.Add(legend2);
+            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisX.IsLabelAutoFit = false;
+            chartArea4.AxisX.LabelStyle.Enabled = false;
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisX.MajorTickMark.Enabled = false;
+            chartArea4.AxisX.Maximum = 10000D;
+            chartArea4.AxisX.Minimum = -10000D;
+            chartArea4.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisY.IsLabelAutoFit = false;
+            chartArea4.AxisY.LabelStyle.Enabled = false;
+            chartArea4.AxisY.MajorGrid.Enabled = false;
+            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisY.MajorTickMark.Enabled = false;
+            chartArea4.AxisY.Maximum = 10000D;
+            chartArea4.AxisY.Minimum = -10000D;
+            chartArea4.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.Name = "ChartArea1";
+            this.forceChart.ChartAreas.Add(chartArea4);
+            legend4.Enabled = false;
+            legend4.Name = "Legend1";
+            this.forceChart.Legends.Add(legend4);
             this.forceChart.Location = new System.Drawing.Point(288, 17);
             this.forceChart.Margin = new System.Windows.Forms.Padding(4);
             this.forceChart.Name = "forceChart";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series2.IsVisibleInLegend = false;
-            series2.Legend = "Legend1";
-            series2.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series2.Name = "Series1";
-            dataPoint2.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series2.Points.Add(dataPoint2);
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.forceChart.Series.Add(series2);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.IsVisibleInLegend = false;
+            series4.Legend = "Legend1";
+            series4.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series4.Name = "Series1";
+            dataPoint4.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series4.Points.Add(dataPoint4);
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.forceChart.Series.Add(series4);
             this.forceChart.Size = new System.Drawing.Size(85, 79);
             this.forceChart.TabIndex = 5;
             this.forceChart.Text = "chart1";
@@ -552,10 +553,10 @@ namespace BrunnerDX
             // 
             // btnDecTrimY
             // 
-            this.btnDecTrimY.Location = new System.Drawing.Point(199, 60);
+            this.btnDecTrimY.Location = new System.Drawing.Point(199, 82);
             this.btnDecTrimY.Margin = new System.Windows.Forms.Padding(2);
             this.btnDecTrimY.Name = "btnDecTrimY";
-            this.btnDecTrimY.Size = new System.Drawing.Size(57, 40);
+            this.btnDecTrimY.Size = new System.Drawing.Size(57, 35);
             this.btnDecTrimY.TabIndex = 9;
             this.btnDecTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimY, "Map button to trim nose up");
@@ -564,10 +565,10 @@ namespace BrunnerDX
             // 
             // btnIncTrimY
             // 
-            this.btnIncTrimY.Location = new System.Drawing.Point(199, 19);
+            this.btnIncTrimY.Location = new System.Drawing.Point(199, 4);
             this.btnIncTrimY.Margin = new System.Windows.Forms.Padding(2);
             this.btnIncTrimY.Name = "btnIncTrimY";
-            this.btnIncTrimY.Size = new System.Drawing.Size(57, 40);
+            this.btnIncTrimY.Size = new System.Drawing.Size(57, 35);
             this.btnIncTrimY.TabIndex = 8;
             this.btnIncTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimY, "Map button to trim nose down");
@@ -576,10 +577,10 @@ namespace BrunnerDX
             // 
             // btnDecTrimX
             // 
-            this.btnDecTrimX.Location = new System.Drawing.Point(138, 35);
+            this.btnDecTrimX.Location = new System.Drawing.Point(138, 43);
             this.btnDecTrimX.Margin = new System.Windows.Forms.Padding(2);
             this.btnDecTrimX.Name = "btnDecTrimX";
-            this.btnDecTrimX.Size = new System.Drawing.Size(57, 40);
+            this.btnDecTrimX.Size = new System.Drawing.Size(57, 35);
             this.btnDecTrimX.TabIndex = 4;
             this.btnDecTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimX, "Map button to trim roll left");
@@ -588,10 +589,10 @@ namespace BrunnerDX
             // 
             // btnIncTrimX
             // 
-            this.btnIncTrimX.Location = new System.Drawing.Point(260, 35);
+            this.btnIncTrimX.Location = new System.Drawing.Point(260, 43);
             this.btnIncTrimX.Margin = new System.Windows.Forms.Padding(2);
             this.btnIncTrimX.Name = "btnIncTrimX";
-            this.btnIncTrimX.Size = new System.Drawing.Size(57, 40);
+            this.btnIncTrimX.Size = new System.Drawing.Size(57, 35);
             this.btnIncTrimX.TabIndex = 3;
             this.btnIncTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimX, "Map button to trim roll left");
@@ -677,6 +678,7 @@ namespace BrunnerDX
             // trimTab
             // 
             this.trimTab.BackColor = System.Drawing.Color.Transparent;
+            this.trimTab.Controls.Add(this.btnCenterTrim);
             this.trimTab.Controls.Add(this.barTrimStrengthZ);
             this.trimTab.Controls.Add(this.label2);
             this.trimTab.Controls.Add(this.barTrimStrengthXY);
@@ -741,12 +743,24 @@ namespace BrunnerDX
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 47);
+            this.label3.Location = new System.Drawing.Point(15, 52);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Button Mapping";
+            // 
+            // btnCenterTrim
+            // 
+            this.btnCenterTrim.Location = new System.Drawing.Point(199, 43);
+            this.btnCenterTrim.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCenterTrim.Name = "btnCenterTrim";
+            this.btnCenterTrim.Size = new System.Drawing.Size(57, 35);
+            this.btnCenterTrim.TabIndex = 22;
+            this.btnCenterTrim.Text = "?";
+            this.toolTip.SetToolTip(this.btnCenterTrim, "Map button to center trimming");
+            this.btnCenterTrim.UseVisualStyleBackColor = true;
+            this.btnCenterTrim.Click += new System.EventHandler(this.btnTrimMapping_Click);
             // 
             // BrunnerDXGui
             // 
@@ -839,6 +853,7 @@ namespace BrunnerDX
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TrackBar barTrimStrengthZ;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnCenterTrim;
     }
 }
 

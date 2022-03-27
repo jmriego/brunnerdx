@@ -68,7 +68,7 @@ namespace BrunnerDX
             _position = new PositionValue[3] { 0, 0, 0 };
             trimPosition = new PositionValue[3] { 0, 0, 0 };
             trimForces = new ForceValue[3] { 0, 0, 0 };
-            _force = new ForceValue[2] { 0, 0 };
+            _force = new ForceValue[3] { 0, 0, 0 };
             positionHistory.Enqueue(_position);
 
             buttons = new bool[64];
@@ -101,7 +101,14 @@ namespace BrunnerDX
             }
         }
 
-        public ForceValue[] force => _force;
+        public ForceValue[] force
+        {
+            get
+            {
+                return new ForceValue[3] { this._force[0] + this.trimForces[0], this._force[1] + this.trimForces[1], this.trimForces[2] };
+            }
+        }
+
         public bool defaultSpring
         {
             get
@@ -162,9 +169,9 @@ namespace BrunnerDX
             double normalizedPos = pos.ratio;
             double normalizedTrimPos = trimPos.ratio;
 
-            ForceValue force = new ForceValue();
-            force.ratio = normalizedTrimPos - normalizedPos;
-            return force;
+            ForceValue springForce = new ForceValue();
+            springForce.ratio = normalizedTrimPos - normalizedPos;
+            return springForce;
         }
 
         private bool IsButtonPressed(int b)
@@ -218,12 +225,15 @@ namespace BrunnerDX
         private void UpdateTrimPosition()
         {
             int step = 10;
-            if (IsButtonPressed(this.mapping["decTrimX"])) trimPosition[0] = trimPosition[0] - step;
-            if (IsButtonPressed(this.mapping["incTrimX"])) trimPosition[0] = trimPosition[0] + step;
-            if (IsButtonPressed(this.mapping["decTrimY"])) trimPosition[1] = trimPosition[1] - step;
-            if (IsButtonPressed(this.mapping["incTrimY"])) trimPosition[1] = trimPosition[1] + step;
-            if (IsButtonPressed(this.mapping["decTrimZ"])) trimPosition[2] = trimPosition[2] - step;
-            if (IsButtonPressed(this.mapping["incTrimZ"])) trimPosition[2] = trimPosition[2] + step;
+            if (IsButtonPressed(this.mapping["DecTrimX"])) trimPosition[0] = trimPosition[0] - step;
+            if (IsButtonPressed(this.mapping["IncTrimX"])) trimPosition[0] = trimPosition[0] + step;
+            if (IsButtonPressed(this.mapping["DecTrimY"])) trimPosition[1] = trimPosition[1] - step;
+            if (IsButtonPressed(this.mapping["IncTrimY"])) trimPosition[1] = trimPosition[1] + step;
+            if (IsButtonPressed(this.mapping["CenterTrim"]))
+            {
+                trimPosition[0] = 0;
+                trimPosition[1] = 0;
+            }
         }
 
         private void SaveButtonPresses(bool[] buttons)
@@ -245,9 +255,9 @@ namespace BrunnerDX
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
-                            ArduinoForce2Brunner(force[1]+trimForces[1]),
-                            ArduinoForce2Brunner(force[0]+trimForces[0]),
-                            ArduinoForce2Brunner(trimForces[2])
+                            ArduinoForce2Brunner(force[1]),
+                            ArduinoForce2Brunner(force[0]),
+                            ArduinoForce2Brunner(force[2])
                             );
                         if (delaySeconds > 0)
                         {
@@ -433,8 +443,8 @@ namespace BrunnerDX
                     break;
 
                 case Order.FORCES:
-                    force[0] = arduinoPort.ReadInt32();
-                    force[1] = arduinoPort.ReadInt32();
+                    this._force[0] = arduinoPort.ReadInt32();
+                    this._force[1] = arduinoPort.ReadInt32();
                     break;
 
                 default:
