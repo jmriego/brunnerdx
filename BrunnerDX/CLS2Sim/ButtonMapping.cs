@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BrunnerDX.Mapping
 {
-    public struct ButtonMapping
+    public class ButtonMapping
     {
         public int decTrimX;
         public int incTrimX;

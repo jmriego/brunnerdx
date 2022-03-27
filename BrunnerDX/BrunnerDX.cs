@@ -12,7 +12,7 @@ using HighPrecisionTimer;
 using NLog;
 
 using BrunnerDX.Helpers;
-
+using BrunnerDX.Mapping;
 
 namespace BrunnerDX
 {
@@ -47,6 +47,7 @@ namespace BrunnerDX
 
         // Buttons variables
         public bool[] buttons = new bool[64];
+        private ButtonMapping mapping = new ButtonMapping();
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
@@ -130,8 +131,9 @@ namespace BrunnerDX
         static public int BrunnerPosition2Arduino(float p)
         {
             PositionValue pos = new PositionValue();
-            // Brunner returns a value between 0.0 to 1.0 but PositionValue expects the range -1.0 to 1.0
-            pos.ratio = (p - 0.5) * 2;
+            // Brunner returns an inverted value between 0.0 to 1.0 but PositionValue expects the range -1.0 to 1.0
+            double ratio = (1.0 - p - 0.5) * 2.0;
+            pos.ratio = ratio;
             return pos;
         }
 
@@ -163,6 +165,15 @@ namespace BrunnerDX
             ForceValue force = new ForceValue();
             force.ratio = normalizedTrimPos - normalizedPos;
             return force;
+        }
+
+        private bool IsButtonPressed(int b)
+        {
+            if (b >= 0 && b < this.buttons.Length)
+            {
+                return this.buttons[b];
+            }
+            return false;
         }
 
         private void UpdatePosition(PositionMessage positionMessage)
@@ -204,6 +215,17 @@ namespace BrunnerDX
             }
         }
 
+        private void UpdateTrimPosition()
+        {
+            int step = 10;
+            if (IsButtonPressed(this.mapping.decTrimX)) trimPosition[0] = trimPosition[0] - step;
+            if (IsButtonPressed(this.mapping.incTrimX)) trimPosition[0] = trimPosition[0] + step;
+            if (IsButtonPressed(this.mapping.decTrimY)) trimPosition[1] = trimPosition[1] - step;
+            if (IsButtonPressed(this.mapping.incTrimY)) trimPosition[1] = trimPosition[1] + step;
+            if (IsButtonPressed(this.mapping.decTrimZ)) trimPosition[2] = trimPosition[2] - step;
+            if (IsButtonPressed(this.mapping.incTrimZ)) trimPosition[2] = trimPosition[2] + step;
+        }
+
         private void SaveButtonPresses(bool[] buttons)
         {
             this.buttons = buttons;
@@ -237,6 +259,8 @@ namespace BrunnerDX
 
                         ButtonReplyMessage buttonReplyMessage = brunnerSocket.GetButtonsPressed();
                         SaveButtonPresses(buttonReplyMessage.buttons);
+
+                        UpdateTrimPosition();
                     }
 
                     // send the current position to the Arduino
