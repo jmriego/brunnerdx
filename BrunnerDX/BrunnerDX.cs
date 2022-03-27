@@ -11,6 +11,8 @@ using System.Diagnostics;
 using HighPrecisionTimer;
 using NLog;
 
+using BrunnerDX.Helpers;
+
 
 namespace BrunnerDX
 {
@@ -31,16 +33,19 @@ namespace BrunnerDX
         public int delaySeconds;
 
         // Trim variables
-        public int trimStrength;
-        public int[] trimPosition;
-        public int[] trimForces;
+        public PositionValue[] trimPosition;
+        public ForceValue trimStrength;
+        public ForceValue[] trimForces;
 
         // Position variables
-        private int[] _position;
-        private Queue<int[]> positionHistory = new Queue<int[]>();
-        private int[] _force;
+        private PositionValue[] _position;
+        private Queue<PositionValue[]> positionHistory = new Queue<PositionValue[]>();
+        private ForceValue[] _force;
         private bool[] axisHasMoved = new bool[] { false, false };
         private bool _defaultSpring = false;
+
+        // Buttons variables
+        public bool[] buttons = new bool[64];
 
         private bool _isArduinoConnected = false;
         private bool _isBrunnerConnected = false;
@@ -58,14 +63,20 @@ namespace BrunnerDX
 
         public void Reset()
         {
-            _position = new int[2] { 0, 0 };
-            trimPosition = new int[3] { 0, 0, 0 };
-            trimForces = new int[3] { 0, 0, 0 };
-            _force = new int[2] { 0, 0 };
+            _position = new PositionValue[3] { 0, 0, 0 };
+            trimPosition = new PositionValue[3] { 0, 0, 0 };
+            trimForces = new ForceValue[3] { 0, 0, 0 };
+            _force = new ForceValue[2] { 0, 0 };
             positionHistory.Enqueue(_position);
+
+            buttons = new bool[64];
+            for (int i = 0; i < 64; i++)
+            {
+                buttons[i] = false;
+            }
         }
 
-        public int[] position {
+        public PositionValue[] position {
             get
             {
                 if (delaySeconds == 0)
@@ -88,7 +99,7 @@ namespace BrunnerDX
             }
         }
 
-        public int[] force => _force;
+        public ForceValue[] force => _force;
         public bool defaultSpring
         {
             get
@@ -117,10 +128,13 @@ namespace BrunnerDX
 
         static public int BrunnerPosition2Arduino(float p)
         {
-            return (int)((p - 0.5) * 2 * 32767 * -1);
+            PositionValue pos = new PositionValue();
+            // Brunner returns a value between 0.0 to 1.0 but PositionValue expects the range -1.0 to 1.0
+            pos.ratio = (p - 0.5) * 2;
+            return pos;
         }
 
-        public int ArduinoForce2Brunner(int f)
+        public int ArduinoForce2Brunner(ForceValue f)
         {
             return (int)(f * forceMultiplier);
         }
@@ -140,31 +154,22 @@ namespace BrunnerDX
             return sock;
         }
 
-        private bool waitForBrunner(Cls2SimSocket sock, int timeout=1)
+        private ForceValue calculateSpring(PositionValue pos, PositionValue trimPos)
         {
-            return sock.WaitForResponse(timeout);
-        }
+            double normalizedPos = pos.ratio;
+            double normalizedTrimPos = trimPos.ratio;
 
-        private int calculateSpring(int pos, int trimPos)
-        {
-            float normalizedPos = ((float)pos / (float)32767);
-            float normalizedTrimPos = ((float)trimPos / (float)32767);
+            ForceValue force = new ForceValue();
+            force.ratio = normalizedTrimPos - normalizedPos;
 
-            float force = normalizedTrimPos - normalizedPos;
-
-            return (int)(force * trimStrength);
-        }
-
-        public static int Clamp(int value, int min, int max)
-        {
-            return (value < min) ? min : (value > max) ? max : value;
+            return (int)(force * this.trimStrength);
         }
 
         private void UpdatePosition(PositionMessage positionMessage)
         {
-            int x = BrunnerPosition2Arduino(positionMessage.aileron);
-            int y = BrunnerPosition2Arduino(positionMessage.elevator);
-            int z = BrunnerPosition2Arduino(positionMessage.rudder);
+            PositionValue x = BrunnerPosition2Arduino(positionMessage.aileron);
+            PositionValue y = BrunnerPosition2Arduino(positionMessage.elevator);
+            PositionValue z = BrunnerPosition2Arduino(positionMessage.rudder);
 
             // calculate trim
             trimForces[0] = calculateSpring(x, trimPosition[0]);
@@ -199,6 +204,11 @@ namespace BrunnerDX
             }
         }
 
+        private void SaveButtonPresses(bool[] buttons)
+        {
+            this.buttons = buttons;
+        }
+
         private void Communicate(RobustSerial arduinoPort, Cls2SimSocket brunnerSocket)
         {
             bool lockTaken = false;
@@ -213,9 +223,9 @@ namespace BrunnerDX
                     {
                         // Notice we change the order of Aileron,Elevator
                         ForceMessage forceMessage = new ForceMessage(
-                            ArduinoForce2Brunner(Clamp(force[1]+trimForces[1], -10000, 10000)),
-                            ArduinoForce2Brunner(Clamp(force[0]+trimForces[0], -10000, 10000)),
-                            ArduinoForce2Brunner(Clamp(trimForces[2], -10000, 10000))
+                            ArduinoForce2Brunner(force[1]+trimForces[1]),
+                            ArduinoForce2Brunner(force[0]+trimForces[0]),
+                            ArduinoForce2Brunner(trimForces[2])
                             );
                         if (delaySeconds > 0)
                         {
@@ -224,6 +234,9 @@ namespace BrunnerDX
                         }
                         PositionMessage positionMessage = brunnerSocket.SendForcesReadPosition(forceMessage);
                         UpdatePosition(positionMessage);
+
+                        ButtonReplyMessage buttonReplyMessage = brunnerSocket.GetButtonsPressed();
+                        SaveButtonPresses(buttonReplyMessage.buttons);
                     }
 
                     // send the current position to the Arduino
@@ -327,7 +340,7 @@ namespace BrunnerDX
                     {
                         if (!_isBrunnerConnected && awaitingBrunnerWatch.IsRunning)
                         {
-                            _isBrunnerConnected = waitForBrunner(brunnerSocket, timeout: 1);
+                            _isBrunnerConnected = brunnerSocket.WaitForResponse(1);
                             if (awaitingBrunnerWatch.ElapsedMilliseconds > secondsWaitBrunner * 1000)
                             {
                                 awaitingBrunnerWatch.Stop();
@@ -340,7 +353,7 @@ namespace BrunnerDX
                             this._requiresSendingConfig = false;
                         }
 
-                        var currentPosition = new int[2];
+                        var currentPosition = new PositionValue[3];
                         _position.CopyTo(currentPosition, 0);
                         positionHistory.Enqueue(currentPosition);
                         var prueba = positionHistory.ToArray();
