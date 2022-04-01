@@ -1,0 +1,5 @@
+{
+  "cls2sim_emu.py": {
+    "dispatch": "cmd.exe /c python.exe cls2sim_emu.py --joystick 'SideWinder Force Feedback 2 Joystick'",
+  }
+}

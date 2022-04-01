@@ -45,11 +45,16 @@ namespace BrunnerDX
         int cls2SimPort;
         double forceMultiplier;
 
+        // button mapping variables
+        private string waitingForMappingState = "";
+        private Button waitingForMappingButton = null;
+
         private bool isStarting = false;
         long writeOptionsCountdownTicks = -1;
         long connectCountdownTicks = -1;
 
         BrunnerDX brunnerDX = new BrunnerDX();
+        private bool[] prevButtonsPressed;
 
         private object lockObject = new object();
 
@@ -92,12 +97,28 @@ namespace BrunnerDX
                 this.forceSlider.Value = (int)Properties.Settings.Default.Force;
             }
             catch (Exception ex) { }
+            try
+            {
+                this.barTrimStrengthXY.Value = (int)Properties.Settings.Default.TrimStrengthXY;
+            }
+            catch (Exception ex) { }
+            try
+            {
+                this.barTrimStrengthZ.Value = (int)Properties.Settings.Default.TrimStrengthZ;
+            }
+            catch (Exception ex) { }
 
             this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
             this.AutoCLSOpenCheckBox.Checked = Properties.Settings.Default.AutoOpenCLS2Sim;
             this.TextCLS2SimPath.Text = Properties.Settings.Default.AutoOpenCLS2SimPath;
             ConfirmOptions();
             isStarting = false;
+
+            btnDecTrimX.Text = Properties.Settings.Default.DecTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimX.ToString();
+            btnIncTrimX.Text = Properties.Settings.Default.IncTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimX.ToString();
+            btnDecTrimY.Text = Properties.Settings.Default.DecTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimY.ToString();
+            btnIncTrimY.Text = Properties.Settings.Default.IncTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimY.ToString();
+            btnCenterTrim.Text = Properties.Settings.Default.CenterTrim.ToString() == "-1" ? "?" : Properties.Settings.Default.CenterTrim.ToString();
         }
 
         private void WriteOptions()
@@ -110,7 +131,28 @@ namespace BrunnerDX
             Properties.Settings.Default.ComPort = arduinoPortName;
             Properties.Settings.Default.AutoOpenCLS2Sim = this.AutoCLSOpenCheckBox.Checked;
             Properties.Settings.Default.AutoOpenCLS2SimPath = this.TextCLS2SimPath.Text;
+            // button mapping options
+            Properties.Settings.Default.DecTrimX = parseTextToInt(btnDecTrimX.Text, -1);
+            Properties.Settings.Default.IncTrimX = parseTextToInt(btnIncTrimX.Text, -1);
+            Properties.Settings.Default.DecTrimY = parseTextToInt(btnDecTrimY.Text, -1);
+            Properties.Settings.Default.IncTrimY = parseTextToInt(btnIncTrimY.Text, -1);
+            Properties.Settings.Default.CenterTrim = parseTextToInt(btnCenterTrim.Text, -1);
+
+            // trimming strength options
+            Properties.Settings.Default.TrimStrengthXY = this.barTrimStrengthXY.Value;
+            Properties.Settings.Default.TrimStrengthZ = this.barTrimStrengthZ.Value;
             Properties.Settings.Default.Save();
+        }
+
+        private int parseTextToInt(string s, int defaultValue)
+        {
+            try
+            {
+                return int.Parse(s);
+            } catch (FormatException)
+            {
+                return defaultValue;
+            }
         }
 
         private void ConfirmOptions(bool startWriteCountdown=false)
@@ -125,6 +167,17 @@ namespace BrunnerDX
 
             forceMultiplier = this.forceSlider.Value;
             brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
+            brunnerDX.trimForceMultiplierXY = (double)this.barTrimStrengthXY.Value / (double)this.barTrimStrengthXY.Maximum;
+            brunnerDX.trimForceMultiplierZ = (double)this.barTrimStrengthZ.Value / (double)this.barTrimStrengthZ.Maximum;
+
+            // button mapping options
+            brunnerDX.mapping["DecTrimX"] = parseTextToInt(btnDecTrimX.Text, -1);
+            brunnerDX.mapping["IncTrimX"] = parseTextToInt(btnIncTrimX.Text, -1);
+            brunnerDX.mapping["DecTrimY"] = parseTextToInt(btnDecTrimY.Text, -1);
+            brunnerDX.mapping["IncTrimY"] = parseTextToInt(btnIncTrimY.Text, -1);
+            brunnerDX.mapping["CenterTrim"] = parseTextToInt(btnCenterTrim.Text, -1);
+
+            // location of CLS2Sim program
             this.cls2SimPath = this.TextCLS2SimPath.Text;
 
             if (startWriteCountdown)
@@ -271,6 +324,16 @@ namespace BrunnerDX
             if (!isStarting) ConfirmOptions(startWriteCountdown: true);
         }
 
+        private void barTrimStrengthXY_Scroll(object sender, EventArgs e)
+        {
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
+        }
+
+        private void barTrimStrengthZ_Scroll(object sender, EventArgs e)
+        {
+            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
+        }
+
         private void delaySlider_Scroll(object sender, EventArgs e)
         {
             string delayText = $"{this.delaySlider.Value} secs";
@@ -372,18 +435,50 @@ namespace BrunnerDX
             }
         }
 
+        private void RemapBrunnerDXButton()
+        {
+            string bindingName = this.waitingForMappingButton.Name.Replace("btn", "");
+            if (this.waitingForMappingState == "CANCEL")
+            {
+                logger.Info($"Cancelling mapping for {bindingName}");
+                this.waitingForMappingButton.Text = "?";
+                this.waitingForMappingState = "";
+                this.waitingForMappingButton = null;
+                ConfirmOptions(startWriteCountdown: true);
+            }
+            else if (this.prevButtonsPressed != null)
+            {
+                for (int i = 0; i < this.brunnerDX.buttons.Length; i++)
+                {
+                    if (!this.prevButtonsPressed[i] && this.brunnerDX.buttons[i])
+                    {
+                        logger.Info($"Remapped {bindingName} to button {i}");
+                        this.waitingForMappingButton.Text = i.ToString();
+                        this.waitingForMappingState = "";
+                        this.waitingForMappingButton = null;
+                        ConfirmOptions(startWriteCountdown: true);
+                    }
+                }
+            }
+
+        }
+
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             if (Monitor.TryEnter(lockObject))
             {
-                this.forceChart.Series[0].Points.Clear();
-                this.positionChart.Series[0].Points.Clear();
+                if (this.forceChart.Series[0].Points.Count > 1)
+                    this.forceChart.Series[0].Points.RemoveAt(1);
+                if (this.positionChart.Series[0].Points.Count > 1)
+                    this.positionChart.Series[0].Points.RemoveAt(1);
 
                 if (brunnerDX.isArduinoConnected)
                 {
                     this.arduinoStatus.BackColor = Color.Green;
                     this.forceChart.Series[0].Points.AddXY(brunnerDX.force[0], (double)-brunnerDX.force[1]);
                     this.connectButton.Text = "Disconnect";
+                    if (this.waitingForMappingState != "") RemapBrunnerDXButton();
+                    this.prevButtonsPressed = brunnerDX.buttons;
                 }
                 else
                 {
@@ -440,6 +535,21 @@ namespace BrunnerDX
         private void consoleLog_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
+        }
+
+        private void btnTrimMapping_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == this.waitingForMappingButton)
+            {
+                this.waitingForMappingState = "CANCEL";
+            }
+            else
+            {
+                logger.Info($"Waiting for button press...");
+                this.waitingForMappingState = "WAITING";
+            }
+            this.waitingForMappingButton = btn;
         }
     }
 }

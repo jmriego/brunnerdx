@@ -162,8 +162,10 @@
     <Compile Include="BrunnerDXGui.Designer.cs">
       <DependentUpon>BrunnerDXGui.cs</DependentUpon>
     </Compile>
+    <Compile Include="CLS2Sim\ButtonMapping.cs" />
     <Compile Include="CLS2Sim\CLS2SimAutomation.cs" />
     <Compile Include="CLS2Sim\Cls2SimSocket.cs" />
+    <Compile Include="Helpers\ClampedInteger.cs" />
     <Compile Include="Helpers\FormArduinoUploaderLogger.cs" />
     <Compile Include="MultimediaTimer\MultimediaTimer.cs" />
     <Compile Include="Program.cs" />

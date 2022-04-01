@@ -10,6 +10,7 @@ using System.Net.Sockets;
 
 using NLog;
 using System.Threading;
+using System.IO;
 
 namespace BrunnerDX
 {
@@ -64,6 +65,61 @@ namespace BrunnerDX
             this.profileName = profileName;
         }
     }
+    public struct ReadRequestMessage
+    {
+        UInt32 command;
+        UInt32 axis;
+        UInt32 dataId;
+
+        public ReadRequestMessage(UInt32 axis, UInt32 dataId)
+        {
+            this.command = 0xD0;
+            this.axis = axis;
+            this.dataId = dataId;
+        }
+    }
+
+    public struct ButtonReplyMessage
+    {
+        public UInt16 length;
+        public byte status;
+        public UInt16 deviceId;
+        public UInt16 dataId;
+        public bool[] buttons;
+
+        public ButtonReplyMessage(UInt16 length, byte status, UInt16 deviceId, UInt16 dataId, bool[] buttons)
+        {
+            this.length = length;
+            this.status = status;
+            this.deviceId = deviceId;
+            this.dataId = dataId;
+            this.buttons = buttons;
+        }
+
+        public static ButtonReplyMessage FromArray(byte[] bytes)
+        {
+            var reader = new BinaryReader(new MemoryStream(bytes));
+            var s = default(ButtonReplyMessage);
+
+            s.length = reader.ReadUInt16(); // length of the rest of the message
+            s.status = reader.ReadByte();
+            s.deviceId = reader.ReadUInt16();
+            s.dataId = reader.ReadUInt16();
+
+            int numBytesButtons = s.length - 5; // we have used 5 bytes for reading status, deviceId, dataId
+            s.buttons = new bool[numBytesButtons * 8];
+            for (int b = 0; b < numBytesButtons; b++ )
+            {
+                byte buttonGroup = reader.ReadByte();
+                for (int i = 0; i < 8; i++)
+                {
+                    s.buttons[b*8 + i] = (buttonGroup & (1 << i)) == 0 ? false : true;
+                }
+            }
+
+            return s;
+        }
+    }
 
     public class Cls2SimSocket : IDisposable
     {
@@ -114,8 +170,7 @@ namespace BrunnerDX
             return arr;
         }
 
-        static void ByteArrayToMessage<T>(byte[] bytearray, ref T obj)
-        {
+        static void ByteArrayToMessage<T>(byte[] bytearray, ref T obj) {
             int len = Marshal.SizeOf(obj);
             IntPtr i = Marshal.AllocHGlobal(len);
             Marshal.Copy(bytearray, 0, i, len);
@@ -161,6 +216,17 @@ namespace BrunnerDX
             byte[] bytes = sock.Receive(ref remoteEP);
             ByteArrayToMessage<PositionMessage>(bytes, ref position);
             return position;
+        }
+
+        public ButtonReplyMessage GetButtonsPressed()
+        {
+            ReadRequestMessage request = new ReadRequestMessage(0x01, 0x31);
+
+            byte[] msg = StructureToByteArray(request);
+            int bytesSent = sock.Send(msg, msg.Length);
+
+            byte[] bytes = sock.Receive(ref remoteEP);
+            return ButtonReplyMessage.FromArray(bytes);
         }
     }
 }
