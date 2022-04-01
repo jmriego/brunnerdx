@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.6.0]
+
+### Changed
+- Added trimming controls
+- Added an optional spring effect while not in a sim
+
 ## [2.5.0]
 
 ### Changed
