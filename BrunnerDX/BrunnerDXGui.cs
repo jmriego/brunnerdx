@@ -543,10 +543,13 @@ namespace BrunnerDX
             if (btn == this.waitingForMappingButton)
             {
                 this.waitingForMappingState = "CANCEL";
+            } else if (!this.brunnerDX.isBrunnerConnected)
+            {
+                logger.Info("Please connect to CLS2Sim for remapping this control");
             }
             else
             {
-                logger.Info($"Waiting for button press...");
+                logger.Info("Waiting for button press...");
                 this.waitingForMappingState = "WAITING";
             }
             this.waitingForMappingButton = btn;
