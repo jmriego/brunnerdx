@@ -5318,7 +5318,7 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BrunnerDX.Setup"
-        "ProductCode" = "8:{451394F7-B228-4A09-8955-D78C23D74190}"
+        "ProductCode" = "8:{CCF04217-5E88-46B9-93A3-EA978363F6DB}"
         "PackageCode" = "8:{80E6DA96-A217-479A-BEBD-2FA7636F73C4}"
         "UpgradeCode" = "8:{19C84E63-0F40-4FE1-8013-8E31D467EB4F}"
         "AspNetVersion" = "8:2.0.50727.0"
