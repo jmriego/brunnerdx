@@ -165,6 +165,7 @@
     <Compile Include="CLS2Sim\ButtonMapping.cs" />
     <Compile Include="CLS2Sim\CLS2SimAutomation.cs" />
     <Compile Include="CLS2Sim\Cls2SimSocket.cs" />
+    <Compile Include="Filters\LowPassFilter.cs" />
     <Compile Include="Helpers\ClampedInteger.cs" />
     <Compile Include="Helpers\FormArduinoUploaderLogger.cs" />
     <Compile Include="MultimediaTimer\MultimediaTimer.cs" />

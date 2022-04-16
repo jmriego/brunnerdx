@@ -440,7 +440,7 @@ namespace BrunnerDX
             string bindingName = this.waitingForMappingButton.Name.Replace("btn", "");
             if (this.waitingForMappingState == "CANCEL")
             {
-                logger.Info($"Cancelling mapping for {bindingName}");
+                logger.Info($"Cancelled mapping for {bindingName}");
                 this.waitingForMappingButton.Text = "?";
                 this.waitingForMappingState = "";
                 this.waitingForMappingButton = null;
@@ -549,7 +549,7 @@ namespace BrunnerDX
             }
             else
             {
-                logger.Info("Waiting for button press...");
+                logger.Info("Waiting for button press. Or click on this again to cancel mapping");
                 this.waitingForMappingState = "WAITING";
             }
             this.waitingForMappingButton = btn;
