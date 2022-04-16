@@ -167,14 +167,15 @@
     <Compile Include="CLS2Sim\Cls2SimSocket.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />
     <Compile Include="Helpers\ClampedInteger.cs" />
-    <Compile Include="Helpers\FormArduinoUploaderLogger.cs" />
-    <Compile Include="MultimediaTimer\MultimediaTimer.cs" />
+    <Compile Include="Arduino\FormArduinoUploaderLogger.cs" />
+    <Compile Include="Helpers\MultimediaTimer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serial\RobustSerial.cs" />
+    <Compile Include="Arduino\RobustSerial.cs" />
     <Compile Include="Helpers\StringIntsComparer.cs" />
     <EmbeddedResource Include="BrunnerDXGui.resx">
       <DependentUpon>BrunnerDXGui.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
