@@ -29,13 +29,13 @@ namespace BrunnerDX
         public string cls2SimHost;
         public int cls2SimPort;
         public string arduinoPortName;
-        public double forceMultiplier = 0.3;
         public int delaySeconds;
+        public Ratio forceMultiplier = 0.3;
 
         // Trim variables
+        public Ratio trimForceMultiplierXY = 0.0;
+        public Ratio trimForceMultiplierZ = 0.0;
         public PositionValue[] trimPosition;
-        public double trimForceMultiplierXY;
-        public double trimForceMultiplierZ;
         public ForceValue[] trimForces;
 
         // Position variables
@@ -82,12 +82,12 @@ namespace BrunnerDX
             get
             {
                 if (delaySeconds == 0)
-                { 
+                {
                     return _position;
                 }
                 else
                 {
-                    int delayPosition = positionHistory.Count - delaySeconds*500; // the most recent position is at the "Count" position in the Queue
+                    int delayPosition = positionHistory.Count - delaySeconds * 500; // the most recent position is at the "Count" position in the Queue
                     var history = this.positionHistory.ToArray();
                     return history[delayPosition >= 0 ? delayPosition : 0];
                 }
@@ -229,7 +229,12 @@ namespace BrunnerDX
             if (IsButtonPressed(this.mapping["IncTrimX"])) trimPosition[0] = trimPosition[0] + step;
             if (IsButtonPressed(this.mapping["DecTrimY"])) trimPosition[1] = trimPosition[1] - step;
             if (IsButtonPressed(this.mapping["IncTrimY"])) trimPosition[1] = trimPosition[1] + step;
-            if (IsButtonPressed(this.mapping["CenterTrim"]))
+            if (IsButtonPressed(this.mapping["ReleaseTrim"]))
+            {
+                trimPosition[0] = _position[0];
+                trimPosition[1] = _position[1];
+            }
+            else if (IsButtonPressed(this.mapping["CenterTrim"]))
             {
                 trimPosition[0] = 0;
                 trimPosition[1] = 0;

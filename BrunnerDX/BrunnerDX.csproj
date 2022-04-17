@@ -162,6 +162,7 @@
     <Compile Include="BrunnerDXGui.Designer.cs">
       <DependentUpon>BrunnerDXGui.cs</DependentUpon>
     </Compile>
+    <Compile Include="BrunnerDXGuiOptions.cs" />
     <Compile Include="CLS2Sim\ButtonMapping.cs" />
     <Compile Include="CLS2Sim\CLS2SimAutomation.cs" />
     <Compile Include="CLS2Sim\Cls2SimSocket.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Helpers\ClampedInteger.cs" />
     <Compile Include="Arduino\FormArduinoUploaderLogger.cs" />
     <Compile Include="Helpers\MultimediaTimer.cs" />
+    <Compile Include="Helpers\Ratio.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Arduino\RobustSerial.cs" />

@@ -27,6 +27,8 @@ using ArduinoUploader.Hardware;
 
 using Octokit;
 
+using BrunnerDX;
+
 namespace BrunnerDX
 {
 
@@ -39,41 +41,33 @@ namespace BrunnerDX
         static string CHANGELOG_URL = "https://github.com/jmriego/brunnerdx/blob/master/CHANGELOG.md";
         private static NLog.Logger logger;
 
-        string arduinoPortName = "";
-        string cls2SimHost;
-        string cls2SimPath;
-        int cls2SimPort;
-        double forceMultiplier;
+        BrunnerDXGuiOptions options = new BrunnerDXGuiOptions();
+        BrunnerDX brunnerDX = new BrunnerDX();
 
         // button mapping variables
         private string waitingForMappingState = "";
         private Button waitingForMappingButton = null;
-
-        private bool isStarting = false;
-        long writeOptionsCountdownTicks = -1;
-        long connectCountdownTicks = -1;
-
-        BrunnerDX brunnerDX = new BrunnerDX();
         private bool[] prevButtonsPressed;
 
+        private long connectCountdownTicks = -1;
         private object lockObject = new object();
 
         public BrunnerDXGui()
         {
             InitializeComponent();
             this.consoleLog.ReadOnly = true;
-            this.ReadOptions();
+            this.UpdateGUIFromOptions();
             this.refreshComPorts();
+            this.options.hasFinishedInitializing = true;
 
-
-            if (this.AutoCLSOpenCheckBox.Checked)
+            if (this.options.autoOpenCLS2Sim)
             {
-                CLS2SimAutomation simWindow = new CLS2SimAutomation(cls2SimPath);
+                CLS2SimAutomation simWindow = new CLS2SimAutomation(this.options.CLS2SimPath);
                 simWindow.Open(returnFocus: Process.GetCurrentProcess());
             }
 
             // if AutoConnect is enabled and we just opened the app start the connection in 3s
-            if (this.autoConnectCheck.Checked)
+            if (this.options.autoConnect)
             {
                 connectCountdownTicks = (3000 / refreshTimer.Interval) + 1;
                 if (!refreshTimer.Enabled)
@@ -83,65 +77,28 @@ namespace BrunnerDX
             }
         }
 
-        private void ReadOptions()
+        private void UpdateGUIFromOptions()
         {
-            isStarting = true;
-            this.ipOption.Text = Properties.Settings.Default.IP;
-            this.portOption.Text = Properties.Settings.Default.Port.ToString();
-            this.autoConnectCheck.Checked = Properties.Settings.Default.AutoConnect;
-            this.checkDefaultSpring.Checked = Properties.Settings.Default.DefaultSpring;
-            this.comboPorts.Text = Properties.Settings.Default.ComPort;
+            this.ipOption.Text = this.options.ip;
+            this.portOption.Text = this.options.port.ToString();
+            this.autoConnectCheck.Checked = this.options.autoConnect;
+            this.checkDefaultSpring.Checked = this.options.defaultSpring;
+            this.comboPorts.Text = this.options.comPort;
 
-            try
-            {
-                this.forceSlider.Value = (int)Properties.Settings.Default.Force;
-            }
-            catch (Exception ex) { }
-            try
-            {
-                this.barTrimStrengthXY.Value = (int)Properties.Settings.Default.TrimStrengthXY;
-            }
-            catch (Exception ex) { }
-            try
-            {
-                this.barTrimStrengthZ.Value = (int)Properties.Settings.Default.TrimStrengthZ;
-            }
-            catch (Exception ex) { }
+            this.forceSlider.Value = (int)Properties.Settings.Default.Force;
+            this.barTrimStrengthXY.Value = (int)Properties.Settings.Default.TrimStrengthXY;
+            this.barTrimStrengthZ.Value = (int)Properties.Settings.Default.TrimStrengthZ;
 
             this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
             this.AutoCLSOpenCheckBox.Checked = Properties.Settings.Default.AutoOpenCLS2Sim;
             this.TextCLS2SimPath.Text = Properties.Settings.Default.AutoOpenCLS2SimPath;
-            ConfirmOptions();
-            isStarting = false;
 
-            btnDecTrimX.Text = Properties.Settings.Default.DecTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimX.ToString();
-            btnIncTrimX.Text = Properties.Settings.Default.IncTrimX.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimX.ToString();
-            btnDecTrimY.Text = Properties.Settings.Default.DecTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.DecTrimY.ToString();
-            btnIncTrimY.Text = Properties.Settings.Default.IncTrimY.ToString() == "-1" ? "?" : Properties.Settings.Default.IncTrimY.ToString();
-            btnCenterTrim.Text = Properties.Settings.Default.CenterTrim.ToString() == "-1" ? "?" : Properties.Settings.Default.CenterTrim.ToString();
-        }
-
-        private void WriteOptions()
-        {
-            Properties.Settings.Default.IP = cls2SimHost;
-            Properties.Settings.Default.Port = cls2SimPort;
-            Properties.Settings.Default.Force = forceMultiplier;
-            Properties.Settings.Default.AutoConnect = this.autoConnectCheck.Checked;
-            Properties.Settings.Default.DefaultSpring = this.checkDefaultSpring.Checked;
-            Properties.Settings.Default.ComPort = arduinoPortName;
-            Properties.Settings.Default.AutoOpenCLS2Sim = this.AutoCLSOpenCheckBox.Checked;
-            Properties.Settings.Default.AutoOpenCLS2SimPath = this.TextCLS2SimPath.Text;
-            // button mapping options
-            Properties.Settings.Default.DecTrimX = parseTextToInt(btnDecTrimX.Text, -1);
-            Properties.Settings.Default.IncTrimX = parseTextToInt(btnIncTrimX.Text, -1);
-            Properties.Settings.Default.DecTrimY = parseTextToInt(btnDecTrimY.Text, -1);
-            Properties.Settings.Default.IncTrimY = parseTextToInt(btnIncTrimY.Text, -1);
-            Properties.Settings.Default.CenterTrim = parseTextToInt(btnCenterTrim.Text, -1);
-
-            // trimming strength options
-            Properties.Settings.Default.TrimStrengthXY = this.barTrimStrengthXY.Value;
-            Properties.Settings.Default.TrimStrengthZ = this.barTrimStrengthZ.Value;
-            Properties.Settings.Default.Save();
+            this.btnDecTrimX.Text = this.options.decTrimXMapping == -1 ? "?" : this.options.decTrimXMapping.ToString();
+            this.btnIncTrimX.Text = this.options.incTrimXMapping == -1 ? "?" : this.options.incTrimXMapping.ToString();
+            this.btnDecTrimY.Text = this.options.decTrimYMapping == -1 ? "?" : this.options.decTrimYMapping.ToString();
+            this.btnIncTrimY.Text = this.options.incTrimYMapping == -1 ? "?" : this.options.incTrimYMapping.ToString();
+            this.btnCenterTrim.Text = this.options.centerTrimMapping == -1 ? "?" : this.options.centerTrimMapping.ToString();
+            this.btnReleaseTrim.Text = this.options.ReleaseTrimMapping == -1 ? "?" : this.options.ReleaseTrimMapping.ToString();
         }
 
         private int parseTextToInt(string s, int defaultValue)
@@ -152,41 +109,6 @@ namespace BrunnerDX
             } catch (FormatException)
             {
                 return defaultValue;
-            }
-        }
-
-        private void ConfirmOptions(bool startWriteCountdown=false)
-        {
-            cls2SimHost = this.ipOption.Text;
-            brunnerDX.cls2SimHost = cls2SimHost;
-
-            cls2SimPort = int.Parse(this.portOption.Text);
-            brunnerDX.cls2SimPort = cls2SimPort;
-
-            arduinoPortName = this.comboPorts.Text;
-
-            forceMultiplier = this.forceSlider.Value;
-            brunnerDX.forceMultiplier = (double)forceMultiplier / 100.0;
-            brunnerDX.trimForceMultiplierXY = (double)this.barTrimStrengthXY.Value / (double)this.barTrimStrengthXY.Maximum;
-            brunnerDX.trimForceMultiplierZ = (double)this.barTrimStrengthZ.Value / (double)this.barTrimStrengthZ.Maximum;
-
-            // button mapping options
-            brunnerDX.mapping["DecTrimX"] = parseTextToInt(btnDecTrimX.Text, -1);
-            brunnerDX.mapping["IncTrimX"] = parseTextToInt(btnIncTrimX.Text, -1);
-            brunnerDX.mapping["DecTrimY"] = parseTextToInt(btnDecTrimY.Text, -1);
-            brunnerDX.mapping["IncTrimY"] = parseTextToInt(btnIncTrimY.Text, -1);
-            brunnerDX.mapping["CenterTrim"] = parseTextToInt(btnCenterTrim.Text, -1);
-
-            // location of CLS2Sim program
-            this.cls2SimPath = this.TextCLS2SimPath.Text;
-
-            if (startWriteCountdown)
-            {
-                writeOptionsCountdownTicks = (2000 / refreshTimer.Interval) + 1;
-                if (!refreshTimer.Enabled)
-                {
-                    refreshTimer.Start();
-                }
             }
         }
 
@@ -201,9 +123,9 @@ namespace BrunnerDX
             foreach (string port in ports)
             {
                 this.comboPorts.Items.Add(port);
-                if (port == arduinoPortName)
+                if (port == this.options.comPort)
                 {
-                    this.comboPorts.SelectedItem = arduinoPortName;
+                    this.comboPorts.SelectedItem = this.options.comPort;
                     selectedPortFound = true;
                 }
             }
@@ -260,45 +182,6 @@ namespace BrunnerDX
             }
         }
 
-        private void upload_Click(object sender, EventArgs e)
-        {
-            this.uploadProgressBar.Visible = true;
-
-            var progress = new Progress<double>(
-                p => UpdateProgress(p));
-            var options = new ArduinoSketchUploaderOptions() {
-                FileName = Path.Combine(AppContext.BaseDirectory, "Fino.ino.hex"),
-                PortName = this.arduinoPortName,
-                ArduinoModel = ArduinoModel.Micro
-            };
-
-            var uploader = new ArduinoSketchUploader(
-                options,
-                new FormArduinoUploaderLogger(logger),
-                progress);
-
-            var thread = new Thread(() =>
-            {
-                try
-                {
-                    uploader.UploadSketch();
-                    logger.Info("Uploaded to Arduino. Please click on 'Detect Ports' just in case the Arduino device has changed ports");
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, ex.Message);
-                }
-            });
-            thread.Start();
-        }
-
-        private void clearLog_Click(object sender, EventArgs e)
-        {
-            //this.consoleLog.SelectAll();
-            //this.consoleLog.Copy();
-            this.consoleLog.Clear();
-        }
-
         private void BrunnerDXGui_Load(object sender, EventArgs e)
         {
             if (logger == null) logger = LogManager.GetCurrentClassLogger();
@@ -308,110 +191,12 @@ namespace BrunnerDX
             CheckBrunnerDXVersion();
         }
 
-        private void comboPorts_SelectedIndexChanged(object sender, EventArgs e)
+        private void ConnectToggleBrunnerDX()
         {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void detectPorts_Click(object sender, EventArgs e)
-        {
-            this.refreshComPorts();
-        }
-
-        private void forceSlider_Scroll(object sender, EventArgs e)
-        {
-            this.forceValue.Text = this.forceSlider.Value.ToString();
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void barTrimStrengthXY_Scroll(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void barTrimStrengthZ_Scroll(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void delaySlider_Scroll(object sender, EventArgs e)
-        {
-            string delayText = $"{this.delaySlider.Value} secs";
-            this.delayValue.Text = delayText;
-            brunnerDX.delaySeconds = this.delaySlider.Value;
-        }
-
-        private void ipOption_TextChanged(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void portOption_TextChanged(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-        }
-
-        private void autoConnectCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-            if (!this.autoConnectCheck.Checked)
-            {
-                connectCountdownTicks = -1;
-            }
-        }
-
-        private void checkDefaultSpring_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isStarting) ConfirmOptions(startWriteCountdown: true);
-            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
-        }
-
-        private void AutoCLSOpenCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!isStarting)
-            {
-                if (AutoCLSOpenCheckBox.Checked)
-                {
-                    using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                    {
-                        openFileDialog.InitialDirectory = this.cls2SimPath;
-                        openFileDialog.Filter = "Executable|CLS2Sim.exe";
-                        //openFileDialog.FilterIndex = 2;
-                        //openFileDialog.RestoreDirectory = true;
-
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            //Get the path of specified file
-                            var dir = Path.GetDirectoryName(openFileDialog.FileName);
-                            this.cls2SimPath = dir;
-                            this.TextCLS2SimPath.Text = dir;
-                            CLS2SimAutomation simWindow = new CLS2SimAutomation(dir);
-                            simWindow.Open(returnFocus: Process.GetCurrentProcess());
-                        }
-                        else
-                        {
-                            this.TextCLS2SimPath.Text = "";
-                            this.AutoCLSOpenCheckBox.Checked = false;
-                        }
-                    }
-                }
-
-                ConfirmOptions(startWriteCountdown: true);
-            }
-
-        }
-
-        private void connectButton_Click(object sender, EventArgs e)
-        {
-            ConnectBrunnerDX();
-        }
-
-        private void ConnectBrunnerDX()
-        {
-            brunnerDX.cls2SimHost = cls2SimHost;
-            brunnerDX.cls2SimPort = cls2SimPort;
-            brunnerDX.arduinoPortName = arduinoPortName;
-            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
+            brunnerDX.cls2SimHost = this.options.ip;
+            brunnerDX.cls2SimPort = this.options.port;
+            brunnerDX.arduinoPortName = this.options.comPort;
+            brunnerDX.defaultSpring = this.options.defaultSpring;
 
             if (brunnerDX.isArduinoConnected)
             {
@@ -438,13 +223,13 @@ namespace BrunnerDX
         private void RemapBrunnerDXButton()
         {
             string bindingName = this.waitingForMappingButton.Name.Replace("btn", "");
+            int bindingMapping = -1;
             if (this.waitingForMappingState == "CANCEL")
             {
                 logger.Info($"Cancelled mapping for {bindingName}");
                 this.waitingForMappingButton.Text = "?";
                 this.waitingForMappingState = "";
                 this.waitingForMappingButton = null;
-                ConfirmOptions(startWriteCountdown: true);
             }
             else if (this.prevButtonsPressed != null)
             {
@@ -453,14 +238,176 @@ namespace BrunnerDX
                     if (!this.prevButtonsPressed[i] && this.brunnerDX.buttons[i])
                     {
                         logger.Info($"Remapped {bindingName} to button {i}");
+                        bindingMapping = i;
                         this.waitingForMappingButton.Text = i.ToString();
                         this.waitingForMappingState = "";
                         this.waitingForMappingButton = null;
-                        ConfirmOptions(startWriteCountdown: true);
                     }
                 }
             }
 
+            this.brunnerDX.mapping[bindingName] = bindingMapping;
+            this.options.GetType().GetProperty(bindingName).SetValue(this.options, bindingName);
+
+        }
+
+        private void upload_Click(object sender, EventArgs e)
+        {
+            this.uploadProgressBar.Visible = true;
+
+            var progress = new Progress<double>(
+                p => UpdateProgress(p));
+            var options = new ArduinoSketchUploaderOptions() {
+                FileName = Path.Combine(AppContext.BaseDirectory, "Fino.ino.hex"),
+                PortName = this.options.comPort,
+                ArduinoModel = ArduinoModel.Micro
+            };
+
+            var uploader = new ArduinoSketchUploader(
+                options,
+                new FormArduinoUploaderLogger(logger),
+                progress);
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    uploader.UploadSketch();
+                    logger.Info("Uploaded to Arduino. Please click on 'Detect Ports' just in case the Arduino device has changed ports");
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, ex.Message);
+                }
+            });
+            thread.Start();
+        }
+
+        private void clearLog_Click(object sender, EventArgs e)
+        {
+            this.consoleLog.Clear();
+        }
+
+        private void comboPorts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.options.comPort = this.comboPorts.Text.Trim();
+        }
+
+        private void detectPorts_Click(object sender, EventArgs e)
+        {
+            this.refreshComPorts();
+        }
+
+        private void forceSlider_Scroll(object sender, EventArgs e)
+        {
+            this.forceValue.Text = this.forceSlider.Value.ToString();
+            this.options.forceMultiplier = this.forceSlider.Value;
+            this.brunnerDX.forceMultiplier.pct = this.forceSlider.Value;
+        }
+
+        private void barTrimStrengthXY_Scroll(object sender, EventArgs e)
+        {
+            this.options.trimStrengthXY = this.barTrimStrengthXY.Value;
+            this.brunnerDX.trimForceMultiplierXY.pct = this.barTrimStrengthXY.Value;
+        }
+
+        private void barTrimStrengthZ_Scroll(object sender, EventArgs e)
+        {
+            this.options.trimStrengthZ = this.barTrimStrengthZ.Value;
+            this.brunnerDX.trimForceMultiplierZ.pct = this.barTrimStrengthZ.Value;
+        }
+
+        private void delaySlider_Scroll(object sender, EventArgs e)
+        {
+            this.delayValue.Text = $"{this.delaySlider.Value} secs";
+            brunnerDX.delaySeconds = this.delaySlider.Value;
+        }
+
+        private void ipOption_TextChanged(object sender, EventArgs e)
+        {
+            this.options.ip = this.ipOption.Text;
+        }
+
+        private void portOption_TextChanged(object sender, EventArgs e)
+        {
+            this.options.port = int.Parse(this.portOption.Text);
+        }
+
+        private void autoConnectCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            this.options.autoConnect = this.autoConnectCheck.Checked;
+            if (!this.autoConnectCheck.Checked)
+            {
+                connectCountdownTicks = -1;
+            }
+        }
+
+        private void checkDefaultSpring_CheckedChanged(object sender, EventArgs e)
+        {
+            this.options.defaultSpring = this.checkDefaultSpring.Checked;
+            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
+        }
+
+        private void AutoCLSOpenCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.options.hasFinishedInitializing)
+            {
+                if (this.AutoCLSOpenCheckBox.Checked)
+                {
+                    using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                    {
+                        openFileDialog.InitialDirectory = this.options.CLS2SimPath;
+                        openFileDialog.Filter = "Executable|CLS2Sim.exe";
+                        //openFileDialog.FilterIndex = 2;
+                        //openFileDialog.RestoreDirectory = true;
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            //Get the path of specified file
+                            var dir = Path.GetDirectoryName(openFileDialog.FileName);
+                            this.options.CLS2SimPath = dir;
+                            this.TextCLS2SimPath.Text = dir;
+                            CLS2SimAutomation simWindow = new CLS2SimAutomation(dir);
+                            simWindow.Open(returnFocus: Process.GetCurrentProcess());
+                        }
+                        else
+                        {
+                            this.TextCLS2SimPath.Text = "";
+                            this.AutoCLSOpenCheckBox.Checked = false;
+                        }
+                    }
+                }
+                this.options.autoOpenCLS2Sim = this.AutoCLSOpenCheckBox.Checked;
+            }
+
+        }
+
+        private void connectButton_Click(object sender, EventArgs e)
+        {
+            ConnectToggleBrunnerDX();
+        }
+
+        private void consoleLog_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
+        }
+
+        private void btnTrimMapping_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == this.waitingForMappingButton)
+            {
+                this.waitingForMappingState = "CANCEL";
+            } else if (!this.brunnerDX.isBrunnerConnected)
+            {
+                logger.Info("Please connect to CLS2Sim for remapping this control");
+            }
+            else
+            {
+                logger.Info("Waiting for button press. Or click on this again to cancel mapping");
+                this.waitingForMappingState = "WAITING";
+            }
+            this.waitingForMappingButton = btn;
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
@@ -502,21 +449,11 @@ namespace BrunnerDX
                     --connectCountdownTicks;
                     if (connectCountdownTicks == 0)
                     {
-                        ConnectBrunnerDX();
-                    }
-                }
-
-                if (writeOptionsCountdownTicks > 0)
-                {
-                    --writeOptionsCountdownTicks;
-                    if (writeOptionsCountdownTicks == 0)
-                    {
-                        WriteOptions();
+                        ConnectToggleBrunnerDX();
                     }
                 }
 
                 if (brunnerDX.stopExecuting &&
-                    writeOptionsCountdownTicks < 0 &&
                     connectCountdownTicks < 0 &&
                     !brunnerDX.isArduinoConnected)
                 {
@@ -530,29 +467,6 @@ namespace BrunnerDX
         private void BrunnerDXGui_FormClosing(object sender, FormClosingEventArgs e)
         {
             brunnerDX.stopExecuting = true;
-        }
-
-        private void consoleLog_LinkClicked(object sender, LinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(e.LinkText);
-        }
-
-        private void btnTrimMapping_Click(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn == this.waitingForMappingButton)
-            {
-                this.waitingForMappingState = "CANCEL";
-            } else if (!this.brunnerDX.isBrunnerConnected)
-            {
-                logger.Info("Please connect to CLS2Sim for remapping this control");
-            }
-            else
-            {
-                logger.Info("Waiting for button press. Or click on this again to cancel mapping");
-                this.waitingForMappingState = "WAITING";
-            }
-            this.waitingForMappingButton = btn;
         }
     }
 }
