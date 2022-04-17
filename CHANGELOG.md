@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0]
+
+### Changed
+- Added trim release control
+- Small changes in GUI layout
+- Various bugfixes
+
 ## [2.6.0]
 
 ### Changed
