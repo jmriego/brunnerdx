@@ -138,28 +138,30 @@ namespace BrunnerDX
 
         public async void CheckBrunnerDXVersion()
         {
+            Version lastReleaseVersion = null;
             try
             {
                 var client = new GitHubClient(new ProductHeaderValue(GITHUB_REPO));
                 var releases = await client.Repository.Release.GetAll(GITHUB_USER, GITHUB_REPO);
-                var lastReleaseVersion = new Version(releases[0].TagName.TrimStart('v'));
-
-                var assemblyVersion = typeof(BrunnerDX).Assembly.GetName().Version;
-                Version brunnerDXVersion = new Version($"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Revision}");
-                switch (brunnerDXVersion.CompareTo(lastReleaseVersion))
-                {
-                    case -1:
-                        logger.Warn($"There's an update available");
-                        this.consoleLog.AppendText($"\nDOWNLOAD: {RELEASES_URL}\nCHANGELOG: {CHANGELOG_URL}\n\n");
-                        break;
-                    case 0:
-                        logger.Info($"You have the latest version");
-                        break;
-                }
+                lastReleaseVersion = new Version(releases[0].TagName.TrimStart('v'));
             }
-            catch (System.Net.WebException)
+            catch (Exception ex) when (ex is System.Net.WebException || ex is System.Net.Http.HttpRequestException)
             {
                 logger.Warn("Couldn't check for updates");
+                return;
+            }
+
+            var assemblyVersion = typeof(BrunnerDX).Assembly.GetName().Version;
+            Version brunnerDXVersion = new Version($"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Revision}");
+            switch (brunnerDXVersion.CompareTo(lastReleaseVersion))
+            {
+                case -1:
+                    logger.Warn($"There's an update available");
+                    this.consoleLog.AppendText($"\nDOWNLOAD: {RELEASES_URL}\nCHANGELOG: {CHANGELOG_URL}\n\n");
+                    break;
+                case 0:
+                    logger.Info($"You have the latest version");
+                    break;
             }
         }
 
