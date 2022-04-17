@@ -23,8 +23,7 @@ namespace BrunnerDX.Helpers
             }
             set
             {
-                this.multiplier = Math.Round(value / 100.0);
-
+                this.multiplier = value / 100.0;
             }
         }
 

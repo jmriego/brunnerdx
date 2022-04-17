@@ -85,19 +85,19 @@ namespace BrunnerDX
             this.checkDefaultSpring.Checked = this.options.defaultSpring;
             this.comboPorts.Text = this.options.comPort;
 
-            this.forceSlider.Value = (int)Properties.Settings.Default.Force;
-            this.barTrimStrengthXY.Value = (int)Properties.Settings.Default.TrimStrengthXY;
-            this.barTrimStrengthZ.Value = (int)Properties.Settings.Default.TrimStrengthZ;
+            this.forceSlider.Value = this.options.forceMultiplier;
+            this.barTrimStrengthXY.Value = this.options.trimStrengthXY;
+            this.barTrimStrengthZ.Value = this.options.trimStrengthZ;
 
-            this.forceValue.Text = this.forceSlider.Value.ToString(); // TODO: shouldn't repeat this code
-            this.AutoCLSOpenCheckBox.Checked = Properties.Settings.Default.AutoOpenCLS2Sim;
-            this.TextCLS2SimPath.Text = Properties.Settings.Default.AutoOpenCLS2SimPath;
+            this.forceValue.Text = this.options.forceMultiplier.ToString(); // TODO: shouldn't repeat this code
+            this.AutoCLSOpenCheckBox.Checked = this.options.autoOpenCLS2Sim;
+            this.TextCLS2SimPath.Text = this.options.CLS2SimPath;
 
-            this.btnDecTrimX.Text = this.options.decTrimXMapping == -1 ? "?" : this.options.decTrimXMapping.ToString();
-            this.btnIncTrimX.Text = this.options.incTrimXMapping == -1 ? "?" : this.options.incTrimXMapping.ToString();
-            this.btnDecTrimY.Text = this.options.decTrimYMapping == -1 ? "?" : this.options.decTrimYMapping.ToString();
-            this.btnIncTrimY.Text = this.options.incTrimYMapping == -1 ? "?" : this.options.incTrimYMapping.ToString();
-            this.btnCenterTrim.Text = this.options.centerTrimMapping == -1 ? "?" : this.options.centerTrimMapping.ToString();
+            this.btnDecTrimX.Text = this.options.DecTrimXMapping == -1 ? "?" : this.options.DecTrimXMapping.ToString();
+            this.btnIncTrimX.Text = this.options.IncTrimXMapping == -1 ? "?" : this.options.IncTrimXMapping.ToString();
+            this.btnDecTrimY.Text = this.options.DecTrimYMapping == -1 ? "?" : this.options.DecTrimYMapping.ToString();
+            this.btnIncTrimY.Text = this.options.IncTrimYMapping == -1 ? "?" : this.options.IncTrimYMapping.ToString();
+            this.btnCenterTrim.Text = this.options.CenterTrimMapping == -1 ? "?" : this.options.CenterTrimMapping.ToString();
             this.btnReleaseTrim.Text = this.options.ReleaseTrimMapping == -1 ? "?" : this.options.ReleaseTrimMapping.ToString();
         }
 
@@ -197,6 +197,16 @@ namespace BrunnerDX
             brunnerDX.cls2SimPort = this.options.port;
             brunnerDX.arduinoPortName = this.options.comPort;
             brunnerDX.defaultSpring = this.options.defaultSpring;
+            brunnerDX.forceMultiplier.pct = this.options.forceMultiplier;
+
+            brunnerDX.trimForceMultiplierXY.pct = this.options.trimStrengthXY;
+            brunnerDX.trimForceMultiplierZ.pct = this.options.trimStrengthZ;
+            brunnerDX.mapping["DecTrimX"] = this.options.DecTrimXMapping;
+            brunnerDX.mapping["IncTrimX"] = this.options.IncTrimXMapping;
+            brunnerDX.mapping["DecTrimY"] = this.options.DecTrimYMapping;
+            brunnerDX.mapping["IncTrimY"] = this.options.IncTrimYMapping;
+            brunnerDX.mapping["CenterTrim"] = this.options.CenterTrimMapping;
+            brunnerDX.mapping["ReleaseTrim"] = this.options.ReleaseTrimMapping;
 
             if (brunnerDX.isArduinoConnected)
             {
@@ -247,7 +257,7 @@ namespace BrunnerDX
             }
 
             this.brunnerDX.mapping[bindingName] = bindingMapping;
-            this.options.GetType().GetProperty(bindingName).SetValue(this.options, bindingName);
+            this.options.GetType().GetProperty(bindingName + "Mapping").SetValue(this.options, bindingMapping);
 
         }
 

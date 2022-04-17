@@ -163,7 +163,7 @@
       <DependentUpon>BrunnerDXGui.cs</DependentUpon>
     </Compile>
     <Compile Include="BrunnerDXGuiOptions.cs" />
-    <Compile Include="CLS2Sim\ButtonMapping.cs" />
+    <Compile Include="Mapping\ButtonMapping.cs" />
     <Compile Include="CLS2Sim\CLS2SimAutomation.cs" />
     <Compile Include="CLS2Sim\Cls2SimSocket.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />
