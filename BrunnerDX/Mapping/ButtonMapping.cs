@@ -8,7 +8,7 @@ namespace BrunnerDX.Mapping
 {
     public class ButtonMapping
     {
-        public static string[] listMappings = { "DecTrimX", "IncTrimX", "DecTrimY", "IncTrimY", "CenterTrim" };
+        public static string[] listMappings = { "DecTrimX", "IncTrimX", "DecTrimY", "IncTrimY", "CenterTrim", "ReleaseTrim" };
 
         public static Dictionary<string, int> GenerateMapping()
         {

@@ -29,13 +29,13 @@ namespace BrunnerDX
         public string cls2SimHost;
         public int cls2SimPort;
         public string arduinoPortName;
-        public double forceMultiplier = 0.3;
         public int delaySeconds;
+        public Ratio forceMultiplier = 0.3;
 
         // Trim variables
+        public Ratio trimForceMultiplierXY = 0.0;
+        public Ratio trimForceMultiplierZ = 0.0;
         public PositionValue[] trimPosition;
-        public double trimForceMultiplierXY;
-        public double trimForceMultiplierZ;
         public ForceValue[] trimForces;
 
         // Position variables
@@ -82,21 +82,14 @@ namespace BrunnerDX
             get
             {
                 if (delaySeconds == 0)
-                { 
+                {
                     return _position;
                 }
                 else
                 {
-                    int delayPosition = 60 - delaySeconds * 10;
+                    int delayPosition = positionHistory.Count - delaySeconds * 500; // the most recent position is at the "Count" position in the Queue
                     var history = this.positionHistory.ToArray();
-                    if (delayPosition < positionHistory.Count)
-                    {
-                        return history[delayPosition];
-                    }
-                    else
-                    {
-                        return history[positionHistory.Count - 1];
-                    }
+                    return history[delayPosition >= 0 ? delayPosition : 0];
                 }
             }
         }
@@ -194,6 +187,13 @@ namespace BrunnerDX
             trimForces[1] = calculateSpring(y, trimPosition[1]) * this.trimForceMultiplierXY;
             trimForces[2] = calculateSpring(z, trimPosition[2]) * this.trimForceMultiplierZ;
 
+            var currentPosition = new PositionValue[3] {x, y, z};
+            positionHistory.Enqueue(currentPosition);
+            if (positionHistory.Count > 10 * (1000 / timerMs) ) // only keep the last 10 seconds of positions
+            {
+                positionHistory.Dequeue();
+            }
+
             // positions
             if (x != _position[0])
             {
@@ -229,7 +229,12 @@ namespace BrunnerDX
             if (IsButtonPressed(this.mapping["IncTrimX"])) trimPosition[0] = trimPosition[0] + step;
             if (IsButtonPressed(this.mapping["DecTrimY"])) trimPosition[1] = trimPosition[1] - step;
             if (IsButtonPressed(this.mapping["IncTrimY"])) trimPosition[1] = trimPosition[1] + step;
-            if (IsButtonPressed(this.mapping["CenterTrim"]))
+            if (IsButtonPressed(this.mapping["ReleaseTrim"]))
+            {
+                trimPosition[0] = _position[0];
+                trimPosition[1] = _position[1];
+            }
+            else if (IsButtonPressed(this.mapping["CenterTrim"]))
             {
                 trimPosition[0] = 0;
                 trimPosition[1] = 0;
@@ -375,6 +380,10 @@ namespace BrunnerDX
                         if (!_isBrunnerConnected && awaitingBrunnerWatch.IsRunning)
                         {
                             _isBrunnerConnected = brunnerSocket.WaitForResponse(1);
+                            if (_isBrunnerConnected) // We just connected so show a confirmation message
+                            {
+                                logger.Info("Connected to CLS2SIM");
+                            }
                             if (awaitingBrunnerWatch.ElapsedMilliseconds > secondsWaitBrunner * 1000)
                             {
                                 awaitingBrunnerWatch.Stop();
@@ -387,14 +396,6 @@ namespace BrunnerDX
                             this._requiresSendingConfig = false;
                         }
 
-                        var currentPosition = new PositionValue[3];
-                        _position.CopyTo(currentPosition, 0);
-                        positionHistory.Enqueue(currentPosition);
-                        var prueba = positionHistory.ToArray();
-                        if (positionHistory.Count > 60)
-                        {
-                            positionHistory.Dequeue();
-                        }
                         System.Threading.Thread.Sleep(100);
                     }
                     timer.Stop();
