@@ -30,14 +30,14 @@ namespace BrunnerDX
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint11 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint12 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint4 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.groupBoxFirmware = new System.Windows.Forms.GroupBox();
             this.uploadProgressBar = new System.Windows.Forms.ProgressBar();
             this.detectPorts = new System.Windows.Forms.Button();
@@ -117,30 +117,30 @@ namespace BrunnerDX
             this.groupBoxFirmware.Controls.Add(this.upload);
             this.groupBoxFirmware.Controls.Add(this.comboPorts);
             this.groupBoxFirmware.Controls.Add(this.portLabel);
-            this.groupBoxFirmware.Location = new System.Drawing.Point(13, 14);
-            this.groupBoxFirmware.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxFirmware.Location = new System.Drawing.Point(10, 11);
+            this.groupBoxFirmware.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBoxFirmware.Name = "groupBoxFirmware";
-            this.groupBoxFirmware.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxFirmware.Size = new System.Drawing.Size(521, 124);
+            this.groupBoxFirmware.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxFirmware.Size = new System.Drawing.Size(391, 101);
             this.groupBoxFirmware.TabIndex = 0;
             this.groupBoxFirmware.TabStop = false;
             this.groupBoxFirmware.Text = "Arduino Firmware";
             // 
             // uploadProgressBar
             // 
-            this.uploadProgressBar.Location = new System.Drawing.Point(19, 82);
-            this.uploadProgressBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.uploadProgressBar.Location = new System.Drawing.Point(14, 67);
+            this.uploadProgressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.uploadProgressBar.Name = "uploadProgressBar";
-            this.uploadProgressBar.Size = new System.Drawing.Size(484, 18);
+            this.uploadProgressBar.Size = new System.Drawing.Size(363, 15);
             this.uploadProgressBar.TabIndex = 4;
             this.uploadProgressBar.Visible = false;
             // 
             // detectPorts
             // 
-            this.detectPorts.Location = new System.Drawing.Point(189, 28);
-            this.detectPorts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.detectPorts.Location = new System.Drawing.Point(142, 23);
+            this.detectPorts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.detectPorts.Name = "detectPorts";
-            this.detectPorts.Size = new System.Drawing.Size(113, 49);
+            this.detectPorts.Size = new System.Drawing.Size(85, 40);
             this.detectPorts.TabIndex = 3;
             this.detectPorts.Text = "Detect Ports";
             this.detectPorts.UseVisualStyleBackColor = true;
@@ -148,10 +148,10 @@ namespace BrunnerDX
             // 
             // upload
             // 
-            this.upload.Location = new System.Drawing.Point(309, 28);
-            this.upload.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.upload.Location = new System.Drawing.Point(232, 23);
+            this.upload.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.upload.Name = "upload";
-            this.upload.Size = new System.Drawing.Size(123, 49);
+            this.upload.Size = new System.Drawing.Size(92, 40);
             this.upload.TabIndex = 2;
             this.upload.Text = "Upload Firmware";
             this.upload.UseVisualStyleBackColor = true;
@@ -160,19 +160,20 @@ namespace BrunnerDX
             // comboPorts
             // 
             this.comboPorts.FormattingEnabled = true;
-            this.comboPorts.Location = new System.Drawing.Point(60, 41);
-            this.comboPorts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboPorts.Location = new System.Drawing.Point(45, 33);
+            this.comboPorts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboPorts.Name = "comboPorts";
-            this.comboPorts.Size = new System.Drawing.Size(121, 24);
+            this.comboPorts.Size = new System.Drawing.Size(92, 21);
             this.comboPorts.TabIndex = 1;
             this.comboPorts.SelectedIndexChanged += new System.EventHandler(this.comboPorts_SelectedIndexChanged);
             // 
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(15, 41);
+            this.portLabel.Location = new System.Drawing.Point(11, 33);
+            this.portLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(31, 16);
+            this.portLabel.Size = new System.Drawing.Size(26, 13);
             this.portLabel.TabIndex = 0;
             this.portLabel.Text = "Port";
             // 
@@ -182,10 +183,10 @@ namespace BrunnerDX
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.consoleLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.consoleLog.Location = new System.Drawing.Point(5, 54);
-            this.consoleLog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.consoleLog.Location = new System.Drawing.Point(4, 44);
+            this.consoleLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.consoleLog.Name = "consoleLog";
-            this.consoleLog.Size = new System.Drawing.Size(1024, 248);
+            this.consoleLog.Size = new System.Drawing.Size(769, 202);
             this.consoleLog.TabIndex = 2;
             this.consoleLog.Text = "";
             this.consoleLog.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.consoleLog_LinkClicked);
@@ -197,11 +198,11 @@ namespace BrunnerDX
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxLogging.Controls.Add(this.clearLog);
             this.groupBoxLogging.Controls.Add(this.consoleLog);
-            this.groupBoxLogging.Location = new System.Drawing.Point(13, 288);
-            this.groupBoxLogging.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxLogging.Location = new System.Drawing.Point(10, 234);
+            this.groupBoxLogging.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBoxLogging.Name = "groupBoxLogging";
-            this.groupBoxLogging.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxLogging.Size = new System.Drawing.Size(1036, 308);
+            this.groupBoxLogging.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxLogging.Size = new System.Drawing.Size(777, 250);
             this.groupBoxLogging.TabIndex = 3;
             this.groupBoxLogging.TabStop = false;
             this.groupBoxLogging.Text = "Logging";
@@ -209,10 +210,10 @@ namespace BrunnerDX
             // clearLog
             // 
             this.clearLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clearLog.Location = new System.Drawing.Point(904, 15);
-            this.clearLog.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.clearLog.Location = new System.Drawing.Point(678, 12);
+            this.clearLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.clearLog.Name = "clearLog";
-            this.clearLog.Size = new System.Drawing.Size(125, 34);
+            this.clearLog.Size = new System.Drawing.Size(94, 28);
             this.clearLog.TabIndex = 3;
             this.clearLog.Text = "Clear Log";
             this.clearLog.UseVisualStyleBackColor = true;
@@ -221,9 +222,10 @@ namespace BrunnerDX
             // delayValue
             // 
             this.delayValue.AutoSize = true;
-            this.delayValue.Location = new System.Drawing.Point(402, 133);
+            this.delayValue.Location = new System.Drawing.Point(302, 108);
+            this.delayValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.delayValue.Name = "delayValue";
-            this.delayValue.Size = new System.Drawing.Size(46, 16);
+            this.delayValue.Size = new System.Drawing.Size(38, 13);
             this.delayValue.TabIndex = 11;
             this.delayValue.Text = "0 secs";
             this.delayValue.Visible = false;
@@ -231,11 +233,11 @@ namespace BrunnerDX
             // delaySlider
             // 
             this.delaySlider.LargeChange = 2;
-            this.delaySlider.Location = new System.Drawing.Point(121, 121);
-            this.delaySlider.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.delaySlider.Location = new System.Drawing.Point(91, 98);
+            this.delaySlider.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.delaySlider.Maximum = 6;
             this.delaySlider.Name = "delaySlider";
-            this.delaySlider.Size = new System.Drawing.Size(275, 56);
+            this.delaySlider.Size = new System.Drawing.Size(206, 45);
             this.delaySlider.TabIndex = 10;
             this.toolTip.SetToolTip(this.delaySlider, "Movement delay. Helps during the axis mappings in some games\r\nForces will be deac" +
         "tivated while using this");
@@ -244,28 +246,30 @@ namespace BrunnerDX
             // delayLabel
             // 
             this.delayLabel.AutoSize = true;
-            this.delayLabel.Location = new System.Drawing.Point(64, 133);
+            this.delayLabel.Location = new System.Drawing.Point(48, 108);
+            this.delayLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.delayLabel.Name = "delayLabel";
-            this.delayLabel.Size = new System.Drawing.Size(43, 16);
+            this.delayLabel.Size = new System.Drawing.Size(34, 13);
             this.delayLabel.TabIndex = 9;
             this.delayLabel.Text = "Delay";
             // 
             // forceValue
             // 
             this.forceValue.AutoSize = true;
-            this.forceValue.Location = new System.Drawing.Point(402, 53);
+            this.forceValue.Location = new System.Drawing.Point(302, 43);
+            this.forceValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.forceValue.Name = "forceValue";
-            this.forceValue.Size = new System.Drawing.Size(21, 16);
+            this.forceValue.Size = new System.Drawing.Size(19, 13);
             this.forceValue.TabIndex = 8;
             this.forceValue.Text = "30";
             // 
             // autoConnectCheck
             // 
             this.autoConnectCheck.AutoSize = true;
-            this.autoConnectCheck.Location = new System.Drawing.Point(217, 159);
-            this.autoConnectCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.autoConnectCheck.Location = new System.Drawing.Point(163, 129);
+            this.autoConnectCheck.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.autoConnectCheck.Name = "autoConnectCheck";
-            this.autoConnectCheck.Size = new System.Drawing.Size(18, 17);
+            this.autoConnectCheck.Size = new System.Drawing.Size(15, 14);
             this.autoConnectCheck.TabIndex = 7;
             this.toolTip.SetToolTip(this.autoConnectCheck, "Connect on program start");
             this.autoConnectCheck.UseVisualStyleBackColor = true;
@@ -274,20 +278,21 @@ namespace BrunnerDX
             // autoConnectLabel
             // 
             this.autoConnectLabel.AutoSize = true;
-            this.autoConnectLabel.Location = new System.Drawing.Point(93, 159);
+            this.autoConnectLabel.Location = new System.Drawing.Point(70, 129);
+            this.autoConnectLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.autoConnectLabel.Name = "autoConnectLabel";
-            this.autoConnectLabel.Size = new System.Drawing.Size(86, 16);
+            this.autoConnectLabel.Size = new System.Drawing.Size(72, 13);
             this.autoConnectLabel.TabIndex = 6;
             this.autoConnectLabel.Text = "Auto Connect";
             // 
             // forceSlider
             // 
             this.forceSlider.LargeChange = 10;
-            this.forceSlider.Location = new System.Drawing.Point(121, 41);
-            this.forceSlider.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.forceSlider.Location = new System.Drawing.Point(91, 33);
+            this.forceSlider.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.forceSlider.Maximum = 150;
             this.forceSlider.Name = "forceSlider";
-            this.forceSlider.Size = new System.Drawing.Size(275, 56);
+            this.forceSlider.Size = new System.Drawing.Size(206, 45);
             this.forceSlider.TabIndex = 5;
             this.forceSlider.TickFrequency = 10;
             this.toolTip.SetToolTip(this.forceSlider, "Force strength");
@@ -297,18 +302,19 @@ namespace BrunnerDX
             // forceLabel
             // 
             this.forceLabel.AutoSize = true;
-            this.forceLabel.Location = new System.Drawing.Point(71, 53);
+            this.forceLabel.Location = new System.Drawing.Point(53, 43);
+            this.forceLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.forceLabel.Name = "forceLabel";
-            this.forceLabel.Size = new System.Drawing.Size(42, 16);
+            this.forceLabel.Size = new System.Drawing.Size(34, 13);
             this.forceLabel.TabIndex = 4;
             this.forceLabel.Text = "Force";
             // 
             // portOption
             // 
-            this.portOption.Location = new System.Drawing.Point(217, 77);
-            this.portOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.portOption.Location = new System.Drawing.Point(163, 63);
+            this.portOption.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.portOption.Name = "portOption";
-            this.portOption.Size = new System.Drawing.Size(100, 22);
+            this.portOption.Size = new System.Drawing.Size(76, 20);
             this.portOption.TabIndex = 3;
             this.portOption.Text = "15090";
             this.portOption.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -316,10 +322,10 @@ namespace BrunnerDX
             // 
             // ipOption
             // 
-            this.ipOption.Location = new System.Drawing.Point(217, 40);
-            this.ipOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ipOption.Location = new System.Drawing.Point(163, 32);
+            this.ipOption.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ipOption.Name = "ipOption";
-            this.ipOption.Size = new System.Drawing.Size(100, 22);
+            this.ipOption.Size = new System.Drawing.Size(76, 20);
             this.ipOption.TabIndex = 2;
             this.ipOption.Text = "127.0.0.1";
             this.ipOption.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -328,18 +334,20 @@ namespace BrunnerDX
             // udpLabel
             // 
             this.udpLabel.AutoSize = true;
-            this.udpLabel.Location = new System.Drawing.Point(59, 83);
+            this.udpLabel.Location = new System.Drawing.Point(44, 67);
+            this.udpLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.udpLabel.Name = "udpLabel";
-            this.udpLabel.Size = new System.Drawing.Size(120, 16);
+            this.udpLabel.Size = new System.Drawing.Size(97, 13);
             this.udpLabel.TabIndex = 1;
             this.udpLabel.Text = "CLS2Sim UDP port";
             // 
             // ipLabel
             // 
             this.ipLabel.AutoSize = true;
-            this.ipLabel.Location = new System.Drawing.Point(105, 45);
+            this.ipLabel.Location = new System.Drawing.Point(79, 37);
+            this.ipLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ipLabel.Name = "ipLabel";
-            this.ipLabel.Size = new System.Drawing.Size(77, 16);
+            this.ipLabel.Size = new System.Drawing.Size(63, 13);
             this.ipLabel.TabIndex = 0;
             this.ipLabel.Text = "CLS2Sim IP";
             // 
@@ -354,11 +362,11 @@ namespace BrunnerDX
             this.groupBoxConnect.Controls.Add(this.clsLabel);
             this.groupBoxConnect.Controls.Add(this.arduinoStatus);
             this.groupBoxConnect.Controls.Add(this.arduinoLabel);
-            this.groupBoxConnect.Location = new System.Drawing.Point(13, 143);
-            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxConnect.Location = new System.Drawing.Point(10, 116);
+            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBoxConnect.Name = "groupBoxConnect";
-            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxConnect.Size = new System.Drawing.Size(521, 145);
+            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxConnect.Size = new System.Drawing.Size(391, 118);
             this.groupBoxConnect.TabIndex = 6;
             this.groupBoxConnect.TabStop = false;
             this.groupBoxConnect.Text = "Connect";
@@ -366,121 +374,117 @@ namespace BrunnerDX
             // positionLabel
             // 
             this.positionLabel.AutoSize = true;
-            this.positionLabel.Location = new System.Drawing.Point(416, 100);
-            this.positionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.positionLabel.Location = new System.Drawing.Point(312, 81);
             this.positionLabel.Name = "positionLabel";
-            this.positionLabel.Size = new System.Drawing.Size(55, 16);
+            this.positionLabel.Size = new System.Drawing.Size(44, 13);
             this.positionLabel.TabIndex = 8;
             this.positionLabel.Text = "Position";
             this.positionLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // positionChart
             // 
-            chartArea11.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea11.AxisX.IsLabelAutoFit = false;
-            chartArea11.AxisX.LabelStyle.Enabled = false;
-            chartArea11.AxisX.MajorGrid.Enabled = false;
-            chartArea11.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea11.AxisX.MajorTickMark.Enabled = false;
-            chartArea11.AxisX.Maximum = 32767D;
-            chartArea11.AxisX.Minimum = -32767D;
-            chartArea11.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea11.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea11.AxisY.IsLabelAutoFit = false;
-            chartArea11.AxisY.LabelStyle.Enabled = false;
-            chartArea11.AxisY.MajorGrid.Enabled = false;
-            chartArea11.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea11.AxisY.MajorTickMark.Enabled = false;
-            chartArea11.AxisY.Maximum = 32767D;
-            chartArea11.AxisY.Minimum = -32767D;
-            chartArea11.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea11.Name = "ChartArea1";
-            this.positionChart.ChartAreas.Add(chartArea11);
-            legend11.Enabled = false;
-            legend11.Name = "Legend1";
-            this.positionChart.Legends.Add(legend11);
-            this.positionChart.Location = new System.Drawing.Point(403, 17);
-            this.positionChart.Margin = new System.Windows.Forms.Padding(4);
+            chartArea3.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisX.IsLabelAutoFit = false;
+            chartArea3.AxisX.LabelStyle.Enabled = false;
+            chartArea3.AxisX.MajorGrid.Enabled = false;
+            chartArea3.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisX.MajorTickMark.Enabled = false;
+            chartArea3.AxisX.Maximum = 32767D;
+            chartArea3.AxisX.Minimum = -32767D;
+            chartArea3.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea3.AxisY.IsLabelAutoFit = false;
+            chartArea3.AxisY.LabelStyle.Enabled = false;
+            chartArea3.AxisY.MajorGrid.Enabled = false;
+            chartArea3.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.AxisY.MajorTickMark.Enabled = false;
+            chartArea3.AxisY.Maximum = 32767D;
+            chartArea3.AxisY.Minimum = -32767D;
+            chartArea3.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea3.Name = "ChartArea1";
+            this.positionChart.ChartAreas.Add(chartArea3);
+            legend3.Enabled = false;
+            legend3.Name = "Legend1";
+            this.positionChart.Legends.Add(legend3);
+            this.positionChart.Location = new System.Drawing.Point(302, 14);
             this.positionChart.Name = "positionChart";
-            series11.ChartArea = "ChartArea1";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series11.IsVisibleInLegend = false;
-            series11.Legend = "Legend1";
-            series11.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series11.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series11.Name = "Series1";
-            dataPoint11.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint11.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series11.Points.Add(dataPoint11);
-            series11.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series11.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.positionChart.Series.Add(series11);
-            this.positionChart.Size = new System.Drawing.Size(85, 79);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.IsVisibleInLegend = false;
+            series3.Legend = "Legend1";
+            series3.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series3.Name = "Series1";
+            dataPoint3.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series3.Points.Add(dataPoint3);
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.positionChart.Series.Add(series3);
+            this.positionChart.Size = new System.Drawing.Size(64, 64);
             this.positionChart.TabIndex = 7;
             this.positionChart.Text = "chart1";
             // 
             // forcesLabel
             // 
             this.forcesLabel.AutoSize = true;
-            this.forcesLabel.Location = new System.Drawing.Point(305, 100);
-            this.forcesLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.forcesLabel.Location = new System.Drawing.Point(229, 81);
             this.forcesLabel.Name = "forcesLabel";
-            this.forcesLabel.Size = new System.Drawing.Size(49, 16);
+            this.forcesLabel.Size = new System.Drawing.Size(39, 13);
             this.forcesLabel.TabIndex = 6;
             this.forcesLabel.Text = "Forces";
             this.forcesLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // forceChart
             // 
-            chartArea12.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea12.AxisX.IsLabelAutoFit = false;
-            chartArea12.AxisX.LabelStyle.Enabled = false;
-            chartArea12.AxisX.MajorGrid.Enabled = false;
-            chartArea12.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea12.AxisX.MajorTickMark.Enabled = false;
-            chartArea12.AxisX.Maximum = 10000D;
-            chartArea12.AxisX.Minimum = -10000D;
-            chartArea12.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea12.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea12.AxisY.IsLabelAutoFit = false;
-            chartArea12.AxisY.LabelStyle.Enabled = false;
-            chartArea12.AxisY.MajorGrid.Enabled = false;
-            chartArea12.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea12.AxisY.MajorTickMark.Enabled = false;
-            chartArea12.AxisY.Maximum = 10000D;
-            chartArea12.AxisY.Minimum = -10000D;
-            chartArea12.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
-            chartArea12.Name = "ChartArea1";
-            this.forceChart.ChartAreas.Add(chartArea12);
-            legend12.Enabled = false;
-            legend12.Name = "Legend1";
-            this.forceChart.Legends.Add(legend12);
-            this.forceChart.Location = new System.Drawing.Point(288, 17);
-            this.forceChart.Margin = new System.Windows.Forms.Padding(4);
+            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisX.IsLabelAutoFit = false;
+            chartArea4.AxisX.LabelStyle.Enabled = false;
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisX.MajorTickMark.Enabled = false;
+            chartArea4.AxisX.Maximum = 10000D;
+            chartArea4.AxisX.Minimum = -10000D;
+            chartArea4.AxisX2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea4.AxisY.IsLabelAutoFit = false;
+            chartArea4.AxisY.LabelStyle.Enabled = false;
+            chartArea4.AxisY.MajorGrid.Enabled = false;
+            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.AxisY.MajorTickMark.Enabled = false;
+            chartArea4.AxisY.Maximum = 10000D;
+            chartArea4.AxisY.Minimum = -10000D;
+            chartArea4.AxisY2.MajorGrid.LineColor = System.Drawing.Color.Transparent;
+            chartArea4.Name = "ChartArea1";
+            this.forceChart.ChartAreas.Add(chartArea4);
+            legend4.Enabled = false;
+            legend4.Name = "Legend1";
+            this.forceChart.Legends.Add(legend4);
+            this.forceChart.Location = new System.Drawing.Point(216, 14);
             this.forceChart.Name = "forceChart";
-            series12.ChartArea = "ChartArea1";
-            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series12.IsVisibleInLegend = false;
-            series12.Legend = "Legend1";
-            series12.MarkerColor = System.Drawing.Color.DodgerBlue;
-            series12.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
-            series12.Name = "Series1";
-            dataPoint12.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataPoint12.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            series12.Points.Add(dataPoint12);
-            series12.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            series12.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.forceChart.Series.Add(series12);
-            this.forceChart.Size = new System.Drawing.Size(85, 79);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.IsVisibleInLegend = false;
+            series4.Legend = "Legend1";
+            series4.MarkerColor = System.Drawing.Color.DodgerBlue;
+            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series4.Name = "Series1";
+            dataPoint4.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataPoint4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
+            series4.Points.Add(dataPoint4);
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            this.forceChart.Series.Add(series4);
+            this.forceChart.Size = new System.Drawing.Size(64, 64);
             this.forceChart.TabIndex = 5;
             this.forceChart.Text = "chart1";
             // 
             // connectButton
             // 
-            this.connectButton.Location = new System.Drawing.Point(140, 34);
-            this.connectButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.connectButton.Location = new System.Drawing.Point(105, 28);
+            this.connectButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(112, 46);
+            this.connectButton.Size = new System.Drawing.Size(84, 37);
             this.connectButton.TabIndex = 4;
             this.connectButton.Text = "Connect";
             this.connectButton.UseVisualStyleBackColor = true;
@@ -489,19 +493,20 @@ namespace BrunnerDX
             // cls2SimStatus
             // 
             this.cls2SimStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cls2SimStatus.Location = new System.Drawing.Point(101, 63);
-            this.cls2SimStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cls2SimStatus.Location = new System.Drawing.Point(76, 51);
+            this.cls2SimStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cls2SimStatus.Name = "cls2SimStatus";
-            this.cls2SimStatus.Size = new System.Drawing.Size(16, 16);
+            this.cls2SimStatus.Size = new System.Drawing.Size(13, 14);
             this.cls2SimStatus.TabIndex = 3;
             this.cls2SimStatus.TabStop = false;
             // 
             // clsLabel
             // 
             this.clsLabel.AutoSize = true;
-            this.clsLabel.Location = new System.Drawing.Point(27, 64);
+            this.clsLabel.Location = new System.Drawing.Point(20, 52);
+            this.clsLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.clsLabel.Name = "clsLabel";
-            this.clsLabel.Size = new System.Drawing.Size(62, 16);
+            this.clsLabel.Size = new System.Drawing.Size(50, 13);
             this.clsLabel.TabIndex = 2;
             this.clsLabel.Text = "CLS2Sim";
             this.clsLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -509,19 +514,20 @@ namespace BrunnerDX
             // arduinoStatus
             // 
             this.arduinoStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.arduinoStatus.Location = new System.Drawing.Point(101, 34);
-            this.arduinoStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.arduinoStatus.Location = new System.Drawing.Point(76, 28);
+            this.arduinoStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.arduinoStatus.Name = "arduinoStatus";
-            this.arduinoStatus.Size = new System.Drawing.Size(16, 16);
+            this.arduinoStatus.Size = new System.Drawing.Size(13, 14);
             this.arduinoStatus.TabIndex = 1;
             this.arduinoStatus.TabStop = false;
             // 
             // arduinoLabel
             // 
             this.arduinoLabel.AutoSize = true;
-            this.arduinoLabel.Location = new System.Drawing.Point(36, 34);
+            this.arduinoLabel.Location = new System.Drawing.Point(27, 28);
+            this.arduinoLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.arduinoLabel.Name = "arduinoLabel";
-            this.arduinoLabel.Size = new System.Drawing.Size(53, 16);
+            this.arduinoLabel.Size = new System.Drawing.Size(43, 13);
             this.arduinoLabel.TabIndex = 0;
             this.arduinoLabel.Text = "Arduino";
             this.arduinoLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -534,9 +540,10 @@ namespace BrunnerDX
             // checkDefaultSpring
             // 
             this.checkDefaultSpring.AutoSize = true;
-            this.checkDefaultSpring.Location = new System.Drawing.Point(131, 194);
+            this.checkDefaultSpring.Location = new System.Drawing.Point(98, 158);
+            this.checkDefaultSpring.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkDefaultSpring.Name = "checkDefaultSpring";
-            this.checkDefaultSpring.Size = new System.Drawing.Size(18, 17);
+            this.checkDefaultSpring.Size = new System.Drawing.Size(15, 14);
             this.checkDefaultSpring.TabIndex = 3;
             this.toolTip.SetToolTip(this.checkDefaultSpring, "Start a centering spring effect when there\'s no sim running and BrunnerDX is conn" +
         "ected");
@@ -546,9 +553,10 @@ namespace BrunnerDX
             // AutoCLSOpenCheckBox
             // 
             this.AutoCLSOpenCheckBox.AutoSize = true;
-            this.AutoCLSOpenCheckBox.Location = new System.Drawing.Point(217, 121);
+            this.AutoCLSOpenCheckBox.Location = new System.Drawing.Point(163, 98);
+            this.AutoCLSOpenCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.AutoCLSOpenCheckBox.Name = "AutoCLSOpenCheckBox";
-            this.AutoCLSOpenCheckBox.Size = new System.Drawing.Size(18, 17);
+            this.AutoCLSOpenCheckBox.Size = new System.Drawing.Size(15, 14);
             this.AutoCLSOpenCheckBox.TabIndex = 12;
             this.toolTip.SetToolTip(this.AutoCLSOpenCheckBox, "Open CLS2Sim on External Control mode on program start");
             this.AutoCLSOpenCheckBox.UseVisualStyleBackColor = true;
@@ -556,10 +564,10 @@ namespace BrunnerDX
             // 
             // btnDecTrimY
             // 
-            this.btnDecTrimY.Location = new System.Drawing.Point(199, 82);
+            this.btnDecTrimY.Location = new System.Drawing.Point(149, 67);
             this.btnDecTrimY.Margin = new System.Windows.Forms.Padding(2);
             this.btnDecTrimY.Name = "btnDecTrimY";
-            this.btnDecTrimY.Size = new System.Drawing.Size(57, 35);
+            this.btnDecTrimY.Size = new System.Drawing.Size(43, 28);
             this.btnDecTrimY.TabIndex = 9;
             this.btnDecTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimY, "Map button to trim nose up");
@@ -568,10 +576,10 @@ namespace BrunnerDX
             // 
             // btnIncTrimY
             // 
-            this.btnIncTrimY.Location = new System.Drawing.Point(199, 4);
+            this.btnIncTrimY.Location = new System.Drawing.Point(149, 3);
             this.btnIncTrimY.Margin = new System.Windows.Forms.Padding(2);
             this.btnIncTrimY.Name = "btnIncTrimY";
-            this.btnIncTrimY.Size = new System.Drawing.Size(57, 35);
+            this.btnIncTrimY.Size = new System.Drawing.Size(43, 28);
             this.btnIncTrimY.TabIndex = 8;
             this.btnIncTrimY.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimY, "Map button to trim nose down");
@@ -580,10 +588,10 @@ namespace BrunnerDX
             // 
             // btnDecTrimX
             // 
-            this.btnDecTrimX.Location = new System.Drawing.Point(138, 43);
+            this.btnDecTrimX.Location = new System.Drawing.Point(104, 35);
             this.btnDecTrimX.Margin = new System.Windows.Forms.Padding(2);
             this.btnDecTrimX.Name = "btnDecTrimX";
-            this.btnDecTrimX.Size = new System.Drawing.Size(57, 35);
+            this.btnDecTrimX.Size = new System.Drawing.Size(43, 28);
             this.btnDecTrimX.TabIndex = 4;
             this.btnDecTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnDecTrimX, "Map button to trim roll left");
@@ -592,10 +600,10 @@ namespace BrunnerDX
             // 
             // btnIncTrimX
             // 
-            this.btnIncTrimX.Location = new System.Drawing.Point(260, 43);
+            this.btnIncTrimX.Location = new System.Drawing.Point(195, 35);
             this.btnIncTrimX.Margin = new System.Windows.Forms.Padding(2);
             this.btnIncTrimX.Name = "btnIncTrimX";
-            this.btnIncTrimX.Size = new System.Drawing.Size(57, 35);
+            this.btnIncTrimX.Size = new System.Drawing.Size(43, 28);
             this.btnIncTrimX.TabIndex = 3;
             this.btnIncTrimX.Text = "?";
             this.toolTip.SetToolTip(this.btnIncTrimX, "Map button to trim roll right");
@@ -604,10 +612,10 @@ namespace BrunnerDX
             // 
             // btnCenterTrim
             // 
-            this.btnCenterTrim.Location = new System.Drawing.Point(432, 10);
+            this.btnCenterTrim.Location = new System.Drawing.Point(324, 8);
             this.btnCenterTrim.Margin = new System.Windows.Forms.Padding(2);
             this.btnCenterTrim.Name = "btnCenterTrim";
-            this.btnCenterTrim.Size = new System.Drawing.Size(57, 35);
+            this.btnCenterTrim.Size = new System.Drawing.Size(43, 28);
             this.btnCenterTrim.TabIndex = 22;
             this.btnCenterTrim.Text = "?";
             this.toolTip.SetToolTip(this.btnCenterTrim, "Map button to center trimming");
@@ -616,10 +624,10 @@ namespace BrunnerDX
             // 
             // btnReleaseTrim
             // 
-            this.btnReleaseTrim.Location = new System.Drawing.Point(432, 72);
+            this.btnReleaseTrim.Location = new System.Drawing.Point(324, 58);
             this.btnReleaseTrim.Margin = new System.Windows.Forms.Padding(2);
             this.btnReleaseTrim.Name = "btnReleaseTrim";
-            this.btnReleaseTrim.Size = new System.Drawing.Size(57, 35);
+            this.btnReleaseTrim.Size = new System.Drawing.Size(43, 28);
             this.btnReleaseTrim.TabIndex = 24;
             this.btnReleaseTrim.Text = "?";
             this.toolTip.SetToolTip(this.btnReleaseTrim, "Map button to release trimming");
@@ -631,10 +639,11 @@ namespace BrunnerDX
             this.tabControl1.Controls.Add(this.profileTab);
             this.tabControl1.Controls.Add(this.connectionTab);
             this.tabControl1.Controls.Add(this.trimTab);
-            this.tabControl1.Location = new System.Drawing.Point(540, 14);
+            this.tabControl1.Location = new System.Drawing.Point(405, 11);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(512, 274);
+            this.tabControl1.Size = new System.Drawing.Size(384, 223);
             this.tabControl1.TabIndex = 7;
             // 
             // profileTab
@@ -648,19 +657,21 @@ namespace BrunnerDX
             this.profileTab.Controls.Add(this.forceValue);
             this.profileTab.Controls.Add(this.forceSlider);
             this.profileTab.Controls.Add(this.delayLabel);
-            this.profileTab.Location = new System.Drawing.Point(4, 25);
+            this.profileTab.Location = new System.Drawing.Point(4, 22);
+            this.profileTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.profileTab.Name = "profileTab";
-            this.profileTab.Padding = new System.Windows.Forms.Padding(3);
-            this.profileTab.Size = new System.Drawing.Size(504, 245);
+            this.profileTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.profileTab.Size = new System.Drawing.Size(376, 197);
             this.profileTab.TabIndex = 1;
             this.profileTab.Text = "Profile";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 193);
+            this.label1.Location = new System.Drawing.Point(13, 157);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 16);
+            this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Default Spring";
             // 
@@ -676,28 +687,31 @@ namespace BrunnerDX
             this.connectionTab.Controls.Add(this.portOption);
             this.connectionTab.Controls.Add(this.autoConnectCheck);
             this.connectionTab.Controls.Add(this.autoConnectLabel);
-            this.connectionTab.Location = new System.Drawing.Point(4, 25);
+            this.connectionTab.Location = new System.Drawing.Point(4, 22);
+            this.connectionTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.connectionTab.Name = "connectionTab";
-            this.connectionTab.Padding = new System.Windows.Forms.Padding(3);
-            this.connectionTab.Size = new System.Drawing.Size(504, 245);
+            this.connectionTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.connectionTab.Size = new System.Drawing.Size(376, 197);
             this.connectionTab.TabIndex = 0;
             this.connectionTab.Text = "Connection";
             // 
             // TextCLS2SimPath
             // 
             this.TextCLS2SimPath.AutoSize = true;
-            this.TextCLS2SimPath.Location = new System.Drawing.Point(241, 121);
+            this.TextCLS2SimPath.Location = new System.Drawing.Point(181, 98);
+            this.TextCLS2SimPath.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TextCLS2SimPath.Name = "TextCLS2SimPath";
-            this.TextCLS2SimPath.Size = new System.Drawing.Size(383, 16);
+            this.TextCLS2SimPath.Size = new System.Drawing.Size(312, 13);
             this.TextCLS2SimPath.TabIndex = 14;
             this.TextCLS2SimPath.Text = "C:\\Program Files (x86)\\Brunner Elektronik AG\\CLS2Sim\\Settings";
             // 
             // labelAutoCLSOpen
             // 
             this.labelAutoCLSOpen.AutoSize = true;
-            this.labelAutoCLSOpen.Location = new System.Drawing.Point(82, 121);
+            this.labelAutoCLSOpen.Location = new System.Drawing.Point(62, 98);
+            this.labelAutoCLSOpen.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAutoCLSOpen.Name = "labelAutoCLSOpen";
-            this.labelAutoCLSOpen.Size = new System.Drawing.Size(98, 16);
+            this.labelAutoCLSOpen.Size = new System.Drawing.Size(79, 13);
             this.labelAutoCLSOpen.TabIndex = 13;
             this.labelAutoCLSOpen.Text = "Open CLS2Sim";
             // 
@@ -717,94 +731,99 @@ namespace BrunnerDX
             this.trimTab.Controls.Add(this.label3);
             this.trimTab.Controls.Add(this.btnDecTrimX);
             this.trimTab.Controls.Add(this.btnIncTrimX);
-            this.trimTab.Location = new System.Drawing.Point(4, 25);
+            this.trimTab.Location = new System.Drawing.Point(4, 22);
+            this.trimTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trimTab.Name = "trimTab";
-            this.trimTab.Size = new System.Drawing.Size(504, 245);
+            this.trimTab.Size = new System.Drawing.Size(376, 197);
             this.trimTab.TabIndex = 2;
             this.trimTab.Text = "Trim";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(335, 81);
+            this.label6.Location = new System.Drawing.Point(251, 66);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 16);
+            this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 25;
             this.label6.Text = "Trim release";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(344, 19);
+            this.label4.Location = new System.Drawing.Point(258, 15);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 16);
+            this.label4.Size = new System.Drawing.Size(60, 13);
             this.label4.TabIndex = 23;
             this.label4.Text = "Trim center";
             // 
             // barTrimStrengthZ
             // 
             this.barTrimStrengthZ.LargeChange = 10;
-            this.barTrimStrengthZ.Location = new System.Drawing.Point(199, 187);
+            this.barTrimStrengthZ.Location = new System.Drawing.Point(149, 152);
             this.barTrimStrengthZ.Margin = new System.Windows.Forms.Padding(2);
             this.barTrimStrengthZ.Maximum = 100;
             this.barTrimStrengthZ.Name = "barTrimStrengthZ";
-            this.barTrimStrengthZ.Size = new System.Drawing.Size(290, 56);
+            this.barTrimStrengthZ.Size = new System.Drawing.Size(218, 45);
             this.barTrimStrengthZ.TabIndex = 21;
             this.barTrimStrengthZ.TickFrequency = 10;
+            this.toolTip.SetToolTip(this.barTrimStrengthZ, "Percentage of the main force setting to be used in returning to center");
             this.barTrimStrengthZ.Scroll += new System.EventHandler(this.barTrimStrengthZ_Scroll);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 204);
+            this.label2.Location = new System.Drawing.Point(7, 166);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(164, 16);
+            this.label2.Size = new System.Drawing.Size(133, 13);
             this.label2.TabIndex = 20;
             this.label2.Text = "Rudder Centering Strength";
             // 
             // barTrimStrengthXY
             // 
             this.barTrimStrengthXY.LargeChange = 10;
-            this.barTrimStrengthXY.Location = new System.Drawing.Point(199, 128);
+            this.barTrimStrengthXY.Location = new System.Drawing.Point(149, 104);
             this.barTrimStrengthXY.Margin = new System.Windows.Forms.Padding(2);
             this.barTrimStrengthXY.Maximum = 100;
             this.barTrimStrengthXY.Name = "barTrimStrengthXY";
-            this.barTrimStrengthXY.Size = new System.Drawing.Size(290, 56);
+            this.barTrimStrengthXY.Size = new System.Drawing.Size(218, 45);
             this.barTrimStrengthXY.TabIndex = 19;
             this.barTrimStrengthXY.TickFrequency = 10;
+            this.toolTip.SetToolTip(this.barTrimStrengthXY, "Percentage of the main force setting to be used in returning to center");
             this.barTrimStrengthXY.Scroll += new System.EventHandler(this.barTrimStrengthXY_Scroll);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(57, 138);
+            this.label5.Location = new System.Drawing.Point(43, 112);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(116, 16);
+            this.label5.Size = new System.Drawing.Size(97, 13);
             this.label5.TabIndex = 18;
             this.label5.Text = "Roll/Pitch Strength";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 52);
+            this.label3.Location = new System.Drawing.Point(11, 42);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 16);
+            this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Button Mapping";
             // 
             // BrunnerDXGui
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1064, 604);
+            this.ClientSize = new System.Drawing.Size(798, 491);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBoxConnect);
             this.Controls.Add(this.groupBoxLogging);
             this.Controls.Add(this.groupBoxFirmware);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "BrunnerDXGui";
             this.Text = "BrunnerDX";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BrunnerDXGui_FormClosing);

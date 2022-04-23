@@ -321,6 +321,7 @@ namespace BrunnerDX
         {
             this.options.trimStrengthXY = this.barTrimStrengthXY.Value;
             this.brunnerDX.trimForceMultiplierXY.pct = this.barTrimStrengthXY.Value;
+            this.brunnerDX.defaultSpring = this.checkDefaultSpring.Checked && this.barTrimStrengthXY.Value == 0;
         }
 
         private void barTrimStrengthZ_Scroll(object sender, EventArgs e)
@@ -357,7 +358,7 @@ namespace BrunnerDX
         private void checkDefaultSpring_CheckedChanged(object sender, EventArgs e)
         {
             this.options.defaultSpring = this.checkDefaultSpring.Checked;
-            brunnerDX.defaultSpring = this.checkDefaultSpring.Checked;
+            this.brunnerDX.defaultSpring = this.checkDefaultSpring.Checked && this.barTrimStrengthXY.Value == 0;
         }
 
         private void AutoCLSOpenCheckBox_CheckedChanged(object sender, EventArgs e)
