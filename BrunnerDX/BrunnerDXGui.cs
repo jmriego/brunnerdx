@@ -195,6 +195,7 @@ namespace BrunnerDX
 
         private void ConnectToggleBrunnerDX()
         {
+            this.connectCountdownTicks = 0;
             brunnerDX.cls2SimHost = this.options.ip;
             brunnerDX.cls2SimPort = this.options.port;
             brunnerDX.arduinoPortName = this.options.comPort;
