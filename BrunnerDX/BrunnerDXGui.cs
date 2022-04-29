@@ -195,7 +195,7 @@ namespace BrunnerDX
 
         private void ConnectToggleBrunnerDX()
         {
-            this.connectCountdownTicks = 0;
+            this.connectCountdownTicks = -1;
             brunnerDX.cls2SimHost = this.options.ip;
             brunnerDX.cls2SimPort = this.options.port;
             brunnerDX.arduinoPortName = this.options.comPort;
@@ -433,18 +433,25 @@ namespace BrunnerDX
                 if (this.positionChart.Series[0].Points.Count > 1)
                     this.positionChart.Series[0].Points.RemoveAt(1);
 
+                if (brunnerDX.stopExecuting)
+                {
+                    this.connectButton.Text = "Connect";
+                }
+                else
+                {
+                    this.connectButton.Text = "Disconnect";
+                }
+
                 if (brunnerDX.isArduinoConnected)
                 {
                     this.arduinoStatus.BackColor = Color.Green;
                     this.forceChart.Series[0].Points.AddXY(brunnerDX.force[0], (double)-brunnerDX.force[1]);
-                    this.connectButton.Text = "Disconnect";
                     if (this.waitingForMappingState != "") RemapBrunnerDXButton();
                     this.prevButtonsPressed = brunnerDX.buttons;
                 }
                 else
                 {
                     this.arduinoStatus.BackColor = brunnerDX.stopExecuting ? Color.Transparent : Color.Red;
-                    this.connectButton.Text = "Connect";
                 }
 
                 if (brunnerDX.isBrunnerConnected)
@@ -465,9 +472,7 @@ namespace BrunnerDX
                     {
                         ConnectToggleBrunnerDX();
                     }
-                }
-
-                if (brunnerDX.stopExecuting &&
+                } else if (brunnerDX.stopExecuting &&
                     connectCountdownTicks < 0 &&
                     !brunnerDX.isArduinoConnected)
                 {
