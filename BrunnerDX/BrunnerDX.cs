@@ -314,7 +314,7 @@ namespace BrunnerDX
                 logger.Error(ex, ex.Message);
                 _isBrunnerConnected = false;
                 logger.Warn("CLS2Sim disconnected. Trying to reconnect...");
-                _isBrunnerConnected = brunnerSocket.WaitForResponse(60);
+                _isBrunnerConnected = brunnerSocket.WaitForResponse(5);
                 if (!isBrunnerConnected) throw;
             }
             catch (Exception ex)
