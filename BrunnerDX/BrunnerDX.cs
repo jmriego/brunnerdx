@@ -304,8 +304,18 @@ namespace BrunnerDX
                 logger.Error(ex, ex.Message);
                 _isArduinoConnected = false;
                 arduinoPort.Close();
+                logger.Warn("Arduino disconnected. Trying to reconnect...");
                 arduinoPort.WaitForConnection(timeout: 5000);
                 _isArduinoConnected = true;
+            }
+            catch (Exception ex) when (ex is System.Net.Sockets.SocketException)
+            {
+                logger.Error(ex, ex.StackTrace);
+                logger.Error(ex, ex.Message);
+                _isBrunnerConnected = false;
+                logger.Warn("CLS2Sim disconnected. Trying to reconnect...");
+                _isBrunnerConnected = brunnerSocket.WaitForResponse(60);
+                if (!isBrunnerConnected) throw;
             }
             catch (Exception ex)
             {
