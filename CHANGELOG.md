@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.7.1]
+
+### Changed
+- Automatically try to reconnect if there's any hiccup in the connection
+
 ## [2.7.0]
 
 ### Changed

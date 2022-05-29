@@ -279,21 +279,43 @@ namespace BrunnerDX
                     }
 
                     // send the current position to the Arduino
-                    if (arduinoPort.semaphore >= 1 && ticksToNextPositionChange <= 0)
+                    if (arduinoPort.ready)
                     {
-                        arduinoPort.WriteOrder(Order.POSITION);
-                        arduinoPort.WriteInt16(this.position[0]);
-                        arduinoPort.WriteInt16(this.position[1]);
-                        Interlocked.Exchange(ref ticksToNextPositionChange, (forcedArduinoCalculation / timerMs) + 1);
-                        axisHasMoved[0] = false;
-                        axisHasMoved[1] = false;
-                    }
+                        if (arduinoPort.semaphore >= 1 && ticksToNextPositionChange <= 0)
+                        {
+                            arduinoPort.WriteOrder(Order.POSITION);
+                            arduinoPort.WriteInt16(this.position[0]);
+                            arduinoPort.WriteInt16(this.position[1]);
+                            Interlocked.Exchange(ref ticksToNextPositionChange, (forcedArduinoCalculation / timerMs) + 1);
+                            axisHasMoved[0] = false;
+                            axisHasMoved[1] = false;
+                        }
 
-                    if (arduinoPort.semaphore >= 1)
-                    {
-                        arduinoPort.WriteOrder(Order.FORCES);
+                        if (arduinoPort.semaphore >= 1)
+                        {
+                            arduinoPort.WriteOrder(Order.FORCES);
+                        }
                     }
                 }
+            }
+            catch (Exception ex) when (ex is System.IO.IOException)
+            {
+                logger.Error(ex, ex.StackTrace);
+                logger.Error(ex, ex.Message);
+                _isArduinoConnected = false;
+                arduinoPort.Close();
+                logger.Warn("Arduino disconnected. Trying to reconnect...");
+                arduinoPort.WaitForConnection(timeout: 5000);
+                _isArduinoConnected = true;
+            }
+            catch (Exception ex) when (ex is System.Net.Sockets.SocketException)
+            {
+                logger.Error(ex, ex.StackTrace);
+                logger.Error(ex, ex.Message);
+                _isBrunnerConnected = false;
+                logger.Warn("CLS2Sim disconnected. Trying to reconnect...");
+                _isBrunnerConnected = brunnerSocket.WaitForResponse(5);
+                if (!isBrunnerConnected) throw;
             }
             catch (Exception ex)
             {
@@ -375,7 +397,7 @@ namespace BrunnerDX
                     var awaitingBrunnerWatch = new Stopwatch();
                     awaitingBrunnerWatch.Start();
 
-                    while (arduinoPort.IsOpen && !stopExecuting)
+                    while (!stopExecuting)
                     {
                         if (!_isBrunnerConnected && awaitingBrunnerWatch.IsRunning)
                         {

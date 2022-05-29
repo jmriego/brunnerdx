@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO.Ports;
 
 using NLog;
+using System.Diagnostics;
 
 namespace BrunnerDX
 {
@@ -30,7 +31,7 @@ namespace BrunnerDX
         Logger logger = LogManager.GetCurrentClassLogger();
 
         SerialPort arduinoPort;
-        private bool _connected = false;
+        private bool _ready = false;
         private int _semaphore = 10;
 
         MessageReceivedEventHandler OnMessageReceived;
@@ -46,7 +47,6 @@ namespace BrunnerDX
             //arduinoPort.DtrEnable = true;
 
             this.OnMessageReceived = onMessageReceived;
-            arduinoPort.DataReceived += DataReceivedHandler;
         }
 
         public void Dispose()
@@ -58,9 +58,9 @@ namespace BrunnerDX
 
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            while (arduinoPort.BytesToRead > 0)
+            try
             {
-                lock (arduinoPort)
+                while (arduinoPort.BytesToRead > 0)
                 {
                     Order ord = ReadOrder();
                     //logger.Debug($"Received order {ord}");
@@ -68,46 +68,64 @@ namespace BrunnerDX
                     {
                         case Order.HELLO:
                         case Order.ALREADY_CONNECTED:
-                            _connected = true;
+                            _ready = true;
                             break;
                         case Order.RECEIVED:
                             Interlocked.Increment(ref _semaphore);
                             break;
                         default:
-                            try
+                            lock (arduinoPort)
                             {
                                 this.OnMessageReceived(ord, this);
-                            }
-                            catch (Exception ex)
-                            {
-                                logger.Error(ex, ex.Message);
                             }
                             break;
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex, ex.StackTrace);
+                logger.Error(ex, ex.Message);
+            }
         }
 
-        public bool connected => _connected;
-        public int semaphore => _semaphore;
+        public bool ready => _ready; // This field indicates we have the COM port open and we have received a HELLO/ALREADY_CONNECTED from the Arduino
+        public int semaphore => _semaphore; // How many orders we can send before a RECEIVED confirmation
         public bool IsOpen => arduinoPort.IsOpen;
 
-        public void WaitForConnection()
+        public void WaitForConnection(int timeout=1000)
         {
-            lock (arduinoPort)
+            var awaitingArduinoWatch = new Stopwatch();
+            awaitingArduinoWatch.Start();
+            while (!arduinoPort.IsOpen)
             {
-                if (!arduinoPort.IsOpen)
+                try
                 {
                     arduinoPort.Open();
                 }
-
-                logger.Info("Waiting for device...");
-                while (_connected)
+                catch (Exception ex) when (ex is System.IO.IOException)
                 {
-                    WriteOrder(Order.HELLO);
-                    System.Threading.Thread.Sleep(500);
+                    if (awaitingArduinoWatch.ElapsedMilliseconds >= timeout) throw;
+                    System.Threading.Thread.Sleep(1000);
                 }
-                logger.Info("Connected to device");
+            }
+
+            logger.Info("Waiting for device...");
+            arduinoPort.DataReceived += DataReceivedHandler;
+            while (!_ready) // Keep on sending HELLO until we receive a confirmation that will be read by DataReceivedHandler
+            {
+                WriteOrder(Order.HELLO);
+                System.Threading.Thread.Sleep(500);
+            }
+            logger.Info("Connected to device");
+        }
+
+        public void Close()
+        {
+            lock (arduinoPort)
+            {
+                _ready = false;
+                arduinoPort.Close();
             }
         }
 
